@@ -16,7 +16,7 @@
 
 *{margin:0;padding:0;box-sizing:border-box}
 
-body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden}
+body{font-family:'Segoe UI',oystem-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden}
 
 
 
@@ -90,7 +90,7 @@ table{width:100%;border-collapse:collapse}thead th{text-align:left;padding:10px 
 
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:500;transition:all .15s}.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--accent2)}.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border)}.btn-ghost:hover{background:var(--surface2);color:var(--text)}.btn-danger{background:transparent;color:var(--red);border:1px solid var(--border)}.btn-danger:hover{background:rgba(255,107,107,.1)}.btn-sm{padding:5px 10px;font-size:12px}
 
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:center;justify-content:center;backdrop-filter:blur(4px)}.modal-overlay.active{display:flex}.modal{background:var(--surface);border:1px solid var(--border);border-radius:14px;width:520px;max-height:85vh;overflow-y:auto}.modal-head{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center}.modal-head h3{font-size:16px;font-weight:600}.modal-head .close{margin-left:auto;cursor:pointer;color:var(--text2);background:none;border:none;font-size:20px}.modal-body{padding:20px 24px}.modal-foot{padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:center;justify-content:center;backdrop-filter:blur(4px)}.modal-overlay.active{display:flex}.modal{background:var(--surface);border:1px solid var(--border);border-radius:14px;width:900px;max-height:90vh;overflow-y:auto}.modal-head{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center}.modal-head h3{font-size:16px;font-weight:600}.modal-head .close{margin-left:auto;cursor:pointer;color:var(--text2);background:none;border:none;font-size:20px}.modal-body{padding:20px 24px}.modal-foot{padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}
 
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.form-group{display:flex;flex-direction:column;gap:5px}.form-group.full{grid-column:1/-1}.form-group label{font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}.form-group input,.form-group select{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-size:14px;outline:none}.form-group input:focus,.form-group select:focus{border-color:var(--accent)}.form-group select{cursor:pointer}
 
@@ -104,9 +104,51 @@ table{width:100%;border-collapse:collapse}thead th{text-align:left;padding:10px 
 
 .pill-admin{background:rgba(108,92,231,.2);color:var(--accent2)}.pill-client{background:rgba(79,172,254,.15);color:var(--blue)}
 
+.pill-draft{background:rgba(255,165,2,.15);color:var(--orange)}.pill-sent{background:rgba(79,172,254,.15);color:var(--blue)}.pill-paid{background:rgba(46,213,115,.15);color:var(--green)}
+
+.pill-active{background:rgba(46,213,115,.15);color:var(--green)}.pill-completed{background:rgba(108,92,231,.2);color:var(--accent2)}.pill-onhold{background:rgba(255,165,2,.15);color:var(--orange)}
+
+.pill-billable{background:rgba(46,213,115,.15);color:var(--green)}
+
 .table-scroll{overflow-x:auto}
 
 .hidden{display:none!important}
+
+.line-items-table{width:100%;border-collapse:collapse;margin:16px 0;background:var(--bg);border:1px solid var(--border);border-radius:8px}
+
+.line-items-table th{padding:10px;background:var(--surface2);border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);text-align:left}
+
+.line-items-table td{padding:10px;border-bottom:1px solid var(--border);font-size:13px}
+
+.line-items-table input,.line-items-table select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:6px;color:var(--text);font-size:12px}
+
+.line-items-table button{padding:4px 8px;font-size:11px}
+
+.print-header{text-align:center;border-bottom:2px solid #000;padding-bottom:16px;margin-bottom:16px}
+
+.print-header h1{font-size:24px;font-weight:700;margin-bottom:4px}
+
+.print-header .details{font-size:11px;line-height:1.6;color:#333}
+
+.print-section{margin:20px 0;page-break-inside:avoid}
+
+.print-section h3{font-size:13px;font-weight:600;border-bottom:1px solid #999;padding-bottom:8px;margin-bottom:12px}
+
+.print-table{width:100%;border-collapse:collapse}
+
+.print-table th{background:#f0f0f0;border:1px solid #999;padding:8px;text-align:left;font-size:10px;font-weight:600}
+
+.print-table td{border:1px solid #999;padding:8px;font-size:10px}
+
+.print-table td.text-right{text-align:right}
+
+.print-summary{width:400px;margin-left:auto;margin-top:16px}
+
+.print-summary-row{display:flex;justify-content:space-between;padding:6px 0;font-size:11px;border-bottom:1px solid #ddd}
+
+.print-summary-row.total{font-weight:700;font-size:12px;border-top:2px solid #000;border-bottom:2px solid #000;padding:8px 0}
+
+@media print{body{background:white;color:black}.modal{display:none}.btn{display:none}.topbar{display:none}.sidebar{display:none}.content{padding:0;overflow:visible;height:auto}.invoice-print-view{width:100%;max-width:100%;margin:0;padding:0;background:white}}
 
 </style>
 
@@ -166,6 +208,14 @@ table{width:100%;border-collapse:collapse}thead th{text-align:left;padding:10px 
 
 <div class="nav-item" data-section="journal" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Transaction Journal<span class="badge" id="badge-txns">0</span></div>
 
+<div class="nav-item" data-section="invoices" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>Invoices<span class="badge" id="badge-invoices">0</span></div>
+
+<div class="nav-section">Projects &amp; Time</div>
+
+<div class="nav-item" data-section="projects" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>Projects<span class="badge" id="badge-projects">0</span></div>
+
+<div class="nav-item" data-section="timeentries" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Time Entries<span class="badge" id="badge-timeentries">0</span></div>
+
 <div class="nav-section">Assets &amp; Tax</div>
 
 <div class="nav-item admin-only" data-section="assets" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>Fixed Assets</div>
@@ -221,6 +271,18 @@ table{width:100%;border-collapse:collapse}thead th{text-align:left;padding:10px 
 
 
 <div class="section" id="sec-journal"><div class="table-wrap"><div class="table-header"><h3>Transaction Journal</h3><span class="count" id="txn-count">0</span><span class="spacer"></span><button class="btn btn-primary" onclick="openModal('txn')">+ New Entry</button></div><div class="table-scroll"><table><thead><tr><th>Date</th><th>Type</th><th>Account</th><th>DR/CR</th><th style="text-align:right">Amount</th><th>Item</th><th>Narration</th><th></th></tr></thead><tbody id="txn-body"></tbody></table></div></div></div>
+
+
+
+<div class="section" id="sec-invoices"><div class="table-wrap"><div class="table-header"><h3>Invoices</h3><span class="count" id="invoices-count">0</span><span class="spacer"></span><button class="btn btn-primary" onclick="openModal('invoice')">+ New Invoice</button></div><div class="table-scroll"><table><thead><tr><th>Invoice #</th><th>Date</th><th>Party</th><th>Type</th><th style="text-align:right">Amount</th><th>Status</th><th></th></tr></thead><tbody id="invoices-body"></tbody></table></div></div></div>
+
+
+
+<div class="section" id="sec-projects"><div class="table-wrap"><div class="table-header"><h3>Projects</h3><span class="count" id="projects-count">0</span><span class="spacer"></span><button class="btn btn-primary admin-only" onclick="openModal('project')">+ New Project</button></div><div class="table-scroll"><table><thead><tr><th>Project Name</th><th>Client</th><th>Status</th><th style="text-align:right">Budget (â¹)</th><th>Start Date</th><th></th></tr></thead><tbody id="projects-body"></tbody></table></div></div></div>
+
+
+
+<div class="section" id="sec-timeentries"><div class="table-wrap"><div class="table-header"><h3>Time Entries</h3><span class="count" id="timeentries-count">0</span><span class="spacer"></span><button class="btn btn-primary" onclick="openModal('timeentry')">+ Log Time</button></div><div class="table-scroll"><table><thead><tr><th>Date</th><th>Project</th><th>Task</th><th>Hours</th><th>Billable</th><th style="text-align:right">Amount</th><th></th></tr></thead><tbody id="timeentries-body"></tbody></table></div></div></div>
 
 
 
@@ -322,7 +384,7 @@ let currentUser = null;
 
 let userProfile = null;
 
-let DB = { setup:{}, coa:[], parties:[], items:[], transactions:[], fixed_assets:[], tds:[] };
+let DB = { setup:{}, coa:[], parties:[], items:[], transactions:[], fixed_assets:[], tds:[], invoices:[], projects:[], time_entries:[] };
 
 const LISTS = {
 
@@ -330,7 +392,13 @@ const LISTS = {
 
   voucher_types:['Sales','Purchase','Receipt','Payment','Journal','Contra','Credit Note','Debit Note'],
 
-  gst_types:['Intra-State (CGST+SGST)','Inter-State (IGST)','Exempt','Non-GST']
+  gst_types:['Intra-State (CGST+SGST)','Inter-State (IGST)','Exempt','Non-GST'],
+
+  invoice_types:['Tax Invoice','Bill of Supply','Credit Note','Debit Note'],
+
+  project_status:['Active','Completed','On Hold'],
+
+  gst_rates:[0,5,12,18,28]
 
 };
 
@@ -548,9 +616,15 @@ async function loadAllData() {
 
     DB.tds = d.tds || [];
 
+    DB.invoices = d.invoices || [];
+
+    DB.projects = d.projects || [];
+
+    DB.time_entries = d.time_entries || [];
+
   } else {
 
-    DB = { setup: { company_name: '', entity_type: '', pan: '', tan: '', gstin: '' }, coa: [...DEFAULT_COA], parties: [], items: [], transactions: [], fixed_assets: [], tds: [] };
+    DB = { setup: { company_name: '', entity_type: '', pan: '', tan: '', gstin: '' }, coa: [...DEFAULT_COA], parties: [], items: [], transactions: [], fixed_assets: [], tds: [], invoices: [], projects: [], time_entries: [] };
 
     await saveAllData();
 
@@ -584,11 +658,17 @@ async function saveCollection(key) {
 
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
 
-function fmt(n){if(n===null||n===undefined||n==='')return'\u2014';return Number(n).toLocaleString('en-IN');}
+function fmt(n){if(n===null||n===undefined||n==='')return'â¹0';return 'â¹'+Number(n).toLocaleString('en-IN');}
 
 function esc(s){if(s===null||s===undefined)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-function updateBadges(){document.getElementById('badge-parties').textContent=DB.parties.length;document.getElementById('badge-items').textContent=DB.items.length;document.getElementById('badge-txns').textContent=DB.transactions.length;}
+function updateBadges(){document.getElementById('badge-parties').textContent=DB.parties.length;document.getElementById('badge-items').textContent=DB.items.length;document.getElementById('badge-txns').textContent=DB.transactions.length;document.getElementById('badge-invoices').textContent=DB.invoices.length;document.getElementById('badge-projects').textContent=DB.projects.length;document.getElementById('badge-timeentries').textContent=DB.time_entries.length;}
+
+function getNextInvoiceNumber(){if(!DB.invoices.length)return'INV-001';const nums=DB.invoices.map(i=>{const m=String(i.invoice_number).match(/INV-(\d+)/);return m?parseInt(m[1]):0;});return'INV-'+String(Math.max(...nums)+1).padStart(3,'0');}
+
+function getNextProjectNumber(){if(!DB.projects.length)return'PROJ-001';const nums=DB.projects.map(p=>{const m=String(p.code).match(/PROJ-(\d+)/);return m?parseInt(m[1]):0;});return'PROJ-'+String(Math.max(...nums)+1).padStart(3,'0');}
+
+function numberToWords(n){const ones=['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine'];const tens=['','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];const twenties=['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];const scales=['','Thousand','Lakh','Crore'];let num=Math.floor(n);let words=[];let scaleIdx=0;while(num>0){let group=num%1000;if(group!==0){let groupWords='';let h=Math.floor(group/100);if(h>0)groupWords+=ones[h]+' Hundred ';let rem=group%100;if(rem>=20){let t=Math.floor(rem/10);let o=rem%10;groupWords+=twenties[t]+(o>0?' '+ones[o]:'')+' ';}else if(rem>0){groupWords+=tens[rem]+' ';}words.unshift(groupWords.trim()+(scales[scaleIdx]?' '+scales[scaleIdx]:''));}num=Math.floor(num/1000);scaleIdx++;}return words.join(' ').trim()+' Rupees Only';}
 
 
 
@@ -614,7 +694,7 @@ function navigate(el){
 
 }
 
-function loadSection(sec){const L={dashboard:loadDashboard,parties:loadParties,items:loadItems,coa:loadCOA,journal:loadTransactions,assets:loadAssets,tds:loadTDS,setup:loadSetup,users:loadUsers};if(L[sec])L[sec]();}
+function loadSection(sec){const L={dashboard:loadDashboard,parties:loadParties,items:loadItems,coa:loadCOA,journal:loadTransactions,invoices:loadInvoices,projects:loadProjects,timeentries:loadTimeEntries,assets:loadAssets,tds:loadTDS,setup:loadSetup,users:loadUsers};if(L[sec])L[sec]();}
 
 
 
@@ -641,6 +721,18 @@ function loadCOA(){const d=DB.coa;document.getElementById('coa-count').textConte
 
 
 function loadTransactions(){const d=DB.transactions;document.getElementById('txn-count').textContent=d.length;updateBadges();const tb=document.getElementById('txn-body');if(!d.length){tb.innerHTML='<tr><td colspan="8" class="empty-state"><p>No transactions yet</p></td></tr>';return;}tb.innerHTML=d.map((t,i)=>`<tr><td>${esc(t.date)}</td><td>${esc(t.voucher_type)}</td><td>${esc(t.dr_account)}</td><td><span class="pill ${t.dr_cr==='DR'?'pill-expense':'pill-income'}">${esc(t.dr_cr)}</span></td><td class="amt" style="text-align:right">${fmt(t.amount)}</td><td>${esc(t.item_code)}</td><td>${esc(t.narration)}</td><td>${isAdmin()?`<button class="btn btn-danger btn-sm" onclick="deleteEntry('transactions',${i})">Delete</button>`:''}</td></tr>`).join('');}
+
+
+
+function loadInvoices(){const d=DB.invoices;document.getElementById('invoices-count').textContent=d.length;updateBadges();const tb=document.getElementById('invoices-body');if(!d.length){tb.innerHTML='<tr><td colspan="7" class="empty-state"><p>No invoices yet</p></td></tr>';return;}tb.innerHTML=d.map((inv,i)=>`<tr><td><strong>${esc(inv.invoice_number)}</strong></td><td>${esc(inv.invoice_date)}</td><td>${esc(inv.party_name)}</td><td>${esc(inv.invoice_type)}</td><td class="amt" style="text-align:right">${fmt(inv.grand_total||0)}</td><td><span class="pill pill-${(inv.status||'draft').toLowerCase()}">${esc(inv.status||'Draft')}</span></td><td><button class="btn btn-ghost btn-sm" onclick="viewInvoice(${i})">View</button>${isAdmin()?`<button class="btn btn-danger btn-sm" onclick="deleteEntry('invoices',${i})">Delete</button>`:''}</td></tr>`).join('');}
+
+
+
+function loadProjects(){const d=DB.projects;document.getElementById('projects-count').textContent=d.length;updateBadges();const tb=document.getElementById('projects-body');if(!d.length){tb.innerHTML='<tr><td colspan="6" class="empty-state"><p>No projects yet</p></td></tr>';return;}tb.innerHTML=d.map((p,i)=>`<tr><td><strong>${esc(p.name)}</strong></td><td>${esc(p.client_name)}</td><td><span class="pill pill-${(p.status||'Active').toLowerCase()}">${esc(p.status||'Active')}</span></td><td class="amt" style="text-align:right">${fmt(p.budget||0)}</td><td>${esc(p.start_date)}</td><td>${isAdmin()?`<button class="btn btn-danger btn-sm" onclick="deleteEntry('projects',${i})">Delete</button>`:''}</td></tr>`).join('');}
+
+
+
+function loadTimeEntries(){const d=DB.time_entries;const filtered=isAdmin()?d:d.filter(e=>e.logged_by===userProfile.email);document.getElementById('timeentries-count').textContent=filtered.length;updateBadges();const tb=document.getElementById('timeentries-body');if(!filtered.length){tb.innerHTML='<tr><td colspan="7" class="empty-state"><p>No time entries yet</p></td></tr>';return;}tb.innerHTML=filtered.map((te,i)=>{const origIdx=DB.time_entries.indexOf(te);return`<tr><td>${esc(te.date)}</td><td>${esc(te.project_name)}</td><td>${esc(te.task_description)}</td><td class="amt">${te.hours}</td><td><span class="pill ${te.billable?'pill-billable':''}">${te.billable?'Yes':'No'}</span></td><td class="amt" style="text-align:right">${fmt(te.billable_amount||0)}</td><td><button class="btn btn-danger btn-sm" onclick="deleteEntry('time_entries',${origIdx})">Delete</button></td></tr>`;}).join('');}
 
 
 
@@ -752,7 +844,7 @@ async function removeUser(uid, email) {
 
 async function deleteEntry(col, idx) {
 
-  if (!isAdmin() && col !== 'transactions') { toast('No permission'); return; }
+  if (!isAdmin() && col !== 'transactions' && col !== 'time_entries') { toast('No permission'); return; }
 
   if (!confirm('Delete this entry?')) return;
 
@@ -770,6 +862,280 @@ async function deleteEntry(col, idx) {
 
 // =============================================
 
+// INVOICE FUNCTIONS
+
+// =============================================
+
+function viewInvoice(idx){
+
+  const inv=DB.invoices[idx];
+
+  const win=window.open('','invoice','width=900,height=1200');
+
+  const html=generateInvoiceHTML(inv);
+
+  win.document.write(html);
+
+  win.document.close();
+
+}
+
+
+
+function generateInvoiceHTML(inv){
+
+  const items=inv.line_items||[];
+
+  let itemsHtml='';
+
+  let subtotal=0;
+
+  items.forEach(li=>{
+
+    const taxable=li.taxable_amount||0;
+
+    const cgst=li.cgst||0;
+
+    const sgst=li.sgst||0;
+
+    const igst=li.igst||0;
+
+    const total=taxable+cgst+sgst+igst;
+
+    subtotal+=total;
+
+    itemsHtml+=`<tr>
+
+      <td>${esc(li.item_name)}</td>
+
+      <td>${esc(li.hsn_sac)}</td>
+
+      <td class="text-right">${li.qty}</td>
+
+      <td class="text-right">â¹${Number(li.rate||0).toLocaleString('en-IN')}</td>
+
+      <td class="text-right">${li.discount_pct||0}%</td>
+
+      <td class="text-right">â¹${Number(taxable).toLocaleString('en-IN')}</td>
+
+      <td class="text-right">${li.gst_rate||0}%</td>
+
+      <td class="text-right">â¹${Number(cgst).toLocaleString('en-IN')}</td>
+
+      <td class="text-right">â¹${Number(sgst).toLocaleString('en-IN')}</td>
+
+      <td class="text-right">â¹${Number(igst).toLocaleString('en-IN')}</td>
+
+      <td class="text-right">â¹${Number(total).toLocaleString('en-IN')}</td>
+
+    </tr>`;
+
+  });
+
+  const totalTax=(inv.total_tax||0);
+
+  const grandTotal=(inv.grand_total||0);
+
+  return`<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>${esc(inv.invoice_number)}</title>
+
+<style>
+
+body{font-family:Arial,sans-serif;margin:20px;color:#333}
+
+.invoice-print-view{max-width:900px;margin:0 auto}
+
+.print-header{text-align:center;border-bottom:3px solid #000;padding-bottom:20px;margin-bottom:20px}
+
+.print-header h1{margin:0;font-size:28px}
+
+.print-header .details{font-size:11px;line-height:1.8;margin-top:10px}
+
+.section-title{font-size:12px;font-weight:bold;border-bottom:1px solid #999;padding:8px 0;margin:16px 0 8px}
+
+.party-details{display:flex;gap:40px;margin:16px 0;font-size:11px}
+
+.party-details .party{flex:1}
+
+.party-details .label{font-weight:bold}
+
+.print-table{width:100%;border-collapse:collapse;font-size:10px}
+
+.print-table th{background:#f0f0f0;border:1px solid #999;padding:8px;text-align:left;font-weight:bold}
+
+.print-table td{border:1px solid #999;padding:8px}
+
+.print-table td.text-right{text-align:right}
+
+.print-summary{margin:20px 0;width:300px;margin-left:auto}
+
+.summary-row{display:flex;justify-content:space-between;padding:6px 0;font-size:11px;border-bottom:1px solid #ddd}
+
+.summary-row.total{font-weight:bold;font-size:13px;border-top:2px solid #000;border-bottom:2px solid #000;padding:8px 0}
+
+.words{margin:16px 0;padding:12px;background:#f9f9f9;border:1px solid #ddd;font-size:11px}
+
+.bank-details{margin:16px 0;font-size:11px}
+
+.auth-line{margin-top:40px;text-align:right;font-size:11px}
+
+@media print{margin:0;padding:0}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="invoice-print-view">
+
+<div class="print-header">
+
+<h1>${esc(DB.setup.company_name||'Company')}</h1>
+
+<div class="details">
+
+GSTIN: ${esc(DB.setup.gstin||'â')} | PAN: ${esc(DB.setup.pan||'â')}<br>
+
+${esc(DB.setup.address||'')}<br>
+
+Email: ${esc(DB.setup.email||'')} | Phone: ${esc(DB.setup.phone||'')}
+
+</div>
+
+</div>
+
+
+
+<div style="display:flex;justify-content:space-between;margin-bottom:16px;font-size:11px">
+
+<div>
+
+<strong>Invoice Type:</strong> ${esc(inv.invoice_type)}<br>
+
+<strong>Invoice #:</strong> ${esc(inv.invoice_number)}<br>
+
+<strong>Invoice Date:</strong> ${esc(inv.invoice_date)}<br>
+
+<strong>Due Date:</strong> ${esc(inv.due_date||'â')}
+
+</div>
+
+<div style="text-align:right">
+
+<strong>Place of Supply:</strong> ${esc(inv.place_of_supply||'â')}<br>
+
+<strong>Reverse Charge:</strong> ${inv.reverse_charge?'Yes':'No'}
+
+</div>
+
+</div>
+
+
+
+<div class="party-details">
+
+<div class="party">
+
+<div class="label">Billed To:</div>
+
+<div>${esc(inv.party_name)}</div>
+
+<div>GSTIN: ${esc(inv.party_gstin||'â')}</div>
+
+<div>State: ${esc(inv.party_state||'â')}</div>
+
+</div>
+
+<div class="party">
+
+<div class="label">Shipped To:</div>
+
+<div>${esc(inv.shipped_to_name||inv.party_name)}</div>
+
+<div>State: ${esc(inv.shipped_to_state||inv.party_state||'â')}</div>
+
+</div>
+
+</div>
+
+
+
+<div class="section-title">Line Items</div>
+
+<table class="print-table">
+
+<thead><tr>
+
+<th>Item</th><th>HSN/SAC</th><th>Qty</th><th>Rate</th><th>Disc%</th><th>Taxable</th><th>GST%</th><th>CGST</th><th>SGST</th><th>IGST</th><th>Total</th>
+
+</tr></thead>
+
+<tbody>${itemsHtml}</tbody>
+
+</table>
+
+
+
+<div class="print-summary">
+
+<div class="summary-row"><span>Subtotal (Taxable):</span><span>â¹${Number(subtotal).toLocaleString('en-IN')}</span></div>
+
+<div class="summary-row"><span>Total Tax:</span><span>â¹${Number(totalTax).toLocaleString('en-IN')}</span></div>
+
+<div class="summary-row"><span>Round-off:</span><span>â¹${Number(inv.roundoff||0).toLocaleString('en-IN')}</span></div>
+
+<div class="summary-row total"><span>Grand Total:</span><span>â¹${Number(grandTotal).toLocaleString('en-IN')}</span></div>
+
+</div>
+
+
+
+<div class="words">
+
+<strong>Amount in Words:</strong> ${numberToWords(grandTotal||0)}
+
+</div>
+
+
+
+<div class="bank-details">
+
+<strong>Bank Details:</strong><br>
+
+Account: ${esc(DB.setup.bank_account||'â')} | IFSC: ${esc(DB.setup.ifsc||'â')}
+
+</div>
+
+
+
+<div class="auth-line">
+
+<strong>Authorized Signatory</strong>
+
+</div>
+
+</div>
+
+<script>window.print();</script>
+
+</body>
+
+</html>`;
+
+}
+
+
+
+// =============================================
+
 // MODALS
 
 // =============================================
@@ -780,11 +1146,17 @@ const modalForms={
 
   item:{title:'Add Item / Service',fields:[{id:'code',label:'Item Code',ph:'ITEM001'},{id:'name',label:'Item Name',ph:'Product or service name'},{id:'type',label:'Type',type:'select',options:['Goods','Services']},{id:'hsn_sac',label:'HSN/SAC Code',ph:'Optional'},{id:'unit',label:'Unit',ph:'Nos / Hrs / Kg'},{id:'gst_rate',label:'GST Rate %',ph:'18',type:'number'}],collection:'items',section:'items'},
 
-  txn:{title:'New Transaction Line',fields:[{id:'date',label:'Date',type:'date'},{id:'voucher_type',label:'Voucher Type',type:'select',options:['Journal','Sales','Purchase','Receipt','Payment','Contra','Credit Note','Debit Note']},{id:'dr_account',label:'Account Code',ph:'1010'},{id:'dr_cr',label:'DR / CR',type:'select',options:['DR','CR']},{id:'amount',label:'Amount (\u20b9)',ph:'0',type:'number'},{id:'gst_type',label:'GST Type',type:'select',options:['Non-GST','Intra-State (CGST+SGST)','Inter-State (IGST)','Exempt']},{id:'item_code',label:'Item Code (optional)',ph:'ITEM001'},{id:'qty',label:'Qty',ph:'',type:'number'},{id:'rate',label:'Rate',ph:'',type:'number'},{id:'narration',label:'Narration',ph:'Description',full:true}],collection:'transactions',section:'journal'},
+  txn:{title:'New Transaction Line',fields:[{id:'date',label:'Date',type:'date'},{id:'voucher_type',label:'Voucher Type',type:'select',options:['Journal','Sales','Purchase','Receipt','Payment','Contra','Credit Note','Debit Note']},{id:'dr_account',label:'Account Code',ph:'1010'},{id:'dr_cr',label:'DR / CR',type:'select',options:['DR','CR']},{id:'amount',label:'Amount (â¹)',ph:'0',type:'number'},{id:'gst_type',label:'GST Type',type:'select',options:['Non-GST','Intra-State (CGST+SGST)','Inter-State (IGST)','Exempt']},{id:'item_code',label:'Item Code (optional)',ph:'ITEM001'},{id:'qty',label:'Qty',ph:'',type:'number'},{id:'rate',label:'Rate',ph:'',type:'number'},{id:'narration',label:'Narration',ph:'Description',full:true}],collection:'transactions',section:'journal'},
 
-  asset:{title:'Add Fixed Asset',fields:[{id:'code',label:'Asset Code',ph:'FA001'},{id:'name',label:'Asset Name',ph:'Laptop'},{id:'block',label:'Block / Category',ph:'Plant & Machinery'},{id:'date',label:'Purchase Date',type:'date'},{id:'cost',label:'Cost (\u20b9)',ph:'80000',type:'number'},{id:'lt_180',label:'Used < 180 days?',type:'select',options:['No','Yes']},{id:'book_rate',label:'Book Dep Rate %',ph:'33.33',type:'number'}],collection:'fixed_assets',section:'assets'},
+  asset:{title:'Add Fixed Asset',fields:[{id:'code',label:'Asset Code',ph:'FA001'},{id:'name',label:'Asset Name',ph:'Laptop'},{id:'block',label:'Block / Category',ph:'Plant & Machinery'},{id:'date',label:'Purchase Date',type:'date'},{id:'cost',label:'Cost (â¹)',ph:'80000',type:'number'},{id:'lt_180',label:'Used < 180 days?',type:'select',options:['No','Yes']},{id:'book_rate',label:'Book Dep Rate %',ph:'33.33',type:'number'}],collection:'fixed_assets',section:'assets'},
 
-  user:{title:'Add User Account',fields:[{id:'email',label:'Email',ph:'client@example.com',type:'email'},{id:'password',label:'Password',ph:'Min 6 characters',type:'password'},{id:'name',label:'Display Name',ph:'Full name'},{id:'role',label:'Role',type:'select',options:['client','admin']}],collection:'__user__',section:'users'}
+  user:{title:'Add User Account',fields:[{id:'email',label:'Email',ph:'client@example.com',type:'email'},{id:'password',label:'Password',ph:'Min 6 characters',type:'password'},{id:'name',label:'Display Name',ph:'Full name'},{id:'role',label:'Role',type:'select',options:['client','admin']}],collection:'__user__',section:'users'},
+
+  invoice:{title:'Create Invoice',fields:[],collection:'invoices',section:'invoices',custom:true},
+
+  project:{title:'Create Project',fields:[{id:'name',label:'Project Name',ph:'Project name'},{id:'client',label:'Client',type:'select',options:[]},{id:'status',label:'Status',type:'select',options:['Active','Completed','On Hold']},{id:'budget',label:'Budget (â¹)',ph:'0',type:'number'},{id:'start_date',label:'Start Date',type:'date'},{id:'description',label:'Description',ph:'',full:true}],collection:'projects',section:'projects'},
+
+  timeentry:{title:'Log Time Entry',fields:[{id:'date',label:'Date',type:'date'},{id:'project',label:'Project',type:'select',options:[]},{id:'task_description',label:'Task Description',ph:'What did you work on?',full:true},{id:'hours',label:'Hours',ph:'8',type:'number'},{id:'billable',label:'Billable',type:'select',options:['No','Yes']},{id:'rate',label:'Rate per Hour (â¹)',ph:'500',type:'number'}],collection:'time_entries',section:'timeentries',custom:true}
 
 };
 
@@ -792,9 +1164,11 @@ const modalForms={
 
 let currentModal=null;
 
+let invoiceLineItems=[];
+
 function openModal(type){
 
-  if(type!=='txn'&&type!=='user'&&!isAdmin()){toast('Admin access required');return;}
+  if(type!=='txn'&&type!=='user'&&type!=='invoice'&&type!=='timeentry'&&!isAdmin()){toast('Admin access required');return;}
 
   currentModal=type;const cfg=modalForms[type];
 
@@ -802,7 +1176,93 @@ function openModal(type){
 
   const body=document.getElementById('modal-body');
 
-  body.innerHTML='<div class="form-grid">'+cfg.fields.map(f=>{const cls=f.full?'form-group full':'form-group';if(f.type==='select')return`<div class="${cls}"><label>${f.label}</label><select id="mf-${f.id}">${f.options.map(o=>`<option value="${o}">${o}</option>`).join('')}</select></div>`;const t=f.type||'text';return`<div class="${cls}"><label>${f.label}</label><input type="${t}" id="mf-${f.id}" placeholder="${f.ph||''}"></div>`;}).join('')+'</div>';
+
+
+  if(type==='invoice'){
+
+    invoiceLineItems=[];
+
+    const partyOpts=DB.parties.map(p=>`<option value="${esc(p.name)}" data-gstin="${esc(p.gstin)}" data-state="${esc(p.state)}">${esc(p.name)}</option>`).join('');
+
+    const itemOpts=DB.items.map(it=>`<option value="${esc(it.name)}" data-hsn="${esc(it.hsn_sac)}" data-gst="${it.gst_rate}">${esc(it.name)}</option>`).join('');
+
+    body.innerHTML=`
+
+<div class="form-grid">
+
+<div class="form-group"><label>Invoice Number</label><input id="mf-invoice_number" value="${getNextInvoiceNumber()}" readonly></div>
+
+<div class="form-group"><label>Invoice Date</label><input type="date" id="mf-invoice_date" value="${new Date().toISOString().slice(0,10)}"></div>
+
+<div class="form-group"><label>Due Date</label><input type="date" id="mf-due_date"></div>
+
+<div class="form-group full"><label>Party (Billed To)</label><select id="mf-party" onchange="updatePartyDetails()">${partyOpts}</select></div>
+
+<div class="form-group"><label>Invoice Type</label><select id="mf-invoice_type"><option value="Tax Invoice">Tax Invoice</option><option value="Bill of Supply">Bill of Supply</option><option value="Credit Note">Credit Note</option><option value="Debit Note">Debit Note</option></select></div>
+
+<div class="form-group"><label>Place of Supply</label><input id="mf-place_of_supply" placeholder="State"></div>
+
+<div class="form-group full"><label>Reverse Charge</label><select id="mf-reverse_charge"><option value="No">No</option><option value="Yes">Yes</option></select></div>
+
+</div>
+
+<div style="margin-top:16px"><h4 style="margin-bottom:12px">Line Items</h4>
+
+<table class="line-items-table"><thead><tr><th>Item</th><th>HSN/SAC</th><th>Qty</th><th>Rate</th><th>Disc %</th><th>Taxable</th><th>GST %</th><th>CGST</th><th>SGST</th><th>IGST</th><th>Total</th><th></th></tr></thead><tbody id="invoice-lines"></tbody></table>
+
+<button type="button" class="btn btn-ghost" onclick="addInvoiceLine()" style="margin-top:8px">+ Add Line Item</button>
+
+</div>
+
+<div class="form-grid" style="margin-top:16px">
+
+<div class="form-group"><label>Notes / Terms</label><input id="mf-notes" placeholder="Payment terms, delivery info, etc" style="grid-column:1/-1"></div>
+
+</div>
+
+<div style="background:var(--surface2);padding:12px;border-radius:8px;margin-top:16px;font-size:12px">
+
+<div style="display:flex;justify-content:space-between;padding:4px 0"><span>Subtotal:</span><span id="inv-subtotal">â¹0</span></div>
+
+<div style="display:flex;justify-content:space-between;padding:4px 0"><span>Total Tax:</span><span id="inv-tax">â¹0</span></div>
+
+<div style="display:flex;justify-content:space-between;padding:4px 0"><span>Round-off:</span><input id="mf-roundoff" type="number" step="0.01" value="0" style="width:80px;text-align:right" onchange="recalculateInvoice()"></div>
+
+<div style="display:flex;justify-content:space-between;padding:4px 0;font-weight:bold"><span>Grand Total:</span><span id="inv-grand">â¹0</span></div>
+
+</div>
+
+`;
+
+    addInvoiceLine();
+
+  }else if(type==='project'){
+
+    const clientOpts=DB.parties.filter(p=>p.type==='Customer'||p.type==='Both').map(p=>`<option value="${esc(p.name)}">${esc(p.name)}</option>`).join('');
+
+    cfg.fields[1].options=['<option value="">Select...</option>',...DB.parties.filter(p=>p.type==='Customer'||p.type==='Both').map(p=>p.name)];
+
+    const html='<div class="form-grid">'+cfg.fields.map(f=>{const cls=f.full?'form-group full':'form-group';if(f.type==='select'){return`<div class="${cls}"><label>${f.label}</label><select id="mf-${f.id}">${f.options.map(o=>`<option value="${typeof o==='string'?o:o}">${typeof o==='string'?o:o}</option>`).join('')}</select></div>`;}const t=f.type||'text';return`<div class="${cls}"><label>${f.label}</label><input type="${t}" id="mf-${f.id}" placeholder="${f.ph||''}"></div>`;}).join('')+'</div>';
+
+    body.innerHTML=html;
+
+  }else if(type==='timeentry'){
+
+    const projOpts=DB.projects.map(p=>`<option value="${esc(p.name)}">${esc(p.name)}</option>`).join('');
+
+    cfg.fields[1].options=DB.projects.map(p=>p.name);
+
+    const html='<div class="form-grid">'+cfg.fields.map(f=>{const cls=f.full?'form-group full':'form-group';if(f.type==='select'){return`<div class="${cls}"><label>${f.label}</label><select id="mf-${f.id}">${f.options.map(o=>`<option value="${typeof o==='string'?o:o}">${typeof o==='string'?o:o}</option>`).join('')}</select></div>`;}const t=f.type||'text';return`<div class="${cls}"><label>${f.label}</label><input type="${t}" id="mf-${f.id}" placeholder="${f.ph||''}"></div>`;}).join('')+'</div>';
+
+    body.innerHTML=html;
+
+    document.getElementById('mf-date').value=new Date().toISOString().slice(0,10);
+
+  }else{
+
+    body.innerHTML='<div class="form-grid">'+cfg.fields.map(f=>{const cls=f.full?'form-group full':'form-group';if(f.type==='select')return`<div class="${cls}"><label>${f.label}</label><select id="mf-${f.id}">${f.options.map(o=>`<option value="${o}">${o}</option>`).join('')}</select></div>`;const t=f.type||'text';return`<div class="${cls}"><label>${f.label}</label><input type="${t}" id="mf-${f.id}" placeholder="${f.ph||''}"></div>`;}).join('')+'</div>';
+
+  }
 
   document.getElementById('modal-save').onclick=saveModal;
 
@@ -812,7 +1272,159 @@ function openModal(type){
 
 
 
-function closeModal(){document.getElementById('modal-overlay').classList.remove('active');currentModal=null;}
+function addInvoiceLine(){
+
+  const row=document.createElement('tr');
+
+  const itemIdx=invoiceLineItems.length;
+
+  row.innerHTML=`
+
+<td><input id="line-item-${itemIdx}" placeholder="Item" list="items-list" style="width:100%"></td>
+
+<td><input id="line-hsn-${itemIdx}" readonly style="width:100%"></td>
+
+<td><input id="line-qty-${itemIdx}" type="number" value="1" onchange="recalculateInvoice()" style="width:60px;text-align:center"></td>
+
+<td><input id="line-rate-${itemIdx}" type="number" step="0.01" onchange="recalculateInvoice()" style="width:80px;text-align:right"></td>
+
+<td><input id="line-disc-${itemIdx}" type="number" step="0.01" value="0" onchange="recalculateInvoice()" style="width:60px;text-align:right"></td>
+
+<td><input id="line-taxable-${itemIdx}" readonly style="width:80px;text-align:right"></td>
+
+<td><input id="line-gst-${itemIdx}" type="number" step="0.01" value="18" onchange="recalculateInvoice()" style="width:60px;text-align:right"></td>
+
+<td><input id="line-cgst-${itemIdx}" readonly style="width:70px;text-align:right"></td>
+
+<td><input id="line-sgst-${itemIdx}" readonly style="width:70px;text-align:right"></td>
+
+<td><input id="line-igst-${itemIdx}" readonly style="width:70px;text-align:right"></td>
+
+<td><input id="line-total-${itemIdx}" readonly style="width:80px;text-align:right"></td>
+
+<td><button type="button" class="btn btn-danger btn-sm" onclick="removeInvoiceLine(${itemIdx})">â</button></td>
+
+`;
+
+  document.getElementById('invoice-lines').appendChild(row);
+
+  invoiceLineItems.push(itemIdx);
+
+
+
+  const itemInput=document.getElementById(`line-item-${itemIdx}`);
+
+  itemInput.addEventListener('change',()=>{
+
+    const selected=DB.items.find(it=>it.name===itemInput.value);
+
+    if(selected){
+
+      document.getElementById(`line-hsn-${itemIdx}`).value=selected.hsn_sac||'';
+
+      document.getElementById(`line-gst-${itemIdx}`).value=selected.gst_rate||18;
+
+      recalculateInvoice();
+
+    }
+
+  });
+
+}
+
+
+
+function removeInvoiceLine(idx){
+
+  const el=document.querySelector(`#line-item-${idx}`).closest('tr');
+
+  el.remove();
+
+  invoiceLineItems=invoiceLineItems.filter(i=>i!==idx);
+
+  recalculateInvoice();
+
+}
+
+
+
+function updatePartyDetails(){
+
+  const party=document.getElementById('mf-party').value;
+
+  const partyData=DB.parties.find(p=>p.name===party);
+
+  if(partyData){
+
+    document.getElementById('mf-place_of_supply').value=partyData.state||'';
+
+  }
+
+}
+
+
+
+function recalculateInvoice(){
+
+  let subtotal=0,totalTax=0;
+
+  invoiceLineItems.forEach(idx=>{
+
+    const qty=parseFloat(document.getElementById(`line-qty-${idx}`).value)||0;
+
+    const rate=parseFloat(document.getElementById(`line-rate-${idx}`).value)||0;
+
+    const disc=parseFloat(document.getElementById(`line-disc-${idx}`).value)||0;
+
+    const gstRate=parseFloat(document.getElementById(`line-gst-${idx}`).value)||0;
+
+    const gross=qty*rate;
+
+    const discAmount=gross*(disc/100);
+
+    const taxable=gross-discAmount;
+
+    const tax=taxable*(gstRate/100);
+
+    const intraState=document.getElementById('mf-place_of_supply').value===DB.parties.find(p=>p.name===document.getElementById('mf-party').value)?.state;
+
+    const cgst=intraState?tax/2:0;
+
+    const sgst=intraState?tax/2:0;
+
+    const igst=!intraState?tax:0;
+
+    document.getElementById(`line-taxable-${idx}`).value=taxable.toFixed(2);
+
+    document.getElementById(`line-cgst-${idx}`).value=cgst.toFixed(2);
+
+    document.getElementById(`line-sgst-${idx}`).value=sgst.toFixed(2);
+
+    document.getElementById(`line-igst-${idx}`).value=igst.toFixed(2);
+
+    document.getElementById(`line-total-${idx}`).value=(taxable+cgst+sgst+igst).toFixed(2);
+
+    subtotal+=taxable;
+
+    totalTax+=cgst+sgst+igst;
+
+  });
+
+  const roundoff=parseFloat(document.getElementById('mf-roundoff').value)||0;
+
+  const grandTotal=subtotal+totalTax+roundoff;
+
+  document.getElementById('inv-subtotal').textContent='â¹'+subtotal.toLocaleString('en-IN',{maximumFractionDigits:2});
+
+  document.getElementById('inv-tax').textContent='â¹'+totalTax.toLocaleString('en-IN',{maximumFractionDigits:2});
+
+  document.getElementById('inv-grand').textContent='â¹'+grandTotal.toLocaleString('en-IN',{maximumFractionDigits:2});
+
+}
+
+
+
+function closeModal(){document.getElementById('modal-overlay').classList.remove('active');currentModal=null;invoiceLineItems=[];}
 
 
 
@@ -839,6 +1451,192 @@ async function saveModal(){
       closeModal();toast(`User ${email} created as ${role}`);loadUsers();
 
     }catch(e){toast('Error: '+e.message);}
+
+    return;
+
+  }
+
+  if(currentModal==='invoice'){
+
+    const partyName=document.getElementById('mf-party').value;
+
+    const party=DB.parties.find(p=>p.name===partyName);
+
+    if(!partyName||!party){toast('Please select a party');return;}
+
+    const lineItems=[];
+
+    let totalTax=0,grandTotal=0;
+
+    invoiceLineItems.forEach(idx=>{
+
+      const item=document.getElementById(`line-item-${idx}`).value;
+
+      if(!item)return;
+
+      const itemData=DB.items.find(it=>it.name===item);
+
+      const qty=parseFloat(document.getElementById(`line-qty-${idx}`).value)||0;
+
+      const taxable=parseFloat(document.getElementById(`line-taxable-${idx}`).value)||0;
+
+      const cgst=parseFloat(document.getElementById(`line-cgst-${idx}`).value)||0;
+
+      const sgst=parseFloat(document.getElementById(`line-sgst-${idx}`).value)||0;
+
+      const igst=parseFloat(document.getElementById(`line-igst-${idx}`).value)||0;
+
+      const total=parseFloat(document.getElementById(`line-total-${idx}`).value)||0;
+
+      const tax=cgst+sgst+igst;
+
+      totalTax+=tax;
+
+      grandTotal+=total;
+
+      lineItems.push({
+
+        item_name:item,
+
+        hsn_sac:document.getElementById(`line-hsn-${idx}`).value,
+
+        qty,
+
+        rate:parseFloat(document.getElementById(`line-rate-${idx}`).value)||0,
+
+        discount_pct:parseFloat(document.getElementById(`line-disc-${idx}`).value)||0,
+
+        taxable_amount:taxable,
+
+        gst_rate:parseFloat(document.getElementById(`line-gst-${idx}`).value)||0,
+
+        cgst,sgst,igst
+
+      });
+
+    });
+
+    const roundoff=parseFloat(document.getElementById('mf-roundoff').value)||0;
+
+    const inv={
+
+      invoice_number:document.getElementById('mf-invoice_number').value,
+
+      invoice_date:document.getElementById('mf-invoice_date').value,
+
+      due_date:document.getElementById('mf-due_date').value,
+
+      party_name:partyName,
+
+      party_gstin:party.gstin||'',
+
+      party_state:party.state||'',
+
+      invoice_type:document.getElementById('mf-invoice_type').value,
+
+      place_of_supply:document.getElementById('mf-place_of_supply').value,
+
+      reverse_charge:document.getElementById('mf-reverse_charge').value==='Yes',
+
+      line_items:lineItems,
+
+      total_tax:totalTax,
+
+      roundoff,
+
+      grand_total:grandTotal+roundoff,
+
+      notes:document.getElementById('mf-notes').value,
+
+      status:'Draft',
+
+      created_by:userProfile.email,
+
+      created_at:new Date().toISOString()
+
+    };
+
+    DB.invoices.push(inv);
+
+    await saveCollection('invoices');
+
+    closeModal();toast('Invoice created');
+
+    const ni=document.querySelector(`.nav-item[data-section="invoices"]`);
+
+    if(ni)navigate(ni);
+
+    return;
+
+  }
+
+  if(currentModal==='project'){
+
+    const entry={};
+
+    entry.name=document.getElementById('mf-name').value;
+
+    entry.client_name=document.getElementById('mf-client').value;
+
+    entry.code=getNextProjectNumber();
+
+    entry.status=document.getElementById('mf-status').value;
+
+    entry.budget=parseFloat(document.getElementById('mf-budget').value)||0;
+
+    entry.start_date=document.getElementById('mf-start_date').value;
+
+    entry.description=document.getElementById('mf-description').value;
+
+    entry.created_by=userProfile.email;
+
+    entry.created_at=new Date().toISOString();
+
+    DB.projects.push(entry);
+
+    await saveCollection('projects');
+
+    closeModal();toast('Project created');
+
+    const ni=document.querySelector(`.nav-item[data-section="projects"]`);
+
+    if(ni)navigate(ni);
+
+    return;
+
+  }
+
+  if(currentModal==='timeentry'){
+
+    const entry={};
+
+    entry.date=document.getElementById('mf-date').value;
+
+    entry.project_name=document.getElementById('mf-project').value;
+
+    entry.task_description=document.getElementById('mf-task_description').value;
+
+    entry.hours=parseFloat(document.getElementById('mf-hours').value)||0;
+
+    entry.billable=document.getElementById('mf-billable').value==='Yes';
+
+    entry.rate=parseFloat(document.getElementById('mf-rate').value)||0;
+
+    entry.billable_amount=entry.billable?entry.hours*entry.rate:0;
+
+    entry.logged_by=userProfile.email;
+
+    entry.created_at=new Date().toISOString();
+
+    DB.time_entries.push(entry);
+
+    await saveCollection('time_entries');
+
+    closeModal();toast('Time entry logged');
+
+    const ni=document.querySelector(`.nav-item[data-section="timeentries"]`);
+
+    if(ni)navigate(ni);
 
     return;
 
@@ -902,4 +1700,5 @@ document.getElementById('login-pass').addEventListener('keydown',e=>{if(e.key===
 
 </body>
 
-                                                                                                                                                                                                  </html>
+</html>
+
