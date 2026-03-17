@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Kepei Accounting</title>
+
+<style>
+
+:root{--bg:#0f1117;--surface:#1a1d27;--surface2:#232733;--border:#2d3140;--text:#e4e6ed;--text2:#8b8fa3;--accent:#6c5ce7;--accent2:#a29bfe;--green:#2ed573;--red:#ff6b6b;--orange:#ffa502;--blue:#4facfe;--radius:10px}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden}
+
+
+
+/* Login */
+
+.login-screen{display:flex;align-items:center;justify-content:center;height:100vh;background:var(--bg)}
+
+.login-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:40px;width:380px;text-align:center}
+
+.login-box h1{font-size:28px;font-weight:700;margin-bottom:4px}.login-box h1 span{color:var(--accent2)}
+
+.login-box .subtitle{font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:32px}
+
+.login-box .form-group{text-align:left;margin-bottom:16px}
+
+.login-box label{font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px}
+
+.login-box input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-size:14px;outline:none}
+
+.login-box input:focus{border-color:var(--accent)}
+
+.login-box .btn-login{width:100%;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;transition:background .15s}
+
+.login-box .btn-login:hover{background:var(--accent2)}
+
+.login-box .error{color:var(--red);font-size:13px;margin-top:12px;min-height:20px}
+
+.login-box .loader{display:none;margin:12px auto 0;width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+
+
+
+/* App Layout */
+
+.app-layout{display:flex;height:100vh;overflow:hidden}
+
+.sidebar{width:240px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+
+.logo{padding:24px 20px;border-bottom:1px solid var(--border)}.logo h1{font-size:22px;font-weight:700;letter-spacing:-.5px}.logo h1 span{color:var(--accent2)}.logo p{font-size:11px;color:var(--text2);margin-top:4px;letter-spacing:.5px;text-transform:uppercase}
+
+.nav{flex:1;padding:12px 10px;overflow-y:auto}.nav-section{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;padding:16px 12px 6px}
+
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;color:var(--text2);transition:all .15s;font-size:14px;user-select:none}.nav-item:hover{background:var(--surface2);color:var(--text)}.nav-item.active{background:var(--accent);color:#fff}
+
+.nav-item svg{width:18px;height:18px;flex-shrink:0}.nav-item .badge{margin-left:auto;background:var(--accent);color:#fff;font-size:11px;padding:1px 7px;border-radius:10px;min-width:24px;text-align:center}.nav-item.active .badge{background:rgba(255,255,255,.25)}
+
+.sidebar-footer{padding:12px 16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:6px}
+
+.user-info{font-size:12px;color:var(--text2);padding:0 4px}.user-info strong{color:var(--text);font-size:13px;display:block}
+
+.sidebar-actions{display:flex;gap:6px;margin-top:4px}
+
+
+
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+
+.topbar{padding:16px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;background:var(--surface)}.topbar h2{font-size:18px;font-weight:600}.topbar .company-name{margin-left:auto;color:var(--text2);font-size:13px}
+
+.content{flex:1;padding:24px 28px;overflow-y:auto}
+
+
+
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:24px}.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px}.card .label{font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}.card .value{font-size:28px;font-weight:700;margin-top:6px}.card .value.green{color:var(--green)}.card .value.red{color:var(--red)}.card .value.blue{color:var(--blue)}.card .value.orange{color:var(--orange)}.card .sub{font-size:12px;color:var(--text2);margin-top:4px}
+
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}.table-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}.table-header h3{font-size:15px;font-weight:600}.table-header .count{background:var(--surface2);color:var(--text2);font-size:12px;padding:2px 8px;border-radius:10px}.table-header .spacer{flex:1}
+
+table{width:100%;border-collapse:collapse}thead th{text-align:left;padding:10px 16px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);border-bottom:1px solid var(--border);background:var(--surface2);font-weight:500;white-space:nowrap}tbody td{padding:10px 16px;font-size:13px;border-bottom:1px solid var(--border)}tbody tr:hover{background:var(--surface2)}tbody tr:last-child td{border-bottom:none}
+
+.empty-state{padding:48px 20px;text-align:center;color:var(--text2)}.empty-state p{font-size:14px}
+
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:500;transition:all .15s}.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--accent2)}.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border)}.btn-ghost:hover{background:var(--surface2);color:var(--text)}.btn-danger{background:transparent;color:var(--red);border:1px solid var(--border)}.btn-danger:hover{background:rgba(255,107,107,.1)}.btn-sm{padding:5px 10px;font-size:12px}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:center;justify-content:center;backdrop-filter:blur(4px)}.modal-overlay.active{display:flex}.modal{background:var(--surface);border:1px solid var(--border);border-radius:14px;width:520px;max-height:85vh;overflow-y:auto}.modal-head{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center}.modal-head h3{font-size:16px;font-weight:600}.modal-head .close{margin-left:auto;cursor:pointer;color:var(--text2);background:none;border:none;font-size:20px}.modal-body{padding:20px 24px}.modal-foot{padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.form-group{display:flex;flex-direction:column;gap:5px}.form-group.full{grid-column:1/-1}.form-group label{font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}.form-group input,.form-group select{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-size:14px;outline:none}.form-group input:focus,.form-group select:focus{border-color:var(--accent)}.form-group select{cursor:pointer}
+
+.toast{position:fixed;bottom:24px;right:24px;background:var(--green);color:#000;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:500;z-index:200;transform:translateY(80px);opacity:0;transition:all .3s}.toast.show{transform:translateY(0);opacity:1}
+
+.section{display:none}.section.active{display:block}.amt{font-variant-numeric:tabular-nums}
+
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+.pill{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:500}.pill-asset{background:rgba(79,172,254,.15);color:var(--blue)}.pill-liability{background:rgba(255,165,2,.15);color:var(--orange)}.pill-equity{background:rgba(162,155,254,.15);color:var(--accent2)}.pill-income{background:rgba(46,213,115,.15);color:var(--green)}.pill-expense{background:rgba(255,107,107,.15);color:var(--red)}
+
+.pill-admin{background:rgba(108,92,231,.2);color:var(--accent2)}.pill-client{background:rgba(79,172,254,.15);color:var(--blue)}
+
+.table-scroll{overflow-x:auto}
+
+.hidden{display:none!important}
+
+</style>
+
+</head>
+
+<body>
+
+
+
+<!-- LOGIN SCREEN -->
+
+<div class="login-screen" id="login-screen">
+
+  <div class="login-box">
+
+    <h1>ke<span>pei</span></h1>
+
+    <p class="subtitle">Accounting System</p>
+
+    <div class="form-group"><label>Email</label><input type="email" id="login-email" placeholder="you@company.com"></div>
+
+    <div class="form-group"><label>Password</label><input type="password" id="login-pass" placeholder="Enter password"></div>
+
+    <button class="btn-login" onclick="doLogin()">Sign In</button>
+
+    <div class="loader" id="login-loader"></div>
+
+    <div class="error" id="login-error"></div>
+
+  </div>
+
+</div>
+
+
+
+<!-- APP (hidden until login) -->
+
+<div class="app-layout hidden" id="app-layout">
+
+<div class="sidebar"><div class="logo"><h1>ke<span>pei</span></h1><p>Accounting System</p></div>
+
+<div class="nav">
+
+<div class="nav-section">Overview</div>
+
+<div class="nav-item active" data-section="dashboard" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div>
+
+<div class="nav-section">Masters</div>
+
+<div class="nav-item admin-only" data-section="parties" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Parties<span class="badge" id="badge-parties">0</span></div>
+
+<div class="nav-item admin-only" data-section="items" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Items &amp; Services<span class="badge" id="badge-items">0</span></div>
+
+<div class="nav-item admin-only" data-section="coa" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Chart of Accounts</div>
+
+<div class="nav-section">Transactions</div>
+
+<div class="nav-item" data-section="journal" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Transaction Journal<span class="badge" id="badge-txns">0</span></div>
+
+<div class="nav-section">Assets &amp; Tax</div>
+
+<div class="nav-item admin-only" data-section="assets" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>Fixed Assets</div>
+
+<div class="nav-item admin-only" data-section="tds" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>TDS Register</div>
+
+<div class="nav-section admin-only">Admin</div>
+
+<div class="nav-item admin-only" data-section="users" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>User Management</div>
+
+<div class="nav-item admin-only" data-section="setup" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Company Setup</div>
+
+</div>
+
+<div class="sidebar-footer">
+
+<div class="user-info"><strong id="user-display-name">â</strong><span id="user-role-label">â</span></div>
+
+<div class="sidebar-actions">
+
+<button class="btn btn-ghost btn-sm" onclick="doLogout()">Sign Out</button>
+
+<button class="btn btn-ghost btn-sm admin-only" onclick="exportData()">Export</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="main"><div class="topbar"><h2 id="page-title">Dashboard</h2><div class="company-name" id="topbar-company">No company set up</div></div>
+
+<div class="content">
+
+
+
+<div class="section active" id="sec-dashboard"><div class="card-grid"><div class="card"><div class="label">Total Parties</div><div class="value blue" id="kpi-parties">&#8212;</div><div class="sub">Customers &amp; Vendors</div></div><div class="card"><div class="label">Total Items</div><div class="value orange" id="kpi-items">&#8212;</div><div class="sub">Goods &amp; Services</div></div><div class="card"><div class="label">Transactions</div><div class="value" id="kpi-txns">&#8212;</div><div class="sub">Journal entries</div></div><div class="card"><div class="label">Fixed Assets</div><div class="value green" id="kpi-assets">&#8212;</div><div class="sub">Registered assets</div></div></div><div class="table-wrap"><div class="table-header"><h3>Recent Transactions</h3><span class="spacer"></span></div><div class="table-scroll"><table><thead><tr><th>Date</th><th>Type</th><th>Account</th><th>DR/CR</th><th style="text-align:right">Amount</th><th>Narration</th></tr></thead><tbody id="dash-recent"></tbody></table></div></div></div>
+
+
+
+<div class="section" id="sec-parties"><div class="table-wrap"><div class="table-header"><h3>Parties</h3><span class="count" id="parties-count">0</span><span class="spacer"></span><button class="btn btn-primary" onclick="openModal('party')">+ Add Party</button></div><div class="table-scroll"><table><thead><tr><th>Code</th><th>Name</th><th>Type</th><th>GSTIN</th><th>State</th><th>PAN</th><th></th></tr></thead><tbody id="parties-body"></tbody></table></div></div></div>
+
+
+
+<div class="section" id="sec-items"><div class="table-wrap"><div class="table-header"><h3>Items &amp; Services</h3><span class="count" id="items-count">0</span><span class="spacer"></span><button class="btn btn-primary" onclick="openModal('item')">+ Add Item</button></div><div class="table-scroll"><table><thead><tr><th>Code</th><th>Name</th><th>Type</th><th>HSN/SAC</th><th>Unit</th><th>GST %</th><th></th></tr></thead><tbody id="items-body"></tbody></table></div></div></div>
+
+
+
+<div class="section" id="sec-coa"><div class="table-wrap"><div class="table-header"><h3>Chart of Accounts</h3><span class="count" id="coa-count">0</span></div><div class="table-scroll"><table><thead><tr><th>Code</th><th>Account Name</th><th>Nature</th><th>BS/PL</th><th>Group</th><th>Sub-Group</th></tr></thead><tbody id="coa-body"></tbody></table></div></div></div>
+
+
+
+<div class="section" id="sec-journal"><div class="table-wrap"><div class="table-header"><h3>Transaction Journal</h3><span class="count" id="txn-count">0</span><span class="spacer"></span><button class="btn btn-primary" onclick="openModal('txn')">+ New Entry</button></div><div class="table-scroll"><table><thead><tr><th>Date</th><th>Type</th><th>Account</th><th>DR/CR</th><th style="text-align:right">Amount</th><th>Item</th><th>Narration</th><th></th></tr></thead><tbody id="txn-body"></tbody></table></div></div></div>
+
+
+
+<div class="section" id="sec-assets"><div class="table-wrap"><div class="table-header"><h3>Fixed Asset Register</h3><span class="count" id="asset-count">0</span><span class="spacer"></span><button class="btn btn-primary" onclick="openModal('asset')">+ Add Asset</button></div><div class="table-scroll"><table><thead><tr><th>Code</th><th>Name</th><th>Block</th><th>Date</th><th style="text-align:right">Cost</th><th>&lt;180d</th><th>Book Rate %</th><th></th></tr></thead><tbody id="asset-body"></tbody></table></div></div></div>
+
+
+
+<div class="section" id="sec-tds"><div class="table-wrap"><div class="table-header"><h3>TDS Register</h3><span class="count" id="tds-count">0</span></div><div class="table-scroll"><table><thead><tr><th>Date</th><th>Party</th><th>Section</th><th style="text-align:right">Amount</th><th>Rate %</th><th>Reference</th></tr></thead><tbody id="tds-body"></tbody></table></div></div></div>
+
+
+
+<!-- USER MANAGEMENT (admin only) -->
+
+<div class="section" id="sec-users">
+
+<div class="table-wrap">
+
+<div class="table-header"><h3>User Accounts</h3><span class="count" id="users-count">0</span><span class="spacer"></span><button class="btn btn-primary" onclick="openModal('user')">+ Add User</button></div>
+
+<div class="table-scroll"><table><thead><tr><th>Email</th><th>Name</th><th>Role</th><th>Created</th><th></th></tr></thead><tbody id="users-body"></tbody></table></div>
+
+</div>
+
+</div>
+
+
+
+<!-- SETUP -->
+
+<div class="section" id="sec-setup"><div class="card" style="max-width:600px"><h3 style="margin-bottom:20px;font-size:16px">Company Details</h3><div class="form-grid" id="setup-form"><div class="form-group full"><label>Company / Entity Name</label><input id="f-company" placeholder="Enter company name"></div><div class="form-group"><label>Entity Type</label><select id="f-entity"><option value="">Select...</option></select></div><div class="form-group"><label>PAN</label><input id="f-pan" placeholder="AAACT1234A"></div><div class="form-group"><label>TAN</label><input id="f-tan" placeholder="DELT12345E"></div><div class="form-group"><label>GSTIN</label><input id="f-gstin" placeholder="29AAACT1234A1Z5"></div></div><div style="margin-top:20px"><button class="btn btn-primary" onclick="saveSetup()">Save Changes</button></div></div></div>
+
+
+
+</div></div>
+
+</div>
+
+
+
+<!-- MODALS -->
+
+<div class="modal-overlay" id="modal-overlay"><div class="modal"><div class="modal-head"><h3 id="modal-title">Add</h3><button class="close" onclick="closeModal()">&times;</button></div><div class="modal-body" id="modal-body"></div><div class="modal-foot"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-primary" id="modal-save">Save</button></div></div></div>
+
+<div class="toast" id="toast">Saved</div>
+
+
+
+<!-- Firebase SDK (v9 compat) -->
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+
+
+<script>
+
+// =============================================
+
+// FIREBASE CONFIG - REPLACE WITH YOUR OWN
+
+// =============================================
+
+const firebaseConfig = {
+
+  apiKey: "AIzaSyBb5m3GrqwMZJkI9alnT2bnI_YU3z3EA14",
+
+  authDomain: "kepei-ee776.firebaseapp.com",
+
+  projectId: "kepei-ee776",
+
+  storageBucket: "kepei-ee776.firebasestorage.app",
+
+  messagingSenderId: "592593304016",
+
+  appId: "1:592593304016:web:6e2e92d58bbeca019021d5"
+
+};
+
+
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+
+const db = firebase.firestore();
+
+
+
+// =============================================
+
+// STATE
+
+// =============================================
+
+let currentUser = null;
+
+let userProfile = null;
+
+let DB = { setup:{}, coa:[], parties:[], items:[], transactions:[], fixed_assets:[], tds:[] };
+
+const LISTS = {
+
+  entity_types:['Proprietorship','Partnership Firm','LLP','Private Limited Company','Public Limited Company','One Person Company (OPC)','Trust','Society','HUF'],
+
+  voucher_types:['Sales','Purchase','Receipt','Payment','Journal','Contra','Credit Note','Debit Note'],
+
+  gst_types:['Intra-State (CGST+SGST)','Inter-State (IGST)','Exempt','Non-GST']
+
+};
+
+
+
+const DEFAULT_COA = [
+
+  {code:'1000',name:'Cash on Hand',nature:'A',bs_pl:'BS',group_l1:'Current Assets',group_l2:'Cash & Cash Equivalents'},
+
+  {code:'1010',name:'Bank - Current Account',nature:'A',bs_pl:'BS',group_l1:'Current Assets',group_l2:'Cash & Cash Equivalents'},
+
+  {code:'1100',name:'Accounts Receivable',nature:'A',bs_pl:'BS',group_l1:'Current Assets',group_l2:'Receivables'},
+
+  {code:'1200',name:'Inventory',nature:'A',bs_pl:'BS',group_l1:'Current Assets',group_l2:'Inventory'},
+
+  {code:'1300',name:'Input GST Credit (ITC)',nature:'A',bs_pl:'BS',group_l1:'Current Assets',group_l2:'GST'},
+
+  {code:'1500',name:'Plant & Machinery (Block)',nature:'A',bs_pl:'BS',group_l1:'Non-current Assets',group_l2:'Fixed Assets'},
+
+  {code:'1510',name:'Furniture & Fixtures (Block)',nature:'A',bs_pl:'BS',group_l1:'Non-current Assets',group_l2:'Fixed Assets'},
+
+  {code:'1590',name:'Accumulated Depreciation',nature:'A',bs_pl:'BS',group_l1:'Non-current Assets',group_l2:'Fixed Assets'},
+
+  {code:'2000',name:'Accounts Payable',nature:'L',bs_pl:'BS',group_l1:'Current Liabilities',group_l2:'Payables'},
+
+  {code:'2100',name:'Output GST Payable',nature:'L',bs_pl:'BS',group_l1:'Current Liabilities',group_l2:'GST'},
+
+  {code:'2200',name:'TDS Payable',nature:'L',bs_pl:'BS',group_l1:'Current Liabilities',group_l2:'Statutory Dues'},
+
+  {code:'2300',name:'Loans - Short Term',nature:'L',bs_pl:'BS',group_l1:'Current Liabilities',group_l2:'Borrowings'},
+
+  {code:'3000',name:'Capital / Equity',nature:'E',bs_pl:'BS',group_l1:'Equity',group_l2:'Capital'},
+
+  {code:'3100',name:'Retained Earnings',nature:'E',bs_pl:'BS',group_l1:'Equity',group_l2:'Reserves'},
+
+  {code:'4000',name:'Sales - Goods',nature:'I',bs_pl:'PL',group_l1:'Revenue',group_l2:'Sales'},
+
+  {code:'4010',name:'Sales - Services',nature:'I',bs_pl:'PL',group_l1:'Revenue',group_l2:'Sales'},
+
+  {code:'4100',name:'Other Income',nature:'I',bs_pl:'PL',group_l1:'Other Income',group_l2:'Misc'},
+
+  {code:'5000',name:'Purchases / COGS',nature:'X',bs_pl:'PL',group_l1:'Cost of Sales',group_l2:'Purchases'},
+
+  {code:'5100',name:'Employee Costs',nature:'X',bs_pl:'PL',group_l1:'Operating Expenses',group_l2:'Payroll'},
+
+  {code:'5200',name:'Rent',nature:'X',bs_pl:'PL',group_l1:'Operating Expenses',group_l2:'Occupancy'},
+
+  {code:'5300',name:'Utilities',nature:'X',bs_pl:'PL',group_l1:'Operating Expenses',group_l2:'Utilities'},
+
+  {code:'5400',name:'Professional Fees',nature:'X',bs_pl:'PL',group_l1:'Operating Expenses',group_l2:'Professional'},
+
+  {code:'5500',name:'Depreciation',nature:'X',bs_pl:'PL',group_l1:'Depreciation',group_l2:'Depreciation'},
+
+  {code:'5600',name:'Income Tax Expense',nature:'X',bs_pl:'PL',group_l1:'Taxes',group_l2:'Income Tax'},
+
+  {code:'5700',name:'Interest Expense',nature:'X',bs_pl:'PL',group_l1:'Finance Costs',group_l2:'Interest'}
+
+];
+
+
+
+// =============================================
+
+// AUTH
+
+// =============================================
+
+function showLogin() { document.getElementById('login-screen').classList.remove('hidden'); document.getElementById('app-layout').classList.add('hidden'); }
+
+function showApp() { document.getElementById('login-screen').classList.add('hidden'); document.getElementById('app-layout').classList.remove('hidden'); }
+
+
+
+async function doLogin() {
+
+  const email = document.getElementById('login-email').value.trim();
+
+  const pass = document.getElementById('login-pass').value;
+
+  const errEl = document.getElementById('login-error');
+
+  const loader = document.getElementById('login-loader');
+
+  errEl.textContent = ''; loader.style.display = 'block';
+
+  try {
+
+    await auth.signInWithEmailAndPassword(email, pass);
+
+  } catch(e) {
+
+    loader.style.display = 'none';
+
+    if (e.code === 'auth/user-not-found' || e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential')
+
+      errEl.textContent = 'Invalid email or password.';
+
+    else if (e.code === 'auth/invalid-email') errEl.textContent = 'Invalid email format.';
+
+    else errEl.textContent = e.message;
+
+  }
+
+}
+
+
+
+function doLogout() { auth.signOut(); }
+
+
+
+// Listen for auth state
+
+auth.onAuthStateChanged(async (user) => {
+
+  if (user) {
+
+    currentUser = user;
+
+    const doc = await db.collection('users').doc(user.uid).get();
+
+    if (doc.exists) {
+
+      userProfile = doc.data();
+
+    } else {
+
+      // First-time admin bootstrapping
+
+      const usersSnap = await db.collection('users').get();
+
+      if (usersSnap.empty) {
+
+        userProfile = { email: user.email, name: user.email.split('@')[0], role: 'admin', created: new Date().toISOString() };
+
+        await db.collection('users').doc(user.uid).set(userProfile);
+
+      } else {
+
+        alert('Account not authorized. Contact your admin.');
+
+        auth.signOut(); return;
+
+      }
+
+    }
+
+    document.getElementById('login-loader').style.display = 'none';
+
+    applyRole();
+
+    showApp();
+
+    await loadAllData();
+
+    initApp();
+
+  } else {
+
+    currentUser = null; userProfile = null;
+
+    showLogin();
+
+  }
+
+});
+
+
+
+function isAdmin() { return userProfile && userProfile.role === 'admin'; }
+
+
+
+function applyRole() {
+
+  document.getElementById('user-display-name').textContent = userProfile.name || userProfile.email;
+
+  document.getElementById('user-role-label').textContent = isAdmin() ? 'Administrator' : 'Client';
+
+  document.querySelectorAll('.admin-only').forEach(el => {
+
+    el.style.display = isAdmin() ? '' : 'none';
+
+  });
+
+}
+
+
+
+// =============================================
+
+// FIRESTORE DATA
+
+// =============================================
+
+async function loadAllData() {
+
+  const snap = await db.collection('appdata').doc('main').get();
+
+  if (snap.exists) {
+
+    const d = snap.data();
+
+    DB.setup = d.setup || {};
+
+    DB.coa = d.coa || DEFAULT_COA;
+
+    DB.parties = d.parties || [];
+
+    DB.items = d.items || [];
+
+    DB.transactions = d.transactions || [];
+
+    DB.fixed_assets = d.fixed_assets || [];
+
+    DB.tds = d.tds || [];
+
+  } else {
+
+    DB = { setup: { company_name: '', entity_type: '', pan: '', tan: '', gstin: '' }, coa: [...DEFAULT_COA], parties: [], items: [], transactions: [], fixed_assets: [], tds: [] };
+
+    await saveAllData();
+
+  }
+
+}
+
+
+
+async function saveAllData() {
+
+  await db.collection('appdata').doc('main').set(DB);
+
+}
+
+
+
+async function saveCollection(key) {
+
+  await db.collection('appdata').doc('main').update({ [key]: DB[key] });
+
+}
+
+
+
+// =============================================
+
+// HELPERS
+
+// =============================================
+
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
+
+function fmt(n){if(n===null||n===undefined||n==='')return'\u2014';return Number(n).toLocaleString('en-IN');}
+
+function esc(s){if(s===null||s===undefined)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function updateBadges(){document.getElementById('badge-parties').textContent=DB.parties.length;document.getElementById('badge-items').textContent=DB.items.length;document.getElementById('badge-txns').textContent=DB.transactions.length;}
+
+
+
+// =============================================
+
+// NAVIGATION
+
+// =============================================
+
+function navigate(el){
+
+  if(el.classList.contains('admin-only')&&!isAdmin()) return;
+
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));el.classList.add('active');
+
+  const sec=el.dataset.section;document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+
+  document.getElementById('sec-'+sec).classList.add('active');
+
+  document.getElementById('page-title').textContent=el.textContent.trim().replace(/\d+$/,'').trim();
+
+  loadSection(sec);
+
+}
+
+function loadSection(sec){const L={dashboard:loadDashboard,parties:loadParties,items:loadItems,coa:loadCOA,journal:loadTransactions,assets:loadAssets,tds:loadTDS,setup:loadSetup,users:loadUsers};if(L[sec])L[sec]();}
+
+
+
+// =============================================
+
+// RENDER FUNCTIONS
+
+// =============================================
+
+function loadDashboard(){document.getElementById('kpi-parties').textContent=DB.parties.length;document.getElementById('kpi-items').textContent=DB.items.length;document.getElementById('kpi-txns').textContent=DB.transactions.length;document.getElementById('kpi-assets').textContent=DB.fixed_assets.length;updateBadges();const recent=DB.transactions.slice(-10).reverse();const tbody=document.getElementById('dash-recent');if(!recent.length){tbody.innerHTML='<tr><td colspan="6" class="empty-state"><p>No transactions yet. Add your first entry from the Transaction Journal.</p></td></tr>';return;}tbody.innerHTML=recent.map(t=>`<tr><td>${esc(t.date)}</td><td>${esc(t.voucher_type)}</td><td>${esc(t.dr_account)}</td><td><span class="pill ${t.dr_cr==='DR'?'pill-expense':'pill-income'}">${esc(t.dr_cr)}</span></td><td class="amt" style="text-align:right">${fmt(t.amount)}</td><td>${esc(t.narration)}</td></tr>`).join('');}
+
+
+
+function loadParties(){const d=DB.parties;document.getElementById('parties-count').textContent=d.length;updateBadges();const tb=document.getElementById('parties-body');if(!d.length){tb.innerHTML='<tr><td colspan="7" class="empty-state"><p>No parties yet</p></td></tr>';return;}tb.innerHTML=d.map((p,i)=>`<tr><td><strong>${esc(p.code)}</strong></td><td>${esc(p.name)}</td><td>${esc(p.type)}</td><td>${esc(p.gstin)}</td><td>${esc(p.state)}</td><td>${esc(p.pan)}</td><td><button class="btn btn-danger btn-sm" onclick="deleteEntry('parties',${i})">Delete</button></td></tr>`).join('');}
+
+
+
+function loadItems(){const d=DB.items;document.getElementById('items-count').textContent=d.length;updateBadges();const tb=document.getElementById('items-body');if(!d.length){tb.innerHTML='<tr><td colspan="7" class="empty-state"><p>No items yet</p></td></tr>';return;}tb.innerHTML=d.map((it,i)=>`<tr><td><strong>${esc(it.code)}</strong></td><td>${esc(it.name)}</td><td>${esc(it.type)}</td><td>${esc(it.hsn_sac)}</td><td>${esc(it.unit)}</td><td>${it.gst_rate}%</td><td><button class="btn btn-danger btn-sm" onclick="deleteEntry('items',${i})">Delete</button></td></tr>`).join('');}
+
+
+
+function loadCOA(){const d=DB.coa;document.getElementById('coa-count').textContent=d.length;const np=n=>({A:'pill-asset',L:'pill-liability',E:'pill-equity',I:'pill-income',X:'pill-expense'}[n]||'');const nl=n=>({A:'Asset',L:'Liability',E:'Equity',I:'Income',X:'Expense'}[n]||n);document.getElementById('coa-body').innerHTML=d.map(a=>`<tr><td><strong>${esc(a.code)}</strong></td><td>${esc(a.name)}</td><td><span class="pill ${np(a.nature)}">${nl(a.nature)}</span></td><td>${esc(a.bs_pl)}</td><td>${esc(a.group_l1)}</td><td>${esc(a.group_l2)}</td></tr>`).join('');}
+
+
+
+function loadTransactions(){const d=DB.transactions;document.getElementById('txn-count').textContent=d.length;updateBadges();const tb=document.getElementById('txn-body');if(!d.length){tb.innerHTML='<tr><td colspan="8" class="empty-state"><p>No transactions yet</p></td></tr>';return;}tb.innerHTML=d.map((t,i)=>`<tr><td>${esc(t.date)}</td><td>${esc(t.voucher_type)}</td><td>${esc(t.dr_account)}</td><td><span class="pill ${t.dr_cr==='DR'?'pill-expense':'pill-income'}">${esc(t.dr_cr)}</span></td><td class="amt" style="text-align:right">${fmt(t.amount)}</td><td>${esc(t.item_code)}</td><td>${esc(t.narration)}</td><td>${isAdmin()?`<button class="btn btn-danger btn-sm" onclick="deleteEntry('transactions',${i})">Delete</button>`:''}</td></tr>`).join('');}
+
+
+
+function loadAssets(){const d=DB.fixed_assets;document.getElementById('asset-count').textContent=d.length;const tb=document.getElementById('asset-body');if(!d.length){tb.innerHTML='<tr><td colspan="8" class="empty-state"><p>No fixed assets yet</p></td></tr>';return;}tb.innerHTML=d.map((a,i)=>`<tr><td><strong>${esc(a.code)}</strong></td><td>${esc(a.name)}</td><td>${esc(a.block)}</td><td>${esc(a.date)}</td><td class="amt" style="text-align:right">${fmt(a.cost)}</td><td>${esc(a.lt_180)}</td><td>${a.book_rate}%</td><td><button class="btn btn-danger btn-sm" onclick="deleteEntry('fixed_assets',${i})">Delete</button></td></tr>`).join('');}
+
+
+
+function loadTDS(){const d=DB.tds;document.getElementById('tds-count').textContent=d.length;const tb=document.getElementById('tds-body');if(!d.length){tb.innerHTML='<tr><td colspan="6" class="empty-state"><p>No TDS entries yet</p></td></tr>';return;}tb.innerHTML=d.map(t=>`<tr><td>${esc(t.date)}</td><td>${esc(t.party)}</td><td>${esc(t.section)}</td><td class="amt" style="text-align:right">${fmt(t.amount)}</td><td>${t.rate}%</td><td>${esc(t.ref)}</td></tr>`).join('');}
+
+
+
+function loadSetup(){document.getElementById('f-company').value=DB.setup.company_name||'';document.getElementById('f-entity').value=DB.setup.entity_type||'';document.getElementById('f-pan').value=DB.setup.pan||'';document.getElementById('f-tan').value=DB.setup.tan||'';document.getElementById('f-gstin').value=DB.setup.gstin||'';}
+
+
+
+async function saveSetup(){DB.setup.company_name=document.getElementById('f-company').value;DB.setup.entity_type=document.getElementById('f-entity').value;DB.setup.pan=document.getElementById('f-pan').value;DB.setup.tan=document.getElementById('f-tan').value;DB.setup.gstin=document.getElementById('f-gstin').value;document.getElementById('topbar-company').textContent=DB.setup.company_name||'No company set up';await saveCollection('setup');toast('Company details saved');}
+
+
+
+// =============================================
+
+// USER MANAGEMENT (admin only)
+
+// =============================================
+
+async function loadUsers() {
+
+  if (!isAdmin()) return;
+
+  const snap = await db.collection('users').get();
+
+  const users = [];
+
+  snap.forEach(doc => users.push({ id: doc.id, ...doc.data() }));
+
+  document.getElementById('users-count').textContent = users.length;
+
+  const tb = document.getElementById('users-body');
+
+  tb.innerHTML = users.map(u => `<tr>
+
+    <td>${esc(u.email)}</td>
+
+    <td>${esc(u.name)}</td>
+
+    <td><span class="pill ${u.role==='admin'?'pill-admin':'pill-client'}">${u.role}</span></td>
+
+    <td>${u.created ? u.created.substring(0,10) : ''}</td>
+
+    <td>${u.id !== currentUser.uid ? `<button class="btn btn-danger btn-sm" onclick="removeUser('${u.id}','${esc(u.email)}')">Remove</button>` : '<span style="color:var(--text2);font-size:12px">You</span>'}</td>
+
+  </tr>`).join('');
+
+}
+
+
+
+async function createUserAccount(email, password, name, role) {
+
+  const tempApp = firebase.initializeApp(firebaseConfig, 'tempApp' + Date.now());
+
+  try {
+
+    const cred = await tempApp.auth().createUserWithEmailAndPassword(email, password);
+
+    await db.collection('users').doc(cred.user.uid).set({
+
+      email, name, role, created: new Date().toISOString()
+
+    });
+
+    await tempApp.auth().signOut();
+
+    tempApp.delete();
+
+    return true;
+
+  } catch(e) {
+
+    try { tempApp.delete(); } catch(x){}
+
+    throw e;
+
+  }
+
+}
+
+
+
+async function removeUser(uid, email) {
+
+  if (!confirm(`Remove user ${email}? They will lose access but their Auth account remains (delete in Firebase Console).`)) return;
+
+  await db.collection('users').doc(uid).delete();
+
+  toast('User removed');
+
+  loadUsers();
+
+}
+
+
+
+// =============================================
+
+// DELETE ENTRIES
+
+// =============================================
+
+async function deleteEntry(col, idx) {
+
+  if (!isAdmin() && col !== 'transactions') { toast('No permission'); return; }
+
+  if (!confirm('Delete this entry?')) return;
+
+  DB[col].splice(idx, 1);
+
+  await saveCollection(col);
+
+  toast('Entry deleted');
+
+  loadSection(document.querySelector('.nav-item.active').dataset.section);
+
+}
+
+
+
+// =============================================
+
+// MODALS
+
+// =============================================
+
+const modalForms={
+
+  party:{title:'Add Party',fields:[{id:'code',label:'Party Code',ph:'CUST001'},{id:'name',label:'Party Name',ph:'Company name'},{id:'type',label:'Type',type:'select',options:['Customer','Vendor','Both']},{id:'gstin',label:'GSTIN',ph:'Optional'},{id:'state',label:'State',ph:'Maharashtra'},{id:'pan',label:'PAN',ph:'Optional'}],collection:'parties',section:'parties'},
+
+  item:{title:'Add Item / Service',fields:[{id:'code',label:'Item Code',ph:'ITEM001'},{id:'name',label:'Item Name',ph:'Product or service name'},{id:'type',label:'Type',type:'select',options:['Goods','Services']},{id:'hsn_sac',label:'HSN/SAC Code',ph:'Optional'},{id:'unit',label:'Unit',ph:'Nos / Hrs / Kg'},{id:'gst_rate',label:'GST Rate %',ph:'18',type:'number'}],collection:'items',section:'items'},
+
+  txn:{title:'New Transaction Line',fields:[{id:'date',label:'Date',type:'date'},{id:'voucher_type',label:'Voucher Type',type:'select',options:['Journal','Sales','Purchase','Receipt','Payment','Contra','Credit Note','Debit Note']},{id:'dr_account',label:'Account Code',ph:'1010'},{id:'dr_cr',label:'DR / CR',type:'select',options:['DR','CR']},{id:'amount',label:'Amount (\u20b9)',ph:'0',type:'number'},{id:'gst_type',label:'GST Type',type:'select',options:['Non-GST','Intra-State (CGST+SGST)','Inter-State (IGST)','Exempt']},{id:'item_code',label:'Item Code (optional)',ph:'ITEM001'},{id:'qty',label:'Qty',ph:'',type:'number'},{id:'rate',label:'Rate',ph:'',type:'number'},{id:'narration',label:'Narration',ph:'Description',full:true}],collection:'transactions',section:'journal'},
+
+  asset:{title:'Add Fixed Asset',fields:[{id:'code',label:'Asset Code',ph:'FA001'},{id:'name',label:'Asset Name',ph:'Laptop'},{id:'block',label:'Block / Category',ph:'Plant & Machinery'},{id:'date',label:'Purchase Date',type:'date'},{id:'cost',label:'Cost (\u20b9)',ph:'80000',type:'number'},{id:'lt_180',label:'Used < 180 days?',type:'select',options:['No','Yes']},{id:'book_rate',label:'Book Dep Rate %',ph:'33.33',type:'number'}],collection:'fixed_assets',section:'assets'},
+
+  user:{title:'Add User Account',fields:[{id:'email',label:'Email',ph:'client@example.com',type:'email'},{id:'password',label:'Password',ph:'Min 6 characters',type:'password'},{id:'name',label:'Display Name',ph:'Full name'},{id:'role',label:'Role',type:'select',options:['client','admin']}],collection:'__user__',section:'users'}
+
+};
+
+
+
+let currentModal=null;
+
+function openModal(type){
+
+  if(type!=='txn'&&type!=='user'&&!isAdmin()){toast('Admin access required');return;}
+
+  currentModal=type;const cfg=modalForms[type];
+
+  document.getElementById('modal-title').textContent=cfg.title;
+
+  const body=document.getElementById('modal-body');
+
+  body.innerHTML='<div class="form-grid">'+cfg.fields.map(f=>{const cls=f.full?'form-group full':'form-group';if(f.type==='select')return`<div class="${cls}"><label>${f.label}</label><select id="mf-${f.id}">${f.options.map(o=>`<option value="${o}">${o}</option>`).join('')}</select></div>`;const t=f.type||'text';return`<div class="${cls}"><label>${f.label}</label><input type="${t}" id="mf-${f.id}" placeholder="${f.ph||''}"></div>`;}).join('')+'</div>';
+
+  document.getElementById('modal-save').onclick=saveModal;
+
+  document.getElementById('modal-overlay').classList.add('active');
+
+}
+
+
+
+function closeModal(){document.getElementById('modal-overlay').classList.remove('active');currentModal=null;}
+
+
+
+async function saveModal(){
+
+  const cfg=modalForms[currentModal];
+
+  if(cfg.collection==='__user__'){
+
+    const email=document.getElementById('mf-email').value.trim();
+
+    const pass=document.getElementById('mf-password').value;
+
+    const name=document.getElementById('mf-name').value.trim();
+
+    const role=document.getElementById('mf-role').value;
+
+    if(!email||!pass||pass.length<6){toast('Email required, password min 6 chars');return;}
+
+    try{
+
+      await createUserAccount(email,pass,name,role);
+
+      closeModal();toast(`User ${email} created as ${role}`);loadUsers();
+
+    }catch(e){toast('Error: '+e.message);}
+
+    return;
+
+  }
+
+  const entry={};cfg.fields.forEach(f=>{const el=document.getElementById('mf-'+f.id);let val=el?el.value:'';if(f.type==='number'&&val!=='')val=parseFloat(val);entry[f.id]=val;});
+
+  entry._addedBy = userProfile.email;
+
+  entry._addedAt = new Date().toISOString();
+
+  DB[cfg.collection].push(entry);
+
+  await saveCollection(cfg.collection);
+
+  closeModal();toast('Entry added');
+
+  const ni=document.querySelector(`.nav-item[data-section="${cfg.section}"]`);
+
+  if(ni)navigate(ni);
+
+}
+
+
+
+// =============================================
+
+// EXPORT
+
+// =============================================
+
+function exportData(){const blob=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`kepei_backup_${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);toast('Data exported');}
+
+
+
+// =============================================
+
+// INIT
+
+// =============================================
+
+function initApp(){
+
+  const sel=document.getElementById('f-entity');sel.innerHTML='<option value="">Select...</option>';
+
+  LISTS.entity_types.forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;sel.appendChild(o);});
+
+  document.getElementById('topbar-company').textContent=DB.setup.company_name||'No company set up';
+
+  loadDashboard();
+
+}
+
+
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+document.getElementById('login-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+
+</script>
+
+</body>
+
+                                                                                                                                                                                                  </html>
