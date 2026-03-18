@@ -232,7 +232,7 @@ table{width:100%;border-collapse:collapse}thead th{text-align:left;padding:10px 
 
 <div class="sidebar-footer">
 
-<div class="user-info"><strong id="user-display-name">â</strong><span id="user-role-label">â</span></div>
+<div class="user-info"><strong id="user-display-name">Ã¢ÂÂ</strong><span id="user-role-label">Ã¢ÂÂ</span></div>
 
 <div class="sidebar-actions">
 
@@ -278,7 +278,7 @@ table{width:100%;border-collapse:collapse}thead th{text-align:left;padding:10px 
 
 
 
-<div class="section" id="sec-projects"><div class="table-wrap"><div class="table-header"><h3>Projects</h3><span class="count" id="projects-count">0</span><span class="spacer"></span><button class="btn btn-primary admin-only" onclick="openModal('project')">+ New Project</button></div><div class="table-scroll"><table><thead><tr><th>Project Name</th><th>Client</th><th>Status</th><th style="text-align:right">Budget (â¹)</th><th>Start Date</th><th></th></tr></thead><tbody id="projects-body"></tbody></table></div></div></div>
+<div class="section" id="sec-projects"><div class="table-wrap"><div class="table-header"><h3>Projects</h3><span class="count" id="projects-count">0</span><span class="spacer"></span><button class="btn btn-primary admin-only" onclick="openModal('project')">+ New Project</button></div><div class="table-scroll"><table><thead><tr><th>Project Name</th><th>Client</th><th>Status</th><th style="text-align:right">Budget (Ã¢ÂÂ¹)</th><th>Start Date</th><th></th></tr></thead><tbody id="projects-body"></tbody></table></div></div></div>
 
 
 
@@ -658,7 +658,7 @@ async function saveCollection(key) {
 
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
 
-function fmt(n){if(n===null||n===undefined||n==='')return'â¹0';return 'â¹'+Number(n).toLocaleString('en-IN');}
+function fmt(n){if(n===null||n===undefined||n==='')return'Ã¢ÂÂ¹0';return 'Ã¢ÂÂ¹'+Number(n).toLocaleString('en-IN');}
 
 function esc(s){if(s===null||s===undefined)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
@@ -912,21 +912,21 @@ function generateInvoiceHTML(inv){
 
       <td class="text-right">${li.qty}</td>
 
-      <td class="text-right">â¹${Number(li.rate||0).toLocaleString('en-IN')}</td>
+      <td class="text-right">Ã¢ÂÂ¹${Number(li.rate||0).toLocaleString('en-IN')}</td>
 
       <td class="text-right">${li.discount_pct||0}%</td>
 
-      <td class="text-right">â¹${Number(taxable).toLocaleString('en-IN')}</td>
+      <td class="text-right">Ã¢ÂÂ¹${Number(taxable).toLocaleString('en-IN')}</td>
 
       <td class="text-right">${li.gst_rate||0}%</td>
 
-      <td class="text-right">â¹${Number(cgst).toLocaleString('en-IN')}</td>
+      <td class="text-right">Ã¢ÂÂ¹${Number(cgst).toLocaleString('en-IN')}</td>
 
-      <td class="text-right">â¹${Number(sgst).toLocaleString('en-IN')}</td>
+      <td class="text-right">Ã¢ÂÂ¹${Number(sgst).toLocaleString('en-IN')}</td>
 
-      <td class="text-right">â¹${Number(igst).toLocaleString('en-IN')}</td>
+      <td class="text-right">Ã¢ÂÂ¹${Number(igst).toLocaleString('en-IN')}</td>
 
-      <td class="text-right">â¹${Number(total).toLocaleString('en-IN')}</td>
+      <td class="text-right">Ã¢ÂÂ¹${Number(total).toLocaleString('en-IN')}</td>
 
     </tr>`;
 
@@ -1002,7 +1002,7 @@ body{font-family:Arial,sans-serif;margin:20px;color:#333}
 
 <div class="details">
 
-GSTIN: ${esc(DB.setup.gstin||'â')} | PAN: ${esc(DB.setup.pan||'â')}<br>
+GSTIN: ${esc(DB.setup.gstin||'Ã¢ÂÂ')} | PAN: ${esc(DB.setup.pan||'Ã¢ÂÂ')}<br>
 
 ${esc(DB.setup.address||'')}<br>
 
@@ -1024,13 +1024,13 @@ Email: ${esc(DB.setup.email||'')} | Phone: ${esc(DB.setup.phone||'')}
 
 <strong>Invoice Date:</strong> ${esc(inv.invoice_date)}<br>
 
-<strong>Due Date:</strong> ${esc(inv.due_date||'â')}
+<strong>Due Date:</strong> ${esc(inv.due_date||'Ã¢ÂÂ')}
 
 </div>
 
 <div style="text-align:right">
 
-<strong>Place of Supply:</strong> ${esc(inv.place_of_supply||'â')}<br>
+<strong>Place of Supply:</strong> ${esc(inv.place_of_supply||'Ã¢ÂÂ')}<br>
 
 <strong>Reverse Charge:</strong> ${inv.reverse_charge?'Yes':'No'}
 
@@ -1048,9 +1048,9 @@ Email: ${esc(DB.setup.email||'')} | Phone: ${esc(DB.setup.phone||'')}
 
 <div>${esc(inv.party_name)}</div>
 
-<div>GSTIN: ${esc(inv.party_gstin||'â')}</div>
+<div>GSTIN: ${esc(inv.party_gstin||'Ã¢ÂÂ')}</div>
 
-<div>State: ${esc(inv.party_state||'â')}</div>
+<div>State: ${esc(inv.party_state||'Ã¢ÂÂ')}</div>
 
 </div>
 
@@ -1060,7 +1060,7 @@ Email: ${esc(DB.setup.email||'')} | Phone: ${esc(DB.setup.phone||'')}
 
 <div>${esc(inv.shipped_to_name||inv.party_name)}</div>
 
-<div>State: ${esc(inv.shipped_to_state||inv.party_state||'â')}</div>
+<div>State: ${esc(inv.shipped_to_state||inv.party_state||'Ã¢ÂÂ')}</div>
 
 </div>
 
@@ -1086,13 +1086,13 @@ Email: ${esc(DB.setup.email||'')} | Phone: ${esc(DB.setup.phone||'')}
 
 <div class="print-summary">
 
-<div class="summary-row"><span>Subtotal (Taxable):</span><span>â¹${Number(subtotal).toLocaleString('en-IN')}</span></div>
+<div class="summary-row"><span>Subtotal (Taxable):</span><span>Ã¢ÂÂ¹${Number(subtotal).toLocaleString('en-IN')}</span></div>
 
-<div class="summary-row"><span>Total Tax:</span><span>â¹${Number(totalTax).toLocaleString('en-IN')}</span></div>
+<div class="summary-row"><span>Total Tax:</span><span>Ã¢ÂÂ¹${Number(totalTax).toLocaleString('en-IN')}</span></div>
 
-<div class="summary-row"><span>Round-off:</span><span>â¹${Number(inv.roundoff||0).toLocaleString('en-IN')}</span></div>
+<div class="summary-row"><span>Round-off:</span><span>Ã¢ÂÂ¹${Number(inv.roundoff||0).toLocaleString('en-IN')}</span></div>
 
-<div class="summary-row total"><span>Grand Total:</span><span>â¹${Number(grandTotal).toLocaleString('en-IN')}</span></div>
+<div class="summary-row total"><span>Grand Total:</span><span>Ã¢ÂÂ¹${Number(grandTotal).toLocaleString('en-IN')}</span></div>
 
 </div>
 
@@ -1110,7 +1110,7 @@ Email: ${esc(DB.setup.email||'')} | Phone: ${esc(DB.setup.phone||'')}
 
 <strong>Bank Details:</strong><br>
 
-Account: ${esc(DB.setup.bank_account||'â')} | IFSC: ${esc(DB.setup.ifsc||'â')}
+Account: ${esc(DB.setup.bank_account||'Ã¢ÂÂ')} | IFSC: ${esc(DB.setup.ifsc||'Ã¢ÂÂ')}
 
 </div>
 
@@ -1124,7 +1124,7 @@ Account: ${esc(DB.setup.bank_account||'â')} | IFSC: ${esc(DB.setup.ifsc||'�
 
 </div>
 
-<script>window.print();</script>
+<script>window.print();<\/script>
 
 </body>
 
@@ -1146,17 +1146,17 @@ const modalForms={
 
   item:{title:'Add Item / Service',fields:[{id:'code',label:'Item Code',ph:'ITEM001'},{id:'name',label:'Item Name',ph:'Product or service name'},{id:'type',label:'Type',type:'select',options:['Goods','Services']},{id:'hsn_sac',label:'HSN/SAC Code',ph:'Optional'},{id:'unit',label:'Unit',ph:'Nos / Hrs / Kg'},{id:'gst_rate',label:'GST Rate %',ph:'18',type:'number'}],collection:'items',section:'items'},
 
-  txn:{title:'New Transaction Line',fields:[{id:'date',label:'Date',type:'date'},{id:'voucher_type',label:'Voucher Type',type:'select',options:['Journal','Sales','Purchase','Receipt','Payment','Contra','Credit Note','Debit Note']},{id:'dr_account',label:'Account Code',ph:'1010'},{id:'dr_cr',label:'DR / CR',type:'select',options:['DR','CR']},{id:'amount',label:'Amount (â¹)',ph:'0',type:'number'},{id:'gst_type',label:'GST Type',type:'select',options:['Non-GST','Intra-State (CGST+SGST)','Inter-State (IGST)','Exempt']},{id:'item_code',label:'Item Code (optional)',ph:'ITEM001'},{id:'qty',label:'Qty',ph:'',type:'number'},{id:'rate',label:'Rate',ph:'',type:'number'},{id:'narration',label:'Narration',ph:'Description',full:true}],collection:'transactions',section:'journal'},
+  txn:{title:'New Transaction Line',fields:[{id:'date',label:'Date',type:'date'},{id:'voucher_type',label:'Voucher Type',type:'select',options:['Journal','Sales','Purchase','Receipt','Payment','Contra','Credit Note','Debit Note']},{id:'dr_account',label:'Account Code',ph:'1010'},{id:'dr_cr',label:'DR / CR',type:'select',options:['DR','CR']},{id:'amount',label:'Amount (Ã¢ÂÂ¹)',ph:'0',type:'number'},{id:'gst_type',label:'GST Type',type:'select',options:['Non-GST','Intra-State (CGST+SGST)','Inter-State (IGST)','Exempt']},{id:'item_code',label:'Item Code (optional)',ph:'ITEM001'},{id:'qty',label:'Qty',ph:'',type:'number'},{id:'rate',label:'Rate',ph:'',type:'number'},{id:'narration',label:'Narration',ph:'Description',full:true}],collection:'transactions',section:'journal'},
 
-  asset:{title:'Add Fixed Asset',fields:[{id:'code',label:'Asset Code',ph:'FA001'},{id:'name',label:'Asset Name',ph:'Laptop'},{id:'block',label:'Block / Category',ph:'Plant & Machinery'},{id:'date',label:'Purchase Date',type:'date'},{id:'cost',label:'Cost (â¹)',ph:'80000',type:'number'},{id:'lt_180',label:'Used < 180 days?',type:'select',options:['No','Yes']},{id:'book_rate',label:'Book Dep Rate %',ph:'33.33',type:'number'}],collection:'fixed_assets',section:'assets'},
+  asset:{title:'Add Fixed Asset',fields:[{id:'code',label:'Asset Code',ph:'FA001'},{id:'name',label:'Asset Name',ph:'Laptop'},{id:'block',label:'Block / Category',ph:'Plant & Machinery'},{id:'date',label:'Purchase Date',type:'date'},{id:'cost',label:'Cost (Ã¢ÂÂ¹)',ph:'80000',type:'number'},{id:'lt_180',label:'Used < 180 days?',type:'select',options:['No','Yes']},{id:'book_rate',label:'Book Dep Rate %',ph:'33.33',type:'number'}],collection:'fixed_assets',section:'assets'},
 
   user:{title:'Add User Account',fields:[{id:'email',label:'Email',ph:'client@example.com',type:'email'},{id:'password',label:'Password',ph:'Min 6 characters',type:'password'},{id:'name',label:'Display Name',ph:'Full name'},{id:'role',label:'Role',type:'select',options:['client','admin']}],collection:'__user__',section:'users'},
 
   invoice:{title:'Create Invoice',fields:[],collection:'invoices',section:'invoices',custom:true},
 
-  project:{title:'Create Project',fields:[{id:'name',label:'Project Name',ph:'Project name'},{id:'client',label:'Client',type:'select',options:[]},{id:'status',label:'Status',type:'select',options:['Active','Completed','On Hold']},{id:'budget',label:'Budget (â¹)',ph:'0',type:'number'},{id:'start_date',label:'Start Date',type:'date'},{id:'description',label:'Description',ph:'',full:true}],collection:'projects',section:'projects'},
+  project:{title:'Create Project',fields:[{id:'name',label:'Project Name',ph:'Project name'},{id:'client',label:'Client',type:'select',options:[]},{id:'status',label:'Status',type:'select',options:['Active','Completed','On Hold']},{id:'budget',label:'Budget (Ã¢ÂÂ¹)',ph:'0',type:'number'},{id:'start_date',label:'Start Date',type:'date'},{id:'description',label:'Description',ph:'',full:true}],collection:'projects',section:'projects'},
 
-  timeentry:{title:'Log Time Entry',fields:[{id:'date',label:'Date',type:'date'},{id:'project',label:'Project',type:'select',options:[]},{id:'task_description',label:'Task Description',ph:'What did you work on?',full:true},{id:'hours',label:'Hours',ph:'8',type:'number'},{id:'billable',label:'Billable',type:'select',options:['No','Yes']},{id:'rate',label:'Rate per Hour (â¹)',ph:'500',type:'number'}],collection:'time_entries',section:'timeentries',custom:true}
+  timeentry:{title:'Log Time Entry',fields:[{id:'date',label:'Date',type:'date'},{id:'project',label:'Project',type:'select',options:[]},{id:'task_description',label:'Task Description',ph:'What did you work on?',full:true},{id:'hours',label:'Hours',ph:'8',type:'number'},{id:'billable',label:'Billable',type:'select',options:['No','Yes']},{id:'rate',label:'Rate per Hour (Ã¢ÂÂ¹)',ph:'500',type:'number'}],collection:'time_entries',section:'timeentries',custom:true}
 
 };
 
@@ -1222,13 +1222,13 @@ function openModal(type){
 
 <div style="background:var(--surface2);padding:12px;border-radius:8px;margin-top:16px;font-size:12px">
 
-<div style="display:flex;justify-content:space-between;padding:4px 0"><span>Subtotal:</span><span id="inv-subtotal">â¹0</span></div>
+<div style="display:flex;justify-content:space-between;padding:4px 0"><span>Subtotal:</span><span id="inv-subtotal">Ã¢ÂÂ¹0</span></div>
 
-<div style="display:flex;justify-content:space-between;padding:4px 0"><span>Total Tax:</span><span id="inv-tax">â¹0</span></div>
+<div style="display:flex;justify-content:space-between;padding:4px 0"><span>Total Tax:</span><span id="inv-tax">Ã¢ÂÂ¹0</span></div>
 
 <div style="display:flex;justify-content:space-between;padding:4px 0"><span>Round-off:</span><input id="mf-roundoff" type="number" step="0.01" value="0" style="width:80px;text-align:right" onchange="recalculateInvoice()"></div>
 
-<div style="display:flex;justify-content:space-between;padding:4px 0;font-weight:bold"><span>Grand Total:</span><span id="inv-grand">â¹0</span></div>
+<div style="display:flex;justify-content:space-between;padding:4px 0;font-weight:bold"><span>Grand Total:</span><span id="inv-grand">Ã¢ÂÂ¹0</span></div>
 
 </div>
 
@@ -1302,7 +1302,7 @@ function addInvoiceLine(){
 
 <td><input id="line-total-${itemIdx}" readonly style="width:80px;text-align:right"></td>
 
-<td><button type="button" class="btn btn-danger btn-sm" onclick="removeInvoiceLine(${itemIdx})">â</button></td>
+<td><button type="button" class="btn btn-danger btn-sm" onclick="removeInvoiceLine(${itemIdx})">Ã¢ÂÂ</button></td>
 
 `;
 
@@ -1414,11 +1414,11 @@ function recalculateInvoice(){
 
   const grandTotal=subtotal+totalTax+roundoff;
 
-  document.getElementById('inv-subtotal').textContent='â¹'+subtotal.toLocaleString('en-IN',{maximumFractionDigits:2});
+  document.getElementById('inv-subtotal').textContent='Ã¢ÂÂ¹'+subtotal.toLocaleString('en-IN',{maximumFractionDigits:2});
 
-  document.getElementById('inv-tax').textContent='â¹'+totalTax.toLocaleString('en-IN',{maximumFractionDigits:2});
+  document.getElementById('inv-tax').textContent='Ã¢ÂÂ¹'+totalTax.toLocaleString('en-IN',{maximumFractionDigits:2});
 
-  document.getElementById('inv-grand').textContent='â¹'+grandTotal.toLocaleString('en-IN',{maximumFractionDigits:2});
+  document.getElementById('inv-grand').textContent='Ã¢ÂÂ¹'+grandTotal.toLocaleString('en-IN',{maximumFractionDigits:2});
 
 }
 
