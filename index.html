@@ -109,6 +109,9 @@ table{width:100%;border-collapse:collapse}thead th{text-align:left;padding:10px 
 .pill-active{background:rgba(46,213,115,.15);color:var(--green)}.pill-completed{background:rgba(108,92,231,.2);color:var(--accent2)}.pill-onhold{background:rgba(255,165,2,.15);color:var(--orange)}
 
 .pill-billable{background:rgba(46,213,115,.15);color:var(--green)}
+.pill-purchase{background:rgba(46,213,115,.15);color:var(--green)}.pill-sale{background:rgba(255,107,107,.15);color:var(--red)}.pill-adjustment{background:rgba(108,92,231,.2);color:var(--accent2)}.pill-opening{background:rgba(79,172,254,.15);color:var(--blue)}
+.pill-output{background:rgba(255,107,107,.15);color:var(--red)}.pill-input{background:rgba(46,213,115,.15);color:var(--green)}.pill-claimed{background:rgba(46,213,115,.15);color:var(--green)}.pill-unclaimed{background:rgba(255,165,2,.15);color:var(--orange)}
+.filter-bar{display:flex;gap:8px;margin-bottom:16px}
 
 .table-scroll{overflow-x:auto}
 
@@ -216,12 +219,16 @@ table{width:100%;border-collapse:collapse}thead th{text-align:left;padding:10px 
 
 <div class="nav-item" data-section="timeentries" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Time Entries<span class="badge" id="badge-timeentries">0</span></div>
 
+<div class="nav-section">Inventory</div>
+<div class="nav-item" data-section="inventory" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Stock Register<span class="badge" id="badge-inventory">0</span></div>
+<div class="nav-item admin-only" data-section="stocksummary" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Stock Summary</div>
 <div class="nav-section">Assets &amp; Tax</div>
 
 <div class="nav-item admin-only" data-section="assets" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>Fixed Assets</div>
 
 <div class="nav-item admin-only" data-section="tds" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>TDS Register</div>
-
+<div class="nav-item" data-section="gstledger" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>GST Ledger<span class="badge" id="badge-gst">0</span></div>
+<div class="nav-item admin-only" data-section="itcsummary" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>ITC Summary</div>
 <div class="nav-section admin-only">Admin</div>
 
 <div class="nav-item admin-only" data-section="users" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>User Management</div>
@@ -286,6 +293,10 @@ table{width:100%;border-collapse:collapse}thead th{text-align:left;padding:10px 
 
 
 
+<div class="section" id="sec-inventory"><div class="table-wrap"><div class="table-header"><h3>Stock Register</h3><span class="count" id="inventory-count">0</span><span class="spacer"></span><button class="btn btn-primary" onclick="openModal('stockentry')">+ Add Stock Entry</button></div><div class="table-scroll"><table><thead><tr><th>Date</th><th>Item</th><th>Type</th><th style="text-align:right">Qty</th><th style="text-align:right">Rate</th><th style="text-align:right">Value</th><th>Reference</th><th>Narration</th><th></th></tr></thead><tbody id="inventory-body"></tbody></table></div></div></div>
+
+<div class="section" id="sec-stocksummary"><div class="card-grid"><div class="card"><div class="label">Total Items in Stock</div><div class="value blue" id="kpi-stock-items">0</div></div><div class="card"><div class="label">Total Stock Value</div><div class="value green" id="kpi-stock-value">0</div></div><div class="card"><div class="label">Low Stock</div><div class="value orange" id="kpi-low-stock">0</div></div><div class="card"><div class="label">Movements</div><div class="value" id="kpi-recent-movements">0</div></div></div><div class="table-wrap"><div class="table-header"><h3>Stock Summary</h3></div><div class="table-scroll"><table><thead><tr><th>Code</th><th>Name</th><th style="text-align:right">Opening</th><th style="text-align:right">Purchased</th><th style="text-align:right">Sold</th><th style="text-align:right">Adjusted</th><th style="text-align:right">Current</th><th style="text-align:right">Avg Rate</th><th style="text-align:right">Value</th></tr></thead><tbody id="stocksummary-body"></tbody></table></div></div></div>
+
 <div class="section" id="sec-assets"><div class="table-wrap"><div class="table-header"><h3>Fixed Asset Register</h3><span class="count" id="asset-count">0</span><span class="spacer"></span><button class="btn btn-primary" onclick="openModal('asset')">+ Add Asset</button></div><div class="table-scroll"><table><thead><tr><th>Code</th><th>Name</th><th>Block</th><th>Date</th><th style="text-align:right">Cost</th><th>&lt;180d</th><th>Book Rate %</th><th></th></tr></thead><tbody id="asset-body"></tbody></table></div></div></div>
 
 
@@ -293,6 +304,10 @@ table{width:100%;border-collapse:collapse}thead th{text-align:left;padding:10px 
 <div class="section" id="sec-tds"><div class="table-wrap"><div class="table-header"><h3>TDS Register</h3><span class="count" id="tds-count">0</span></div><div class="table-scroll"><table><thead><tr><th>Date</th><th>Party</th><th>Section</th><th style="text-align:right">Amount</th><th>Rate %</th><th>Reference</th></tr></thead><tbody id="tds-body"></tbody></table></div></div></div>
 
 
+
+<div class="section" id="sec-itcsummary"><div class="card-grid"><div class="card"><div class="label">Output Tax (Liability)</div><div class="value red" id="kpi-output-tax">0</div></div><div class="card"><div class="label">Input Tax (ITC Available)</div><div class="value green" id="kpi-input-tax">0</div></div><div class="card"><div class="label">Net GST Payable</div><div class="value blue" id="kpi-net-gst">0</div></div><div class="card"><div class="label">ITC Claimed</div><div class="value orange" id="kpi-itc-claimed">0</div></div></div><div class="table-wrap"><div class="table-header"><h3>GSTR-3B Summary</h3></div><div class="table-scroll"><table><thead><tr><th>Description</th><th style="text-align:right">CGST</th><th style="text-align:right">SGST</th><th style="text-align:right">IGST</th><th style="text-align:right">Total</th></tr></thead><tbody id="gstr-summary-body"></tbody></table></div></div><div class="table-wrap" style="margin-top:20px"><div class="table-header"><h3>ITC by Category</h3></div><div class="table-scroll"><table><thead><tr><th>Item</th><th style="text-align:right">CGST</th><th style="text-align:right">SGST</th><th style="text-align:right">IGST</th><th style="text-align:right">Total ITC</th></tr></thead><tbody id="itc-category-body"></tbody></table></div></div><button class="btn btn-primary" onclick="markITCClaimed()" style="margin-top:16px">Mark ITC as Claimed</button></div>
+
+<div class="section" id="sec-gstledger"><div style="margin-bottom:16px;display:flex;gap:8px"><button class="btn btn-ghost" onclick="filterGST('All')">All</button><button class="btn btn-ghost" onclick="filterGST('Output')">Output Tax</button><button class="btn btn-ghost" onclick="filterGST('Input')">Input Tax (ITC)</button></div><div class="table-wrap"><div class="table-header"><h3>GST Ledger</h3><span class="count" id="gst-count">0</span><span class="spacer"></span><button class="btn btn-primary" onclick="openModal('gstentry')">+ Add GST Entry</button></div><div class="table-scroll"><table><thead><tr><th>Date</th><th>Type</th><th>Source</th><th>Party</th><th style="text-align:right">Taxable</th><th style="text-align:right">CGST</th><th style="text-align:right">SGST</th><th style="text-align:right">IGST</th><th style="text-align:right">Total Tax</th><th>Status</th><th></th></tr></thead><tbody id="gst-body"></tbody></table></div></div></div>
 
 <!-- USER MANAGEMENT (admin only) -->
 
@@ -384,7 +399,7 @@ let currentUser = null;
 
 let userProfile = null;
 
-let DB = { setup:{}, coa:[], parties:[], items:[], transactions:[], fixed_assets:[], tds:[], invoices:[], projects:[], time_entries:[] };
+let DB = { setup:{}, coa:[], parties:[], items:[], transactions:[], fixed_assets:[], tds:[], invoices:[], projects:[], time_entries:[], inventory:[], gst_ledger:[] };
 
 const LISTS = {
 
@@ -621,10 +636,12 @@ async function loadAllData() {
     DB.projects = d.projects || [];
 
     DB.time_entries = d.time_entries || [];
+    DB.inventory = d.inventory || [];
+    DB.gst_ledger = d.gst_ledger || [];
 
   } else {
 
-    DB = { setup: { company_name: '', entity_type: '', pan: '', tan: '', gstin: '' }, coa: [...DEFAULT_COA], parties: [], items: [], transactions: [], fixed_assets: [], tds: [], invoices: [], projects: [], time_entries: [] };
+    DB = { setup: { company_name: '', entity_type: '', pan: '', tan: '', gstin: '' }, coa: [...DEFAULT_COA], parties: [], items: [], transactions: [], fixed_assets: [], tds: [], invoices: [], projects: [], time_entries: [], inventory: [], gst_ledger: [] };
 
     await saveAllData();
 
@@ -662,7 +679,7 @@ function fmt(n){if(n===null||n===undefined||n==='')return'Ã¢ÂÂ¹0';return 
 
 function esc(s){if(s===null||s===undefined)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-function updateBadges(){document.getElementById('badge-parties').textContent=DB.parties.length;document.getElementById('badge-items').textContent=DB.items.length;document.getElementById('badge-txns').textContent=DB.transactions.length;document.getElementById('badge-invoices').textContent=DB.invoices.length;document.getElementById('badge-projects').textContent=DB.projects.length;document.getElementById('badge-timeentries').textContent=DB.time_entries.length;}
+function updateBadges(){document.getElementById('badge-parties').textContent=DB.parties.length;document.getElementById('badge-items').textContent=DB.items.length;document.getElementById('badge-txns').textContent=DB.transactions.length;document.getElementById('badge-invoices').textContent=DB.invoices.length;document.getElementById('badge-projects').textContent=DB.projects.length;document.getElementById('badge-timeentries').textContent=DB.time_entries.length;document.getElementById('badge-inventory').textContent=DB.inventory.length;document.getElementById('badge-gst').textContent=DB.gst_ledger.length;}
 
 function getNextInvoiceNumber(){if(!DB.invoices.length)return'INV-001';const nums=DB.invoices.map(i=>{const m=String(i.invoice_number).match(/INV-(\d+)/);return m?parseInt(m[1]):0;});return'INV-'+String(Math.max(...nums)+1).padStart(3,'0');}
 
@@ -694,7 +711,7 @@ function navigate(el){
 
 }
 
-function loadSection(sec){const L={dashboard:loadDashboard,parties:loadParties,items:loadItems,coa:loadCOA,journal:loadTransactions,invoices:loadInvoices,projects:loadProjects,timeentries:loadTimeEntries,assets:loadAssets,tds:loadTDS,setup:loadSetup,users:loadUsers};if(L[sec])L[sec]();}
+function loadSection(sec){const L={dashboard:loadDashboard,parties:loadParties,items:loadItems,coa:loadCOA,journal:loadTransactions,invoices:loadInvoices,projects:loadProjects,timeentries:loadTimeEntries,assets:loadAssets,tds:loadTDS,setup:loadSetup,users:loadUsers,inventory:loadInventory,stocksummary:loadStockSummary,gstledger:loadGSTLedger,itcsummary:loadITCSummary};if(L[sec])L[sec]();}
 
 
 
@@ -743,6 +760,18 @@ function loadAssets(){const d=DB.fixed_assets;document.getElementById('asset-cou
 function loadTDS(){const d=DB.tds;document.getElementById('tds-count').textContent=d.length;const tb=document.getElementById('tds-body');if(!d.length){tb.innerHTML='<tr><td colspan="6" class="empty-state"><p>No TDS entries yet</p></td></tr>';return;}tb.innerHTML=d.map(t=>`<tr><td>${esc(t.date)}</td><td>${esc(t.party)}</td><td>${esc(t.section)}</td><td class="amt" style="text-align:right">${fmt(t.amount)}</td><td>${t.rate}%</td><td>${esc(t.ref)}</td></tr>`).join('');}
 
 
+
+function loadInventory(){const d=DB.inventory;document.getElementById('inventory-count').textContent=d.length;updateBadges();const tb=document.getElementById('inventory-body');if(!d.length){tb.innerHTML='<tr><td colspan="9" class="empty-state"><p>No inventory entries yet</p></td></tr>';return;}tb.innerHTML=d.map((inv,i)=>`<tr><td>${esc(inv.date)}</td><td>${esc(inv.item_name||'')}</td><td><span class="pill pill-${inv.type.toLowerCase()}">${esc(inv.type)}</span></td><td class="amt" style="text-align:right">${inv.qty||0}</td><td class="amt" style="text-align:right">${fmt(inv.rate||0)}</td><td class="amt" style="text-align:right">${fmt(inv.value||0)}</td><td>${esc(inv.reference||'')}</td><td>${esc(inv.narration||'')}</td><td>${isAdmin()?`<button class="btn btn-danger btn-sm" onclick="deleteEntry('inventory',${i})">Delete</button>`:''}</td></tr>`).join('');}
+
+function loadStockSummary(){const d=DB.inventory;const summary={};d.forEach(e=>{const k=e.item_code||'Unknown';if(!summary[k]){const it=DB.items.find(i=>i.code===k);summary[k]={code:k,name:it?.name||'Unknown',opening:0,purchased:0,sold:0,adjusted:0,totalQty:0,totalValue:0};}const s=summary[k];if(e.type==='Opening')s.opening+=e.qty||0;else if(e.type==='Purchase')s.purchased+=e.qty||0;else if(e.type==='Sale')s.sold+=e.qty||0;else if(e.type==='Adjustment')s.adjusted+=e.qty||0;s.totalValue+=(e.value||0);});const items=Object.values(summary).map(s=>{s.currentStock=s.opening+s.purchased-s.sold+s.adjusted;s.avgRate=s.currentStock>0?s.totalValue/s.currentStock:0;s.stockValue=s.currentStock*s.avgRate;return s;});document.getElementById('kpi-stock-items').textContent=items.length;document.getElementById('kpi-stock-value').textContent=fmt(items.reduce((s,i)=>s+i.stockValue,0));document.getElementById('kpi-low-stock').textContent='0';document.getElementById('kpi-recent-movements').textContent=d.length;const tb=document.getElementById('stocksummary-body');if(!items.length){tb.innerHTML='<tr><td colspan="9" class="empty-state"><p>No stock data</p></td></tr>';return;}tb.innerHTML=items.map(s=>`<tr><td><strong>${esc(s.code)}</strong></td><td>${esc(s.name)}</td><td class="amt" style="text-align:right">${s.opening}</td><td class="amt" style="text-align:right">${s.purchased}</td><td class="amt" style="text-align:right">${s.sold}</td><td class="amt" style="text-align:right">${s.adjusted}</td><td class="amt" style="text-align:right">${s.currentStock}</td><td class="amt" style="text-align:right">${fmt(s.avgRate)}</td><td class="amt" style="text-align:right">${fmt(s.stockValue)}</td></tr>`).join('');}
+
+let gstFilterType='All';function filterGST(type){gstFilterType=type;loadGSTLedger();}
+
+function loadGSTLedger(){const d=DB.gst_ledger;const filtered=gstFilterType==='All'?d:d.filter(g=>g.type===gstFilterType);document.getElementById('gst-count').textContent=filtered.length;updateBadges();const tb=document.getElementById('gst-body');if(!filtered.length){tb.innerHTML='<tr><td colspan="11" class="empty-state"><p>No GST entries yet</p></td></tr>';return;}tb.innerHTML=filtered.map((g,i)=>{const oi=DB.gst_ledger.indexOf(g);return`<tr><td>${esc(g.date)}</td><td><span class="pill pill-${g.type.toLowerCase()}">${esc(g.type)}</span></td><td>${esc(g.source||'')}</td><td>${esc(g.party_name||'')}</td><td class="amt" style="text-align:right">${fmt(g.taxable_amount||0)}</td><td class="amt" style="text-align:right">${fmt(g.cgst||0)}</td><td class="amt" style="text-align:right">${fmt(g.sgst||0)}</td><td class="amt" style="text-align:right">${fmt(g.igst||0)}</td><td class="amt" style="text-align:right">${fmt((g.cgst||0)+(g.sgst||0)+(g.igst||0))}</td><td><span class="pill pill-${g.type==='Input'?(g.claimed?'claimed':'unclaimed'):'output'}">${g.type==='Input'?g.claimed?'Claimed':'Unclaimed':'Output'}</span></td><td>${isAdmin()?`<button class="btn btn-danger btn-sm" onclick="deleteEntry('gst_ledger',${oi})">Delete</button>`:''}</td></tr>`;}).join('');}
+
+function loadITCSummary(){const d=DB.gst_ledger;const outTax=d.filter(g=>g.type==='Output').reduce((s,g)=>(g.cgst||0)+(g.sgst||0)+(g.igst||0)+s,0);const inTax=d.filter(g=>g.type==='Input'&&!g.claimed).reduce((s,g)=>(g.cgst||0)+(g.sgst||0)+(g.igst||0)+s,0);const claimed=d.filter(g=>g.type==='Input'&&g.claimed).reduce((s,g)=>(g.cgst||0)+(g.sgst||0)+(g.igst||0)+s,0);document.getElementById('kpi-output-tax').textContent=fmt(outTax);document.getElementById('kpi-input-tax').textContent=fmt(inTax);document.getElementById('kpi-net-gst').textContent=fmt(outTax-inTax);document.getElementById('kpi-itc-claimed').textContent=fmt(claimed);const oC=d.filter(g=>g.type==='Output').reduce((s,g)=>(g.cgst||0)+s,0);const oS=d.filter(g=>g.type==='Output').reduce((s,g)=>(g.sgst||0)+s,0);const oI=d.filter(g=>g.type==='Output').reduce((s,g)=>(g.igst||0)+s,0);const iC=d.filter(g=>g.type==='Input'&&!g.claimed).reduce((s,g)=>(g.cgst||0)+s,0);const iS=d.filter(g=>g.type==='Input'&&!g.claimed).reduce((s,g)=>(g.sgst||0)+s,0);const iI=d.filter(g=>g.type==='Input'&&!g.claimed).reduce((s,g)=>(g.igst||0)+s,0);const gb=document.getElementById('gstr-summary-body');gb.innerHTML=`<tr><td><strong>3.1 Outward Supplies</strong></td><td class="amt" style="text-align:right">${fmt(oC)}</td><td class="amt" style="text-align:right">${fmt(oS)}</td><td class="amt" style="text-align:right">${fmt(oI)}</td><td class="amt" style="text-align:right">${fmt(oC+oS+oI)}</td></tr><tr><td><strong>4. Eligible ITC</strong></td><td class="amt" style="text-align:right">${fmt(iC)}</td><td class="amt" style="text-align:right">${fmt(iS)}</td><td class="amt" style="text-align:right">${fmt(iI)}</td><td class="amt" style="text-align:right">${fmt(iC+iS+iI)}</td></tr><tr><td><strong>Net CGST</strong></td><td class="amt" style="text-align:right">${fmt(oC-iC)}</td><td></td><td></td><td class="amt" style="text-align:right">${fmt(oC-iC)}</td></tr><tr><td><strong>Net SGST</strong></td><td></td><td class="amt" style="text-align:right">${fmt(oS-iS)}</td><td></td><td class="amt" style="text-align:right">${fmt(oS-iS)}</td></tr><tr><td><strong>Net IGST</strong></td><td></td><td></td><td class="amt" style="text-align:right">${fmt(oI-iI)}</td><td class="amt" style="text-align:right">${fmt(oI-iI)}</td></tr>`;const itcMap={};d.filter(g=>g.type==='Input').forEach(g=>{const k=g.source||'Manual';if(!itcMap[k])itcMap[k]={cgst:0,sgst:0,igst:0};itcMap[k].cgst+=(g.cgst||0);itcMap[k].sgst+=(g.sgst||0);itcMap[k].igst+=(g.igst||0);});const ib=document.getElementById('itc-category-body');if(!Object.keys(itcMap).length){ib.innerHTML='<tr><td colspan="5" class="empty-state"><p>No ITC</p></td></tr>';return;}ib.innerHTML=Object.entries(itcMap).map(([k,v])=>`<tr><td>${esc(k)}</td><td class="amt" style="text-align:right">${fmt(v.cgst)}</td><td class="amt" style="text-align:right">${fmt(v.sgst)}</td><td class="amt" style="text-align:right">${fmt(v.igst)}</td><td class="amt" style="text-align:right">${fmt(v.cgst+v.sgst+v.igst)}</td></tr>`).join('');}
+
+function markITCClaimed(){if(!confirm('Mark all unclaimed ITC as claimed?'))return;DB.gst_ledger.forEach(g=>{if(g.type==='Input'&&!g.claimed)g.claimed=true;});saveCollection('gst_ledger');toast('ITC marked as claimed');loadITCSummary();}
 
 function loadSetup(){document.getElementById('f-company').value=DB.setup.company_name||'';document.getElementById('f-entity').value=DB.setup.entity_type||'';document.getElementById('f-pan').value=DB.setup.pan||'';document.getElementById('f-tan').value=DB.setup.tan||'';document.getElementById('f-gstin').value=DB.setup.gstin||'';}
 
@@ -1156,6 +1185,8 @@ const modalForms={
 
   project:{title:'Create Project',fields:[{id:'name',label:'Project Name',ph:'Project name'},{id:'client',label:'Client',type:'select',options:[]},{id:'status',label:'Status',type:'select',options:['Active','Completed','On Hold']},{id:'budget',label:'Budget (Ã¢ÂÂ¹)',ph:'0',type:'number'},{id:'start_date',label:'Start Date',type:'date'},{id:'description',label:'Description',ph:'',full:true}],collection:'projects',section:'projects'},
 
+  stockentry:{title:'Add Stock Entry',fields:[{id:'date',label:'Date',type:'date'},{id:'item_code',label:'Item',type:'select',options:[]},{id:'type',label:'Type',type:'select',options:['Opening','Purchase','Sale','Adjustment']},{id:'qty',label:'Quantity',ph:'0',type:'number'},{id:'rate',label:'Rate',ph:'0',type:'number'},{id:'reference',label:'Reference',ph:'INV-001'},{id:'narration',label:'Narration',ph:'Details',full:true}],collection:'inventory',section:'inventory',custom:true},
+  gstentry:{title:'Add GST Entry',fields:[{id:'date',label:'Date',type:'date'},{id:'type',label:'Type',type:'select',options:['Output','Input']},{id:'source',label:'Source/Reference',ph:'INV-001'},{id:'party_name',label:'Party Name',ph:'Customer/Vendor'},{id:'taxable_amount',label:'Taxable Amount',ph:'0',type:'number'},{id:'cgst',label:'CGST',ph:'0',type:'number'},{id:'sgst',label:'SGST',ph:'0',type:'number'},{id:'igst',label:'IGST',ph:'0',type:'number'},{id:'place_of_supply',label:'Place of Supply',ph:'State'},{id:'reverse_charge',label:'Reverse Charge',type:'select',options:['No','Yes']}],collection:'gst_ledger',section:'gstledger',custom:true},
   timeentry:{title:'Log Time Entry',fields:[{id:'date',label:'Date',type:'date'},{id:'project',label:'Project',type:'select',options:[]},{id:'task_description',label:'Task Description',ph:'What did you work on?',full:true},{id:'hours',label:'Hours',ph:'8',type:'number'},{id:'billable',label:'Billable',type:'select',options:['No','Yes']},{id:'rate',label:'Rate per Hour (Ã¢ÂÂ¹)',ph:'500',type:'number'}],collection:'time_entries',section:'timeentries',custom:true}
 
 };
@@ -1168,7 +1199,7 @@ let invoiceLineItems=[];
 
 function openModal(type){
 
-  if(type!=='txn'&&type!=='user'&&type!=='invoice'&&type!=='timeentry'&&!isAdmin()){toast('Admin access required');return;}
+  if(type!=='txn'&&type!=='user'&&type!=='invoice'&&type!=='timeentry'&&type!=='stockentry'&&type!=='gstentry'&&!isAdmin()){toast('Admin access required');return;}
 
   currentModal=type;const cfg=modalForms[type];
 
@@ -1246,6 +1277,15 @@ function openModal(type){
 
     body.innerHTML=html;
 
+  }else if(type==='stockentry'){
+    cfg.fields[1].options=DB.items.map(it=>it.code);
+    const html='<div class="form-grid">'+cfg.fields.map(f=>{const cls=f.full?'form-group full':'form-group';if(f.type==='select'){return`<div class="${cls}"><label>${f.label}</label><select id="mf-${f.id}">${f.options.map(o=>`<option value="${typeof o==='string'?o:o}">${typeof o==='string'?o:o}</option>`).join('')}</select></div>`;}const t=f.type||'text';return`<div class="${cls}"><label>${f.label}</label><input type="${t}" id="mf-${f.id}" placeholder="${f.ph||''}"></div>`;}).join('')+'</div>';
+    body.innerHTML=html;
+    document.getElementById('mf-date').value=new Date().toISOString().slice(0,10);
+  }else if(type==='gstentry'){
+    const html='<div class="form-grid">'+cfg.fields.map(f=>{const cls=f.full?'form-group full':'form-group';if(f.type==='select'){return`<div class="${cls}"><label>${f.label}</label><select id="mf-${f.id}">${f.options.map(o=>`<option value="${typeof o==='string'?o:o}">${typeof o==='string'?o:o}</option>`).join('')}</select></div>`;}const t=f.type||'text';return`<div class="${cls}"><label>${f.label}</label><input type="${t}" id="mf-${f.id}" placeholder="${f.ph||''}"></div>`;}).join('')+'</div>';
+    body.innerHTML=html;
+    document.getElementById('mf-date').value=new Date().toISOString().slice(0,10);
   }else if(type==='timeentry'){
 
     const projOpts=DB.projects.map(p=>`<option value="${esc(p.name)}">${esc(p.name)}</option>`).join('');
@@ -1559,7 +1599,11 @@ async function saveModal(){
     DB.invoices.push(inv);
 
     await saveCollection('invoices');
-
+    lineItems.forEach(li=>{const id=DB.items.find(it=>it.name===li.item_name);DB.inventory.push({date:inv.invoice_date,item_code:id?.code||li.item_name,item_name:li.item_name,type:party.type==='Vendor'?'Purchase':'Sale',qty:li.qty,rate:li.rate,value:li.taxable_amount,reference:inv.invoice_number,narration:inv.invoice_type,created_by:userProfile.email,created_at:new Date().toISOString()});});
+    await saveCollection('inventory');
+    let tC=0,tS=0,tI=0;lineItems.forEach(li=>{tC+=li.cgst||0;tS+=li.sgst||0;tI+=li.igst||0;});
+    DB.gst_ledger.push({date:inv.invoice_date,type:party.type==='Vendor'?'Input':'Output',source:inv.invoice_number,party_name:party.name,taxable_amount:lineItems.reduce((s,li)=>s+(li.taxable_amount||0),0),cgst:tC,sgst:tS,igst:tI,place_of_supply:party.state||'',reverse_charge:inv.reverse_charge,claimed:false,created_at:new Date().toISOString()});
+    await saveCollection('gst_ledger');
     closeModal();toast('Invoice created');
 
     const ni=document.querySelector(`.nav-item[data-section="invoices"]`);
@@ -1570,6 +1614,12 @@ async function saveModal(){
 
   }
 
+  if(currentModal==='stockentry'){
+    const entry={};entry.date=document.getElementById('mf-date').value;const itemCode=document.getElementById('mf-item_code').value;const item=DB.items.find(it=>it.code===itemCode);entry.item_code=itemCode;entry.item_name=item?.name||itemCode;entry.type=document.getElementById('mf-type').value;entry.qty=parseFloat(document.getElementById('mf-qty').value)||0;entry.rate=parseFloat(document.getElementById('mf-rate').value)||0;entry.value=entry.qty*entry.rate;entry.reference=document.getElementById('mf-reference').value;entry.narration=document.getElementById('mf-narration').value;entry.created_by=userProfile.email;entry.created_at=new Date().toISOString();DB.inventory.push(entry);await saveCollection('inventory');closeModal();toast('Stock entry added');const ni=document.querySelector('.nav-item[data-section="inventory"]');if(ni)navigate(ni);return;
+  }
+  if(currentModal==='gstentry'){
+    const entry={};entry.date=document.getElementById('mf-date').value;entry.type=document.getElementById('mf-type').value;entry.source=document.getElementById('mf-source').value;entry.party_name=document.getElementById('mf-party_name').value;entry.taxable_amount=parseFloat(document.getElementById('mf-taxable_amount').value)||0;entry.cgst=parseFloat(document.getElementById('mf-cgst').value)||0;entry.sgst=parseFloat(document.getElementById('mf-sgst').value)||0;entry.igst=parseFloat(document.getElementById('mf-igst').value)||0;entry.place_of_supply=document.getElementById('mf-place_of_supply').value;entry.reverse_charge=document.getElementById('mf-reverse_charge').value==='Yes';entry.claimed=false;entry.created_by=userProfile.email;entry.created_at=new Date().toISOString();DB.gst_ledger.push(entry);await saveCollection('gst_ledger');closeModal();toast('GST entry added');const ni=document.querySelector('.nav-item[data-section="gstledger"]');if(ni)navigate(ni);return;
+  }
   if(currentModal==='project'){
 
     const entry={};
