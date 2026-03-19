@@ -1179,7 +1179,7 @@ const modalForms={
 
   item:{title:'Add Item / Service',fields:[{id:'code',label:'Item Code',ph:'ITEM001'},{id:'name',label:'Item Name',ph:'Product or service name'},{id:'type',label:'Type',type:'select',options:['Goods','Services']},{id:'hsn_sac',label:'HSN/SAC Code',ph:'Optional'},{id:'unit',label:'Unit',ph:'Nos / Hrs / Kg'},{id:'gst_rate',label:'GST Rate %',ph:'18',type:'number'}],collection:'items',section:'items'},
 
-  txn:{title:'New Transaction Line',fields:[{id:'date',label:'Date',type:'date'},{id:'voucher_type',label:'Voucher Type',type:'select',options:['Journal','Sales','Purchase','Receipt','Payment','Contra','Credit Note','Debit Note']},{id:'dr_account',label:'Account Code',ph:'1010'},{id:'dr_cr',label:'DR / CR',type:'select',options:['DR','CR']},{id:'amount',label:'Amount (Ã¢ÂÂ¹)',ph:'0',type:'number'},{id:'gst_type',label:'GST Type',type:'select',options:['Non-GST','Intra-State (CGST+SGST)','Inter-State (IGST)','Exempt']},{id:'item_code',label:'Item Code (optional)',ph:'ITEM001'},{id:'qty',label:'Qty',ph:'',type:'number'},{id:'rate',label:'Rate',ph:'',type:'number'},{id:'narration',label:'Narration',ph:'Description',full:true}],collection:'transactions',section:'journal'},
+  txn:{title:'New Transaction Line',fields:[{id:'date',label:'Date',type:'date'},{id:'voucher_type',label:'Voucher Type',type:'select',options:['Journal','Sales','Purchase','Receipt','Payment','Contra','Credit Note','Debit Note']},{id:'dr_account',label:'Account Code',ph:'1010'},{id:'dr_cr',label:'DR / CR',type:'select',options:['DR','CR']},{id:'amount',label:'Amount (Ã¢ÂÂ¹)',ph:'0',type:'number'},{id:'gst_type',label:'GST Type',type:'select',options:getGSTRegime()==='regular'?['Non-GST','Intra-State (CGST+SGST)','Inter-State (IGST)','Exempt']:['Non-GST','Exempt']},{id:'item_code',label:'Item Code (optional)',ph:'ITEM001'},{id:'qty',label:'Qty',ph:'',type:'number'},{id:'rate',label:'Rate',ph:'',type:'number'},{id:'narration',label:'Narration',ph:'Description',full:true}],collection:'transactions',section:'journal'},
 
   asset:{title:'Add Fixed Asset',fields:[{id:'code',label:'Asset Code',ph:'FA001'},{id:'name',label:'Asset Name',ph:'Laptop'},{id:'block',label:'Block / Category',ph:'Plant & Machinery'},{id:'date',label:'Purchase Date',type:'date'},{id:'cost',label:'Cost (Ã¢ÂÂ¹)',ph:'80000',type:'number'},{id:'lt_180',label:'Used < 180 days?',type:'select',options:['No','Yes']},{id:'book_rate',label:'Book Dep Rate %',ph:'33.33',type:'number'}],collection:'fixed_assets',section:'assets'},
 
@@ -1221,7 +1221,7 @@ function openModal(type){
 
     const itemOpts=DB.items.map(it=>`<option value="${esc(it.name)}" data-hsn="${esc(it.hsn_sac)}" data-gst="${it.gst_rate}">${esc(it.name)}</option>`).join('');
 
-    body.innerHTML=`
+    body.innerHTML=getRegimeBanner()+`
 
 <div class="form-grid">
 
@@ -1233,17 +1233,17 @@ function openModal(type){
 
 <div class="form-group full"><label>Party (Billed To)</label><select id="mf-party" onchange="updatePartyDetails()">${partyOpts}</select></div>
 
-<div class="form-group"><label>Invoice Type</label><select id="mf-invoice_type"><option value="Tax Invoice">Tax Invoice</option><option value="Bill of Supply">Bill of Supply</option><option value="Credit Note">Credit Note</option><option value="Debit Note">Debit Note</option></select></div>
+<div class="form-group"><label>Invoice Type</label><select id="mf-invoice_type">${getInvoiceTypeOptions()}</select></div>
 
-<div class="form-group"><label>Place of Supply</label><input id="mf-place_of_supply" placeholder="State"></div>
+<div class="form-group" id="fg-place-supply" style="${getGSTRegime()==='exempt'?'display:none':''}"><label>Place of Supply</label><input id="mf-place_of_supply" placeholder="State"></div>
 
-<div class="form-group full"><label>Reverse Charge</label><select id="mf-reverse_charge"><option value="No">No</option><option value="Yes">Yes</option></select></div>
+<div class="form-group full" id="fg-reverse-charge" style="${getGSTRegime()==='regular'?'':'display:none'}"><label>Reverse Charge</label><select id="mf-reverse_charge"><option value="No">No</option><option value="Yes">Yes</option></select></div>
 
 </div>
 
 <div style="margin-top:16px"><h4 style="margin-bottom:12px">Line Items</h4>
 
-<table class="line-items-table"><thead><tr><th>Item</th><th>HSN/SAC</th><th>Qty</th><th>Rate</th><th>Disc %</th><th>Taxable</th><th>GST %</th><th>CGST</th><th>SGST</th><th>IGST</th><th>Total</th><th></th></tr></thead><tbody id="invoice-lines"></tbody></table>
+<table class="line-items-table"><thead><tr>${getLineItemHeaders()}</tr></thead><tbody id="invoice-lines"></tbody></table>
 
 <button type="button" class="btn btn-ghost" onclick="addInvoiceLine()" style="margin-top:8px">+ Add Line Item</button>
 
@@ -1259,7 +1259,7 @@ function openModal(type){
 
 <div style="display:flex;justify-content:space-between;padding:4px 0"><span>Subtotal:</span><span id="inv-subtotal">Ã¢ÂÂ¹0</span></div>
 
-<div style="display:flex;justify-content:space-between;padding:4px 0"><span>Total Tax:</span><span id="inv-tax">Ã¢ÂÂ¹0</span></div>
+<div id="inv-tax-row" style="display:flex;justify-content:space-between;padding:4px 0"><span>Total Tax:</span><span id="inv-tax">Ã¢ÂÂ¹0</span></div>
 
 <div style="display:flex;justify-content:space-between;padding:4px 0"><span>Round-off:</span><input id="mf-roundoff" type="number" step="0.01" value="0" style="width:80px;text-align:right" onchange="recalculateInvoice()"></div>
 
@@ -1322,7 +1322,8 @@ function addInvoiceLine(){
 
   const itemIdx=invoiceLineItems.length;
 
-  row.innerHTML=`
+  row.innerHTML=getLineItemRow(itemIdx);
+if(false){/*`
 
 <td><input id="line-item-${itemIdx}" placeholder="Item" list="items-list" style="width:100%"></td>
 
@@ -1346,9 +1347,9 @@ function addInvoiceLine(){
 
 <td><input id="line-total-${itemIdx}" readonly style="width:80px;text-align:right"></td>
 
-<td><button type="button" class="btn btn-danger btn-sm" onclick="removeInvoiceLine(${itemIdx})">Ã¢ÂÂ</button></td>
+ORIG*/<td><button type="button" class="btn btn-danger btn-sm" onclick="removeInvoiceLine(${itemIdx})">Ã¢ÂÂ</button></td>
 
-`;
+`;*/}
 
   document.getElementById('invoice-lines').appendChild(row);
 
@@ -1408,66 +1409,13 @@ function updatePartyDetails(){
 
 
 
-function recalculateInvoice(){
-
-  let subtotal=0,totalTax=0;
-
-  invoiceLineItems.forEach(idx=>{
-
-    const qty=parseFloat(document.getElementById(`line-qty-${idx}`).value)||0;
-
-    const rate=parseFloat(document.getElementById(`line-rate-${idx}`).value)||0;
-
-    const disc=parseFloat(document.getElementById(`line-disc-${idx}`).value)||0;
-
-    const gstRate=parseFloat(document.getElementById(`line-gst-${idx}`).value)||0;
-
-    const gross=qty*rate;
-
-    const discAmount=gross*(disc/100);
-
-    const taxable=gross-discAmount;
-
-    const tax=taxable*(gstRate/100);
-
-    const intraState=document.getElementById('mf-place_of_supply').value===DB.parties.find(p=>p.name===document.getElementById('mf-party').value)?.state;
-
-    const cgst=intraState?tax/2:0;
-
-    const sgst=intraState?tax/2:0;
-
-    const igst=!intraState?tax:0;
-
-    document.getElementById(`line-taxable-${idx}`).value=taxable.toFixed(2);
-
-    document.getElementById(`line-cgst-${idx}`).value=cgst.toFixed(2);
-
-    document.getElementById(`line-sgst-${idx}`).value=sgst.toFixed(2);
-
-    document.getElementById(`line-igst-${idx}`).value=igst.toFixed(2);
-
-    document.getElementById(`line-total-${idx}`).value=(taxable+cgst+sgst+igst).toFixed(2);
-
-    subtotal+=taxable;
-
-    totalTax+=cgst+sgst+igst;
-
-  });
-
-  const roundoff=parseFloat(document.getElementById('mf-roundoff').value)||0;
-
-  const grandTotal=subtotal+totalTax+roundoff;
-
-  document.getElementById('inv-subtotal').textContent='Ã¢ÂÂ¹'+subtotal.toLocaleString('en-IN',{maximumFractionDigits:2});
-
-  document.getElementById('inv-tax').textContent='Ã¢ÂÂ¹'+totalTax.toLocaleString('en-IN',{maximumFractionDigits:2});
-
-  document.getElementById('inv-grand').textContent='Ã¢ÂÂ¹'+grandTotal.toLocaleString('en-IN',{maximumFractionDigits:2});
-
-}
-
-
-
+function recalculateInvoice(){const r=getGSTRegime();let subtotal=0,totalTax=0;
+invoiceLineItems.forEach(idx=>{const qty=parseFloat(document.getElementById('line-qty-'+idx)?.value)||0;const rate=parseFloat(document.getElementById('line-rate-'+idx)?.value)||0;const disc=parseFloat(document.getElementById('line-disc-'+idx)?.value)||0;const gross=qty*rate;const discAmt=gross*(disc/100);const taxable=gross-discAmt;
+if(r==='exempt'||r==='composition'){const el=document.getElementById('line-total-'+idx);if(el)el.value=taxable.toFixed(2);subtotal+=taxable;}else{const gstRate=parseFloat(document.getElementById('line-gst-'+idx)?.value)||0;const tax=taxable*(gstRate/100);const ps=document.getElementById('mf-place_of_supply');const party=DB.parties.find(p=>p.name===document.getElementById('mf-party')?.value);const intra=ps&&party?ps.value===party.state:false;const cgst=intra?tax/2:0;const sgst=intra?tax/2:0;const igst=!intra?tax:0;const el=k=>document.getElementById('line-'+k+'-'+idx);if(el('taxable'))el('taxable').value=taxable.toFixed(2);if(el('cgst'))el('cgst').value=cgst.toFixed(2);if(el('sgst'))el('sgst').value=sgst.toFixed(2);if(el('igst'))el('igst').value=igst.toFixed(2);if(el('total'))el('total').value=(taxable+cgst+sgst+igst).toFixed(2);subtotal+=taxable;totalTax+=cgst+sgst+igst;}});
+const roundoff=parseFloat(document.getElementById('mf-roundoff')?.value)||0;const grand=subtotal+totalTax+roundoff;
+document.getElementById('inv-subtotal').textContent='\u20b9'+subtotal.toLocaleString('en-IN',{maximumFractionDigits:2});
+if(r==='regular'){document.getElementById('inv-tax').textContent='\u20b9'+totalTax.toLocaleString('en-IN',{maximumFractionDigits:2});document.getElementById('inv-tax').parentElement.style.display='';}else{document.getElementById('inv-tax').parentElement.style.display='none';}
+document.getElementById('inv-grand').textContent='\u20b9'+grand.toLocaleString('en-IN',{maximumFractionDigits:2});}
 function closeModal(){document.getElementById('modal-overlay').classList.remove('active');currentModal=null;invoiceLineItems=[];}
 
 
@@ -1753,6 +1701,14 @@ function startTutorial(){tutIdx=0;document.getElementById('tutorial-overlay').cl
 function showTut(){const s=TUT[tutIdx];document.getElementById('tut-step-label').textContent='Step '+(tutIdx+1)+' of '+TUT.length;document.getElementById('tut-title').textContent=s.t;document.getElementById('tut-body').textContent=s.b;document.getElementById('tut-next-btn').textContent=tutIdx===TUT.length-1?'Finish':'Next';const nav=document.querySelector('.nav-item[data-section="'+s.s+'"]');if(nav&&nav.offsetParent)navigate(nav);}
 function tutNext(){if(tutIdx>=TUT.length-1){skipTutorial();return;}tutIdx++;showTut();}
 function skipTutorial(){document.getElementById('tutorial-overlay').classList.remove('active');}
+
+function getGSTRegime(){const g=DB.setup.gst_status||'exempt';if(g==='regular'||g==='voluntary')return'regular';if(g==='composition')return'composition';return'exempt';}
+function getInvoiceTypeOptions(){const r=getGSTRegime();if(r==='composition')return'<option value="Bill of Supply">Bill of Supply</option>';if(r==='exempt')return'<option value="Invoice">Invoice</option><option value="Receipt">Receipt</option>';return'<option value="Tax Invoice">Tax Invoice</option><option value="Bill of Supply">Bill of Supply</option><option value="Credit Note">Credit Note</option><option value="Debit Note">Debit Note</option>';}
+function getLineItemHeaders(){const r=getGSTRegime();if(r==='exempt')return'<th>Item</th><th>Qty</th><th>Rate</th><th>Disc %</th><th>Amount</th><th></th>';if(r==='composition')return'<th>Item</th><th>HSN/SAC</th><th>Qty</th><th>Rate</th><th>Disc %</th><th>Amount</th><th></th>';return'<th>Item</th><th>HSN/SAC</th><th>Qty</th><th>Rate</th><th>Disc %</th><th>Taxable</th><th>GST %</th><th>CGST</th><th>SGST</th><th>IGST</th><th>Total</th><th></th>';}
+
+function getLineItemRow(idx){const r=getGSTRegime();if(r==='exempt')return`<td><input id="line-item-${idx}" placeholder="Item" style="width:100%"></td><td><input id="line-qty-${idx}" type="number" value="1" onchange="recalculateInvoice()" style="width:60px;text-align:center"></td><td><input id="line-rate-${idx}" type="number" step="0.01" onchange="recalculateInvoice()" style="width:80px;text-align:right"></td><td><input id="line-disc-${idx}" type="number" step="0.01" value="0" onchange="recalculateInvoice()" style="width:60px;text-align:right"></td><td><input id="line-total-${idx}" readonly style="width:80px;text-align:right"></td><td><button type="button" class="btn btn-danger btn-sm" onclick="removeInvoiceLine(${idx})">\u2715</button></td>`;if(r==='composition')return`<td><input id="line-item-${idx}" placeholder="Item" list="items-list" style="width:100%"></td><td><input id="line-hsn-${idx}" readonly style="width:100%"></td><td><input id="line-qty-${idx}" type="number" value="1" onchange="recalculateInvoice()" style="width:60px;text-align:center"></td><td><input id="line-rate-${idx}" type="number" step="0.01" onchange="recalculateInvoice()" style="width:80px;text-align:right"></td><td><input id="line-disc-${idx}" type="number" step="0.01" value="0" onchange="recalculateInvoice()" style="width:60px;text-align:right"></td><td><input id="line-total-${idx}" readonly style="width:80px;text-align:right"></td><td><button type="button" class="btn btn-danger btn-sm" onclick="removeInvoiceLine(${idx})">\u2715</button></td>`;return`<td><input id="line-item-${idx}" placeholder="Item" list="items-list" style="width:100%"></td><td><input id="line-hsn-${idx}" readonly style="width:100%"></td><td><input id="line-qty-${idx}" type="number" value="1" onchange="recalculateInvoice()" style="width:60px;text-align:center"></td><td><input id="line-rate-${idx}" type="number" step="0.01" onchange="recalculateInvoice()" style="width:80px;text-align:right"></td><td><input id="line-disc-${idx}" type="number" step="0.01" value="0" onchange="recalculateInvoice()" style="width:60px;text-align:right"></td><td><input id="line-taxable-${idx}" readonly style="width:80px;text-align:right"></td><td><input id="line-gst-${idx}" type="number" step="0.01" value="18" onchange="recalculateInvoice()" style="width:60px;text-align:right"></td><td><input id="line-cgst-${idx}" readonly style="width:70px;text-align:right"></td><td><input id="line-sgst-${idx}" readonly style="width:70px;text-align:right"></td><td><input id="line-igst-${idx}" readonly style="width:70px;text-align:right"></td><td><input id="line-total-${idx}" readonly style="width:80px;text-align:right"></td><td><button type="button" class="btn btn-danger btn-sm" onclick="removeInvoiceLine(${idx})">\u2715</button></td>`;}
+
+function getRegimeBanner(){const r=getGSTRegime();const cfg={regular:{bg:'rgba(46,213,115,.1)',border:'rgba(46,213,115,.3)',label:'GST Regular',desc:'Tax invoice with CGST/SGST/IGST'},composition:{bg:'rgba(255,165,2,.1)',border:'rgba(255,165,2,.3)',label:'Composition Scheme',desc:'Bill of Supply — no tax collection or ITC'},exempt:{bg:'rgba(79,172,254,.1)',border:'rgba(79,172,254,.3)',label:'Non-GST',desc:'Simple invoice — no GST fields'}};const c=cfg[r]||cfg.exempt;return'<div style="background:'+c.bg+';border:1px solid '+c.border+';border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px"><strong style="text-transform:uppercase;letter-spacing:.5px;font-size:11px">'+c.label+'</strong> <span style="color:var(--text2)">'+c.desc+'</span></div>';}
 
 function initApp(){
 
