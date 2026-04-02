@@ -637,69 +637,138 @@ function applyRole() {
 // =============================================
 
 async function loadAllData() {
+  // SUBCOLLECTION FORMAT: each record is its own Firestore document
+  // Path: appdata/{collectionName}/{docId}
+  // Special: appdata/_meta/setup for setup object, appdata/_meta/coa for COA
 
-  // Try loading from split documents first (new format)
-  const colSnap = await db.collection('appdata').get();
-  const docs = {};
-  colSnap.forEach(d => { docs[d.id] = d.data(); });
+  const metaRef = db.collection('appdata').doc('_meta');
+  const metaSnap = await metaRef.get();
 
-  if (docs.main) {
-    // MIGRATION: Old single-document format detected — split into per-collection docs
-    const d = docs.main;
-    const keys = Object.keys(DB);
-    const batch = db.batch();
-    for (const key of keys) {
-      const val = key === 'coa' ? (d[key] || DEFAULT_COA) : (key === 'setup' ? (d[key] || {}) : (d[key] || []));
-      DB[key] = val;
-      batch.set(db.collection('appdata').doc(key), { data: val });
+  // Check for v2 (split-doc) migration needed
+  const oldSnap = await db.collection('appdata').get();
+  const oldDocs = {};
+  oldSnap.forEach(d => { oldDocs[d.id] = d.data(); });
+
+  // MIGRATION from v1 (single main doc) or v2 (split-doc with {data:[...]})
+  const needsMigration = oldDocs.main || (oldDocs.setup && oldDocs.setup.data !== undefined && !oldDocs._meta);
+  if (needsMigration) {
+    console.log('Kepei: migrating to subcollection format...');
+    let src = {};
+    if (oldDocs.main) {
+      src = oldDocs.main; // v1: single doc
+    } else {
+      // v2: split docs with {data: value}
+      Object.keys(oldDocs).forEach(k => { src[k] = oldDocs[k].data; });
     }
-    // Delete the old monolithic document
-    batch.delete(db.collection('appdata').doc('main'));
+    // Write setup + coa to _meta doc
+    const setupData = src.setup || {};
+    const coaData = src.coa || [...DEFAULT_COA];
+    await metaRef.set({ setup: setupData, coa: coaData });
+    DB.setup = setupData;
+    DB.coa = coaData;
+    // Write array collections as subcollection docs
+    const arrayCols = ['parties','items','transactions','fixed_assets','tds','invoices','projects','time_entries','inventory','gst_ledger','invites'];
+    for (const col of arrayCols) {
+      const arr = src[col] || [];
+      DB[col] = [];
+      const colRef = db.collection('appdata').doc(col).collection('records');
+      for (const item of arr) {
+        const docRef = await colRef.add(item);
+        item._id = docRef.id;
+        DB[col].push(item);
+      }
+    }
+    // Clean up old docs
+    const batch = db.batch();
+    Object.keys(oldDocs).forEach(k => {
+      if (k !== '_meta') batch.delete(db.collection('appdata').doc(k));
+    });
     await batch.commit();
-    console.log('Kepei: migrated single-doc to split-doc format');
-
-  } else if (Object.keys(docs).length > 0) {
-    // New split-document format
-    DB.setup = (docs.setup && docs.setup.data) || {};
-    DB.coa = (docs.coa && docs.coa.data) || DEFAULT_COA;
-    DB.parties = (docs.parties && docs.parties.data) || [];
-    DB.items = (docs.items && docs.items.data) || [];
-    DB.transactions = (docs.transactions && docs.transactions.data) || [];
-    DB.fixed_assets = (docs.fixed_assets && docs.fixed_assets.data) || [];
-    DB.tds = (docs.tds && docs.tds.data) || [];
-    DB.invoices = (docs.invoices && docs.invoices.data) || [];
-    DB.projects = (docs.projects && docs.projects.data) || [];
-    DB.time_entries = (docs.time_entries && docs.time_entries.data) || [];
-    DB.inventory = (docs.inventory && docs.inventory.data) || [];
-    DB.gst_ledger = (docs.gst_ledger && docs.gst_ledger.data) || [];
-    DB.invites = (docs.invites && docs.invites.data) || [];
-
-  } else {
-    // Brand-new account — initialise defaults
-    DB = { setup: { company_name: '', entity_type: '', pan: '', tan: '', gstin: '' }, coa: [...DEFAULT_COA], parties: [], items: [], transactions: [], fixed_assets: [], tds: [], invoices: [], projects: [], time_entries: [], inventory: [], gst_ledger: [], invites: [] };
-    await saveAllData();
+    console.log('Kepei: migration complete — subcollection format active');
+    return;
   }
 
+  // Normal load: subcollection format
+  if (metaSnap.exists) {
+    const meta = metaSnap.data();
+    DB.setup = meta.setup || {};
+    DB.coa = meta.coa || [...DEFAULT_COA];
+  } else {
+    DB.setup = { company_name: '', entity_type: '', pan: '', tan: '', gstin: '' };
+    DB.coa = [...DEFAULT_COA];
+    await metaRef.set({ setup: DB.setup, coa: DB.coa });
+  }
+  const arrayCols = ['parties','items','transactions','fixed_assets','tds','invoices','projects','time_entries','inventory','gst_ledger','invites'];
+  await Promise.all(arrayCols.map(async col => {
+    const snap = await db.collection('appdata').doc(col).collection('records').get();
+    DB[col] = [];
+    snap.forEach(d => { DB[col].push({ _id: d.id, ...d.data() }); });
+  }));
 }
-
-
 
 async function saveAllData() {
-
-  const batch = db.batch();
-  for (const key of Object.keys(DB)) {
-    batch.set(db.collection('appdata').doc(key), { data: DB[key] });
+  // Save meta (setup + coa)
+  await db.collection('appdata').doc('_meta').set({ setup: DB.setup, coa: DB.coa });
+  // Save all array collections
+  const arrayCols = ['parties','items','transactions','fixed_assets','tds','invoices','projects','time_entries','inventory','gst_ledger','invites'];
+  for (const col of arrayCols) {
+    for (const item of DB[col]) {
+      if (item._id) {
+        await db.collection('appdata').doc(col).collection('records').doc(item._id).set(Object.assign({}, item, {_id: undefined}));
+      } else {
+        const ref = await db.collection('appdata').doc(col).collection('records').add(item);
+        item._id = ref.id;
+      }
+    }
   }
-  await batch.commit();
-
 }
 
-
-
 async function saveCollection(key) {
+  if (key === 'setup' || key === 'coa') {
+    await db.collection('appdata').doc('_meta').set({ setup: DB.setup, coa: DB.coa });
+    return;
+  }
+  // For array collections, sync all records
+  const colRef = db.collection('appdata').doc(key).collection('records');
+  for (const item of DB[key]) {
+    if (item._id) {
+      const doc = Object.assign({}, item);
+      delete doc._id;
+      await colRef.doc(item._id).set(doc);
+    } else {
+      const ref = await colRef.add(item);
+      item._id = ref.id;
+    }
+  }
+}
 
-  await db.collection('appdata').doc(key).set({ data: DB[key] });
+// Add a single record to a subcollection (preferred for new entries)
+async function addRecord(key, entry) {
+  const ref = await db.collection('appdata').doc(key).collection('records').add(entry);
+  entry._id = ref.id;
+  DB[key].push(entry);
+  return entry;
+}
 
+// Delete a single record from a subcollection by index
+async function deleteRecord(key, idx) {
+  const item = DB[key][idx];
+  if (item && item._id) {
+    await db.collection('appdata').doc(key).collection('records').doc(item._id).delete();
+  }
+  DB[key].splice(idx, 1);
+}
+
+// Update a single record in a subcollection
+async function updateRecord(key, idx, updates) {
+  const item = DB[key][idx];
+  if (!item) return;
+  Object.assign(item, updates);
+  if (item._id) {
+    const doc = Object.assign({}, item);
+    delete doc._id;
+    await db.collection('appdata').doc(key).collection('records').doc(item._id).set(doc);
+  }
 }
 
 
@@ -808,7 +877,7 @@ function loadGSTLedger(){const d=DB.gst_ledger;const filtered=gstFilterType==='A
 
 function loadITCSummary(){const d=DB.gst_ledger;const outTax=d.filter(g=>g.type==='Output').reduce((s,g)=>(g.cgst||0)+(g.sgst||0)+(g.igst||0)+s,0);const inTax=d.filter(g=>g.type==='Input'&&!g.claimed).reduce((s,g)=>(g.cgst||0)+(g.sgst||0)+(g.igst||0)+s,0);const claimed=d.filter(g=>g.type==='Input'&&g.claimed).reduce((s,g)=>(g.cgst||0)+(g.sgst||0)+(g.igst||0)+s,0);document.getElementById('kpi-output-tax').textContent=fmt(outTax);document.getElementById('kpi-input-tax').textContent=fmt(inTax);document.getElementById('kpi-net-gst').textContent=fmt(outTax-inTax);document.getElementById('kpi-itc-claimed').textContent=fmt(claimed);const oC=d.filter(g=>g.type==='Output').reduce((s,g)=>(g.cgst||0)+s,0);const oS=d.filter(g=>g.type==='Output').reduce((s,g)=>(g.sgst||0)+s,0);const oI=d.filter(g=>g.type==='Output').reduce((s,g)=>(g.igst||0)+s,0);const iC=d.filter(g=>g.type==='Input'&&!g.claimed).reduce((s,g)=>(g.cgst||0)+s,0);const iS=d.filter(g=>g.type==='Input'&&!g.claimed).reduce((s,g)=>(g.sgst||0)+s,0);const iI=d.filter(g=>g.type==='Input'&&!g.claimed).reduce((s,g)=>(g.igst||0)+s,0);const gb=document.getElementById('gstr-summary-body');gb.innerHTML=`<tr><td><strong>3.1 Outward Supplies</strong></td><td class="amt" style="text-align:right">${fmt(oC)}</td><td class="amt" style="text-align:right">${fmt(oS)}</td><td class="amt" style="text-align:right">${fmt(oI)}</td><td class="amt" style="text-align:right">${fmt(oC+oS+oI)}</td></tr><tr><td><strong>4. Eligible ITC</strong></td><td class="amt" style="text-align:right">${fmt(iC)}</td><td class="amt" style="text-align:right">${fmt(iS)}</td><td class="amt" style="text-align:right">${fmt(iI)}</td><td class="amt" style="text-align:right">${fmt(iC+iS+iI)}</td></tr><tr><td><strong>Net CGST</strong></td><td class="amt" style="text-align:right">${fmt(oC-iC)}</td><td></td><td></td><td class="amt" style="text-align:right">${fmt(oC-iC)}</td></tr><tr><td><strong>Net SGST</strong></td><td></td><td class="amt" style="text-align:right">${fmt(oS-iS)}</td><td></td><td class="amt" style="text-align:right">${fmt(oS-iS)}</td></tr><tr><td><strong>Net IGST</strong></td><td></td><td></td><td class="amt" style="text-align:right">${fmt(oI-iI)}</td><td class="amt" style="text-align:right">${fmt(oI-iI)}</td></tr>`;const itcMap={};d.filter(g=>g.type==='Input').forEach(g=>{const k=g.source||'Manual';if(!itcMap[k])itcMap[k]={cgst:0,sgst:0,igst:0};itcMap[k].cgst+=(g.cgst||0);itcMap[k].sgst+=(g.sgst||0);itcMap[k].igst+=(g.igst||0);});const ib=document.getElementById('itc-category-body');if(!Object.keys(itcMap).length){ib.innerHTML='<tr><td colspan="5" class="empty-state"><p>No ITC</p></td></tr>';return;}ib.innerHTML=Object.entries(itcMap).map(([k,v])=>`<tr><td>${esc(k)}</td><td class="amt" style="text-align:right">${fmt(v.cgst)}</td><td class="amt" style="text-align:right">${fmt(v.sgst)}</td><td class="amt" style="text-align:right">${fmt(v.igst)}</td><td class="amt" style="text-align:right">${fmt(v.cgst+v.sgst+v.igst)}</td></tr>`).join('');}
 
-function markITCClaimed(){if(!confirm('Mark all unclaimed ITC as claimed?'))return;DB.gst_ledger.forEach(g=>{if(g.type==='Input'&&!g.claimed)g.claimed=true;});saveCollection('gst_ledger');toast('ITC marked as claimed');loadITCSummary();}
+async function markITCClaimed(){if(!confirm('Mark all unclaimed ITC as claimed?'))return;for(let i=0;i<DB.gst_ledger.length;i++){const g=DB.gst_ledger[i];if(g.type==='Input'&&!g.claimed){g.claimed=true;await updateRecord('gst_ledger',i,{claimed:true});}}toast('ITC marked as claimed');loadITCSummary();}
 
 function loadSetup(){document.getElementById('f-company').value=DB.setup.company_name||'';document.getElementById('f-entity').value=DB.setup.entity_type||'';document.getElementById('f-pan').value=DB.setup.pan||'';document.getElementById('f-tan').value=DB.setup.tan||'';document.getElementById('f-gstin').value=DB.setup.gstin||'';}
 
@@ -915,9 +984,7 @@ async function deleteEntry(col, idx) {
 
   if (!confirm('Delete this entry?')) return;
 
-  DB[col].splice(idx, 1);
-
-  await saveCollection(col);
+  await deleteRecord(col, idx);
 
   toast('Entry deleted');
 
@@ -1538,14 +1605,10 @@ async function saveModal(){
 
     };
 
-    DB.invoices.push(inv);
-
-    await saveCollection('invoices');
-    lineItems.forEach(li=>{const id=DB.items.find(it=>it.name===li.item_name);DB.inventory.push({date:inv.invoice_date,item_code:id?.code||li.item_name,item_name:li.item_name,type:party.type==='Vendor'?'Purchase':'Sale',qty:li.qty,rate:li.rate,value:li.taxable_amount,reference:inv.invoice_number,narration:inv.invoice_type,created_by:userProfile.email,created_at:new Date().toISOString()});});
-    await saveCollection('inventory');
+    await addRecord('invoices', inv);
+    for(const li of lineItems){const id=DB.items.find(it=>it.name===li.item_name);await addRecord('inventory',{date:inv.invoice_date,item_code:id?.code||li.item_name,item_name:li.item_name,type:party.type==='Vendor'?'Purchase':'Sale',qty:li.qty,rate:li.rate,value:li.taxable_amount,reference:inv.invoice_number,narration:inv.invoice_type,created_by:userProfile.email,created_at:new Date().toISOString()});}
     let tC=0,tS=0,tI=0;lineItems.forEach(li=>{tC+=li.cgst||0;tS+=li.sgst||0;tI+=li.igst||0;});
-    DB.gst_ledger.push({date:inv.invoice_date,type:party.type==='Vendor'?'Input':'Output',source:inv.invoice_number,party_name:party.name,taxable_amount:lineItems.reduce((s,li)=>s+(li.taxable_amount||0),0),cgst:tC,sgst:tS,igst:tI,place_of_supply:party.state||'',reverse_charge:inv.reverse_charge,claimed:false,created_at:new Date().toISOString()});
-    await saveCollection('gst_ledger');
+    await addRecord('gst_ledger',{date:inv.invoice_date,type:party.type==='Vendor'?'Input':'Output',source:inv.invoice_number,party_name:party.name,taxable_amount:lineItems.reduce((s,li)=>s+(li.taxable_amount||0),0),cgst:tC,sgst:tS,igst:tI,place_of_supply:party.state||'',reverse_charge:inv.reverse_charge,claimed:false,created_at:new Date().toISOString()});
     closeModal();toast('Invoice created');
 
     const ni=document.querySelector(`.nav-item[data-section="invoices"]`);
@@ -1557,10 +1620,10 @@ async function saveModal(){
   }
 
   if(currentModal==='stockentry'){
-    const entry={};entry.date=document.getElementById('mf-date').value;const itemCode=document.getElementById('mf-item_code').value;const item=DB.items.find(it=>it.code===itemCode);entry.item_code=itemCode;entry.item_name=item?.name||itemCode;entry.type=document.getElementById('mf-type').value;entry.qty=parseFloat(document.getElementById('mf-qty').value)||0;entry.rate=parseFloat(document.getElementById('mf-rate').value)||0;entry.value=entry.qty*entry.rate;entry.reference=document.getElementById('mf-reference').value;entry.narration=document.getElementById('mf-narration').value;entry.created_by=userProfile.email;entry.created_at=new Date().toISOString();DB.inventory.push(entry);await saveCollection('inventory');closeModal();toast('Stock entry added');const ni=document.querySelector('.nav-item[data-section="inventory"]');if(ni)navigate(ni);return;
+    const entry={};entry.date=document.getElementById('mf-date').value;const itemCode=document.getElementById('mf-item_code').value;const item=DB.items.find(it=>it.code===itemCode);entry.item_code=itemCode;entry.item_name=item?.name||itemCode;entry.type=document.getElementById('mf-type').value;entry.qty=parseFloat(document.getElementById('mf-qty').value)||0;entry.rate=parseFloat(document.getElementById('mf-rate').value)||0;entry.value=entry.qty*entry.rate;entry.reference=document.getElementById('mf-reference').value;entry.narration=document.getElementById('mf-narration').value;entry.created_by=userProfile.email;entry.created_at=new Date().toISOString();await addRecord('inventory',entry);closeModal();toast('Stock entry added');const ni=document.querySelector('.nav-item[data-section="inventory"]');if(ni)navigate(ni);return;
   }
   if(currentModal==='gstentry'){
-    const entry={};entry.date=document.getElementById('mf-date').value;entry.type=document.getElementById('mf-type').value;entry.source=document.getElementById('mf-source').value;entry.party_name=document.getElementById('mf-party_name').value;entry.taxable_amount=parseFloat(document.getElementById('mf-taxable_amount').value)||0;entry.cgst=parseFloat(document.getElementById('mf-cgst').value)||0;entry.sgst=parseFloat(document.getElementById('mf-sgst').value)||0;entry.igst=parseFloat(document.getElementById('mf-igst').value)||0;entry.place_of_supply=document.getElementById('mf-place_of_supply').value;entry.reverse_charge=document.getElementById('mf-reverse_charge').value==='Yes';entry.claimed=false;entry.created_by=userProfile.email;entry.created_at=new Date().toISOString();DB.gst_ledger.push(entry);await saveCollection('gst_ledger');closeModal();toast('GST entry added');const ni=document.querySelector('.nav-item[data-section="gstledger"]');if(ni)navigate(ni);return;
+    const entry={};entry.date=document.getElementById('mf-date').value;entry.type=document.getElementById('mf-type').value;entry.source=document.getElementById('mf-source').value;entry.party_name=document.getElementById('mf-party_name').value;entry.taxable_amount=parseFloat(document.getElementById('mf-taxable_amount').value)||0;entry.cgst=parseFloat(document.getElementById('mf-cgst').value)||0;entry.sgst=parseFloat(document.getElementById('mf-sgst').value)||0;entry.igst=parseFloat(document.getElementById('mf-igst').value)||0;entry.place_of_supply=document.getElementById('mf-place_of_supply').value;entry.reverse_charge=document.getElementById('mf-reverse_charge').value==='Yes';entry.claimed=false;entry.created_by=userProfile.email;entry.created_at=new Date().toISOString();await addRecord('gst_ledger',entry);closeModal();toast('GST entry added');const ni=document.querySelector('.nav-item[data-section="gstledger"]');if(ni)navigate(ni);return;
   }
   if(currentModal==='project'){
 
@@ -1584,9 +1647,7 @@ async function saveModal(){
 
     entry.created_at=new Date().toISOString();
 
-    DB.projects.push(entry);
-
-    await saveCollection('projects');
+    await addRecord('projects', entry);
 
     closeModal();toast('Project created');
 
@@ -1620,9 +1681,7 @@ async function saveModal(){
 
     entry.created_at=new Date().toISOString();
 
-    DB.time_entries.push(entry);
-
-    await saveCollection('time_entries');
+    await addRecord('time_entries', entry);
 
     closeModal();toast('Time entry logged');
 
@@ -1640,9 +1699,7 @@ async function saveModal(){
 
   entry._addedAt = new Date().toISOString();
 
-  DB[cfg.collection].push(entry);
-
-  await saveCollection(cfg.collection);
+  await addRecord(cfg.collection, entry);
 
   closeModal();toast('Entry added');
 
@@ -1707,8 +1764,7 @@ async function sendClientInvite(){
   const token=btoa(JSON.stringify({e:email,n:name,et:invite.entity_type,tb:invite.turnover_band,gs:invite.gst_status,bt:invite.biz_type}));
   invite.token=token;
   if(!DB.invites)DB.invites=[];
-  DB.invites.push(invite);
-  await saveCollection('invites');
+  await addRecord('invites', invite);
   const link=window.location.origin+window.location.pathname+'?invite='+encodeURIComponent(token);
   invite.link=link;
   toast('Invite created!');
@@ -1734,8 +1790,7 @@ function copyToClipboard(text){
 }
 async function revokeInvite(idx){
   if(!confirm('Revoke this invite?'))return;
-  DB.invites.splice(idx,1);
-  await saveCollection('invites');
+  await deleteRecord('invites',idx);
   toast('Invite revoked');
   renderInviteList();
 }
