@@ -638,41 +638,46 @@ function applyRole() {
 
 async function loadAllData() {
 
-  const snap = await db.collection('appdata').doc('main').get();
+  // Try loading from split documents first (new format)
+  const colSnap = await db.collection('appdata').get();
+  const docs = {};
+  colSnap.forEach(d => { docs[d.id] = d.data(); });
 
-  if (snap.exists) {
+  if (docs.main) {
+    // MIGRATION: Old single-document format detected — split into per-collection docs
+    const d = docs.main;
+    const keys = Object.keys(DB);
+    const batch = db.batch();
+    for (const key of keys) {
+      const val = key === 'coa' ? (d[key] || DEFAULT_COA) : (key === 'setup' ? (d[key] || {}) : (d[key] || []));
+      DB[key] = val;
+      batch.set(db.collection('appdata').doc(key), { data: val });
+    }
+    // Delete the old monolithic document
+    batch.delete(db.collection('appdata').doc('main'));
+    await batch.commit();
+    console.log('Kepei: migrated single-doc to split-doc format');
 
-    const d = snap.data();
-
-    DB.setup = d.setup || {};
-
-    DB.coa = d.coa || DEFAULT_COA;
-
-    DB.parties = d.parties || [];
-
-    DB.items = d.items || [];
-
-    DB.transactions = d.transactions || [];
-
-    DB.fixed_assets = d.fixed_assets || [];
-
-    DB.tds = d.tds || [];
-
-    DB.invoices = d.invoices || [];
-
-    DB.projects = d.projects || [];
-
-    DB.time_entries = d.time_entries || [];
-    DB.inventory = d.inventory || [];
-    DB.gst_ledger = d.gst_ledger || [];
-    DB.invites = d.invites || [];
+  } else if (Object.keys(docs).length > 0) {
+    // New split-document format
+    DB.setup = (docs.setup && docs.setup.data) || {};
+    DB.coa = (docs.coa && docs.coa.data) || DEFAULT_COA;
+    DB.parties = (docs.parties && docs.parties.data) || [];
+    DB.items = (docs.items && docs.items.data) || [];
+    DB.transactions = (docs.transactions && docs.transactions.data) || [];
+    DB.fixed_assets = (docs.fixed_assets && docs.fixed_assets.data) || [];
+    DB.tds = (docs.tds && docs.tds.data) || [];
+    DB.invoices = (docs.invoices && docs.invoices.data) || [];
+    DB.projects = (docs.projects && docs.projects.data) || [];
+    DB.time_entries = (docs.time_entries && docs.time_entries.data) || [];
+    DB.inventory = (docs.inventory && docs.inventory.data) || [];
+    DB.gst_ledger = (docs.gst_ledger && docs.gst_ledger.data) || [];
+    DB.invites = (docs.invites && docs.invites.data) || [];
 
   } else {
-
+    // Brand-new account — initialise defaults
     DB = { setup: { company_name: '', entity_type: '', pan: '', tan: '', gstin: '' }, coa: [...DEFAULT_COA], parties: [], items: [], transactions: [], fixed_assets: [], tds: [], invoices: [], projects: [], time_entries: [], inventory: [], gst_ledger: [], invites: [] };
-
     await saveAllData();
-
   }
 
 }
@@ -681,7 +686,11 @@ async function loadAllData() {
 
 async function saveAllData() {
 
-  await db.collection('appdata').doc('main').set(DB);
+  const batch = db.batch();
+  for (const key of Object.keys(DB)) {
+    batch.set(db.collection('appdata').doc(key), { data: DB[key] });
+  }
+  await batch.commit();
 
 }
 
@@ -689,7 +698,7 @@ async function saveAllData() {
 
 async function saveCollection(key) {
 
-  await db.collection('appdata').doc('main').update({ [key]: DB[key] });
+  await db.collection('appdata').doc(key).set({ data: DB[key] });
 
 }
 
