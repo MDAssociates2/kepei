@@ -160,6 +160,13 @@ table{width:100%;border-collapse:collapse}thead th{text-align:left;padding:10px 
 
 @media print{body{background:white;color:black}.modal{display:none}.btn{display:none}.topbar{display:none}.sidebar{display:none}.content{padding:0;overflow:visible;height:auto}.invoice-print-view{width:100%;max-width:100%;margin:0;padding:0;background:white}}
 
+.tab-bar{display:flex;gap:4px;background:var(--surface2);border-radius:10px;padding:4px;margin-bottom:20px}
+.tab-btn{flex:1;padding:8px 16px;border:none;border-radius:7px;cursor:pointer;font-size:13px;font-weight:500;background:transparent;color:var(--text2);transition:all .15s}
+.tab-btn.active{background:var(--accent);color:#fff}.tab-btn:hover:not(.active){background:var(--surface);color:var(--text)}
+.age-current{color:var(--green)}.age-31{color:#f1c40f}.age-61{color:var(--orange)}.age-91{color:var(--red)}
+.drill-panel{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:20px;display:none}
+.drill-panel.active{display:block}
+
 </style>
 
 </head>
@@ -227,6 +234,8 @@ table{width:100%;border-collapse:collapse}thead th{text-align:left;padding:10px 
 
 <div class="nav-item" data-section="timeentries" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Time Entries<span class="badge" id="badge-timeentries">0</span></div>
 
+<div class="nav-item" data-section="timereports" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="12" y2="13"/><line x1="9" y1="17" x2="11" y2="17"/></svg>Time Reports</div>
+
 <div class="nav-section">Inventory</div>
 <div class="nav-item" data-section="inventory" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Stock Register<span class="badge" id="badge-inventory">0</span></div>
 <div class="nav-item admin-only" data-section="stocksummary" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Stock Summary</div>
@@ -237,6 +246,10 @@ table{width:100%;border-collapse:collapse}thead th{text-align:left;padding:10px 
 <div class="nav-item admin-only" data-section="tds" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>TDS Register</div>
 <div class="nav-item" data-section="gstledger" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>GST Ledger<span class="badge" id="badge-gst">0</span></div>
 <div class="nav-item admin-only" data-section="itcsummary" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>ITC Summary</div>
+<div class="nav-section">Reports</div>
+
+<div class="nav-item" data-section="ageing" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg>Ageing Analysis</div>
+
 <div class="nav-section admin-only">Admin</div>
 
 <div class="nav-item admin-only" data-section="users" onclick="navigate(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>User Management</div>
@@ -318,6 +331,30 @@ table{width:100%;border-collapse:collapse}thead th{text-align:left;padding:10px 
 <div class="section" id="sec-itcsummary"><div class="card-grid"><div class="card"><div class="label">Output Tax (Liability)</div><div class="value red" id="kpi-output-tax">0</div></div><div class="card"><div class="label">Input Tax (ITC Available)</div><div class="value green" id="kpi-input-tax">0</div></div><div class="card"><div class="label">Net GST Payable</div><div class="value blue" id="kpi-net-gst">0</div></div><div class="card"><div class="label">ITC Claimed</div><div class="value orange" id="kpi-itc-claimed">0</div></div></div><div class="table-wrap"><div class="table-header"><h3>GSTR-3B Summary</h3></div><div class="table-scroll"><table><thead><tr><th>Description</th><th style="text-align:right">CGST</th><th style="text-align:right">SGST</th><th style="text-align:right">IGST</th><th style="text-align:right">Total</th></tr></thead><tbody id="gstr-summary-body"></tbody></table></div></div><div class="table-wrap" style="margin-top:20px"><div class="table-header"><h3>ITC by Category</h3></div><div class="table-scroll"><table><thead><tr><th>Item</th><th style="text-align:right">CGST</th><th style="text-align:right">SGST</th><th style="text-align:right">IGST</th><th style="text-align:right">Total ITC</th></tr></thead><tbody id="itc-category-body"></tbody></table></div></div><button class="btn btn-primary" onclick="markITCClaimed()" style="margin-top:16px">Mark ITC as Claimed</button></div>
 
 <div class="section" id="sec-gstledger"><div style="margin-bottom:16px;display:flex;gap:8px"><button class="btn btn-ghost" onclick="filterGST('All')">All</button><button class="btn btn-ghost" onclick="filterGST('Output')">Output Tax</button><button class="btn btn-ghost" onclick="filterGST('Input')">Input Tax (ITC)</button></div><div class="table-wrap"><div class="table-header"><h3>GST Ledger</h3><span class="count" id="gst-count">0</span><span class="spacer"></span><button class="btn btn-primary" onclick="openModal('gstentry')">+ Add GST Entry</button></div><div class="table-scroll"><table><thead><tr><th>Date</th><th>Type</th><th>Source</th><th>Party</th><th style="text-align:right">Taxable</th><th style="text-align:right">CGST</th><th style="text-align:right">SGST</th><th style="text-align:right">IGST</th><th style="text-align:right">Total Tax</th><th>Status</th><th></th></tr></thead><tbody id="gst-body"></tbody></table></div></div></div>
+
+<!-- TIME REPORTS -->
+
+<div class="section" id="sec-timereports">
+<div class="card-grid" id="tr-kpis"></div>
+<div class="table-wrap"><div class="table-header"><h3>Time Report by Project</h3></div><div class="table-scroll"><table><thead><tr><th>Project</th><th>Status</th><th style="text-align:right">Total Hours</th><th style="text-align:right">Billable Hrs</th><th style="text-align:right">Billable Amount</th><th style="text-align:right">Budget</th></tr></thead><tbody id="tr-body"></tbody></table></div></div>
+</div>
+
+<!-- AGEING ANALYSIS -->
+
+<div class="section" id="sec-ageing">
+<div class="tab-bar">
+<button class="tab-btn active" id="tab-btn-debtors" onclick="switchAgeingTab('debtors',this)">📥 Debtors</button>
+<button class="tab-btn" id="tab-btn-creditors" onclick="switchAgeingTab('creditors',this)">📤 Creditors</button>
+<button class="tab-btn" id="tab-btn-summary" onclick="switchAgeingTab('summary',this)">📊 Summary</button>
+</div>
+<div style="display:flex;gap:8px;margin-bottom:16px;align-items:center">
+<input id="aging-filter-party" placeholder="Filter by party..." oninput="loadAgeingAnalysis()" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-size:13px;outline:none;flex:1;max-width:280px">
+<button class="btn btn-ghost btn-sm" onclick="exportAgeingData()">Export JSON</button>
+</div>
+<div class="card-grid" id="ageing-kpis"></div>
+<div id="ageing-table-wrap" style="margin-top:4px"></div>
+<div class="drill-panel" id="ageing-drill"></div>
+</div>
 
 <!-- USER MANAGEMENT (admin only) -->
 
@@ -817,7 +854,7 @@ function navigate(el){
 
 }
 
-function loadSection(sec){const L={dashboard:loadDashboard,parties:loadParties,items:loadItems,coa:loadCOA,journal:loadTransactions,invoices:loadInvoices,projects:loadProjects,timeentries:loadTimeEntries,assets:loadAssets,tds:loadTDS,setup:loadSetup,users:loadUsers,inventory:loadInventory,stocksummary:loadStockSummary,gstledger:loadGSTLedger,itcsummary:loadITCSummary};if(L[sec])L[sec]();}
+function loadSection(sec){const L={dashboard:loadDashboard,parties:loadParties,items:loadItems,coa:loadCOA,journal:loadTransactions,invoices:loadInvoices,projects:loadProjects,timeentries:loadTimeEntries,timereports:loadTimeReports,ageing:loadAgeingAnalysis,assets:loadAssets,tds:loadTDS,setup:loadSetup,users:loadUsers,inventory:loadInventory,stocksummary:loadStockSummary,gstledger:loadGSTLedger,itcsummary:loadITCSummary};if(L[sec])L[sec]();}
 
 
 
@@ -851,11 +888,13 @@ function loadInvoices(){const d=DB.invoices;document.getElementById('invoices-co
 
 
 
-function loadProjects(){const d=DB.projects;document.getElementById('projects-count').textContent=d.length;updateBadges();const tb=document.getElementById('projects-body');if(!d.length){tb.innerHTML='<tr><td colspan="6" class="empty-state"><p>No projects yet</p></td></tr>';return;}tb.innerHTML=d.map((p,i)=>`<tr><td><strong>${esc(p.name)}</strong></td><td>${esc(p.client_name)}</td><td><span class="pill pill-${(p.status||'Active').toLowerCase()}">${esc(p.status||'Active')}</span></td><td class="amt" style="text-align:right">${fmt(p.budget||0)}</td><td>${esc(p.start_date)}</td><td>${isAdmin()?`<button class="btn btn-danger btn-sm" onclick="deleteEntry('projects',${i})">Delete</button>`:''}</td></tr>`).join('');}
+function getClientProjects(){if(isAdmin())return DB.projects;return DB.projects.filter(p=>p.client_name===userProfile.name);}
+
+function loadProjects(){const d=getClientProjects();document.getElementById('projects-count').textContent=d.length;updateBadges();const tb=document.getElementById('projects-body');if(!d.length){tb.innerHTML='<tr><td colspan="6" class="empty-state"><p>No projects yet</p></td></tr>';return;}tb.innerHTML=d.map(p=>{const oi=DB.projects.indexOf(p);return`<tr><td><strong>${esc(p.name)}</strong></td><td>${esc(p.client_name)}</td><td><span class="pill pill-${(p.status||'Active').toLowerCase()}">${esc(p.status||'Active')}</span></td><td class="amt" style="text-align:right">${fmt(p.budget||0)}</td><td>${esc(p.start_date)}</td><td>${isAdmin()?`<button class="btn btn-danger btn-sm" onclick="deleteEntry('projects',${oi})">Delete</button>`:''}</td></tr>`;}).join('');}
 
 
 
-function loadTimeEntries(){const d=DB.time_entries;const filtered=isAdmin()?d:d.filter(e=>e.logged_by===userProfile.email);document.getElementById('timeentries-count').textContent=filtered.length;updateBadges();const tb=document.getElementById('timeentries-body');if(!filtered.length){tb.innerHTML='<tr><td colspan="7" class="empty-state"><p>No time entries yet</p></td></tr>';return;}tb.innerHTML=filtered.map((te,i)=>{const origIdx=DB.time_entries.indexOf(te);return`<tr><td>${esc(te.date)}</td><td>${esc(te.project_name)}</td><td>${esc(te.task_description)}</td><td class="amt">${te.hours}</td><td><span class="pill ${te.billable?'pill-billable':''}">${te.billable?'Yes':'No'}</span></td><td class="amt" style="text-align:right">${fmt(te.billable_amount||0)}</td><td><button class="btn btn-danger btn-sm" onclick="deleteEntry('time_entries',${origIdx})">Delete</button></td></tr>`;}).join('');}
+function loadTimeEntries(){const d=DB.time_entries;const clientProjNames=getClientProjects().map(p=>p.name);const filtered=isAdmin()?d:d.filter(e=>clientProjNames.includes(e.project_name)||e.logged_by===userProfile.email);document.getElementById('timeentries-count').textContent=filtered.length;updateBadges();const tb=document.getElementById('timeentries-body');if(!filtered.length){tb.innerHTML='<tr><td colspan="7" class="empty-state"><p>No time entries yet</p></td></tr>';return;}tb.innerHTML=filtered.map((te,i)=>{const origIdx=DB.time_entries.indexOf(te);return`<tr><td>${esc(te.date)}</td><td>${esc(te.project_name)}</td><td>${esc(te.task_description)}</td><td class="amt">${te.hours}</td><td><span class="pill ${te.billable?'pill-billable':''}">${te.billable?'Yes':'No'}</span></td><td class="amt" style="text-align:right">${fmt(te.billable_amount||0)}</td><td><button class="btn btn-danger btn-sm" onclick="deleteEntry('time_entries',${origIdx})">Delete</button></td></tr>`;}).join('');}
 
 
 
@@ -1393,9 +1432,9 @@ function openModal(type){
     document.getElementById('mf-date').value=new Date().toISOString().slice(0,10);
   }else if(type==='timeentry'){
 
-    const projOpts=DB.projects.map(p=>`<option value="${esc(p.name)}">${esc(p.name)}</option>`).join('');
+    const visibleProjs=getClientProjects();const projOpts=visibleProjs.map(p=>`<option value="${esc(p.name)}">${esc(p.name)}</option>`).join('');
 
-    cfg.fields[1].options=DB.projects.map(p=>p.name);
+    cfg.fields[1].options=visibleProjs.map(p=>p.name);
 
     const html='<div class="form-grid">'+cfg.fields.map(f=>{const cls=f.full?'form-group full':'form-group';if(f.type==='select'){return`<div class="${cls}"><label>${f.label}</label><select id="mf-${f.id}">${f.options.map(o=>`<option value="${typeof o==='string'?o:o}">${typeof o==='string'?o:o}</option>`).join('')}</select></div>`;}const t=f.type||'text';return`<div class="${cls}"><label>${f.label}</label><input type="${t}" id="mf-${f.id}" placeholder="${f.ph||''}"></div>`;}).join('')+'</div>';
 
@@ -1710,6 +1749,208 @@ async function saveModal(){
 }
 
 
+
+// =============================================
+// TIME REPORTS
+// =============================================
+
+function loadTimeReports(){
+  const d=getClientProjects();
+  const projMap={};
+  d.forEach(p=>{projMap[p.name]={name:p.name,status:p.status||'Active',budget:p.budget||0,totalHours:0,billableHours:0,billableAmount:0,entries:0};});
+  DB.time_entries.forEach(te=>{if(projMap[te.project_name]){const pm=projMap[te.project_name];pm.totalHours+=te.hours||0;if(te.billable){pm.billableHours+=te.hours||0;pm.billableAmount+=te.billable_amount||0;}pm.entries++;}});
+  const items=Object.values(projMap);
+  const totalHrs=items.reduce((s,p)=>s+p.totalHours,0);
+  const billHrs=items.reduce((s,p)=>s+p.billableHours,0);
+  const billAmt=items.reduce((s,p)=>s+p.billableAmount,0);
+  document.getElementById('tr-kpis').innerHTML=
+    `<div class="card"><div class="label">Projects</div><div class="value blue">${items.length}</div></div>`+
+    `<div class="card"><div class="label">Total Hours</div><div class="value">${totalHrs.toFixed(1)}</div></div>`+
+    `<div class="card"><div class="label">Billable Hours</div><div class="value green">${billHrs.toFixed(1)}</div></div>`+
+    `<div class="card"><div class="label">Billable Amount</div><div class="value orange">${fmt(billAmt)}</div></div>`;
+  const tb=document.getElementById('tr-body');
+  if(!items.length){tb.innerHTML='<tr><td colspan="6" class="empty-state"><p>No projects found</p></td></tr>';return;}
+  tb.innerHTML=items.map(p=>`<tr><td><strong>${esc(p.name)}</strong></td><td><span class="pill pill-${p.status.toLowerCase()}">${esc(p.status)}</span></td><td class="amt" style="text-align:right">${p.totalHours.toFixed(1)}</td><td class="amt" style="text-align:right">${p.billableHours.toFixed(1)}</td><td class="amt" style="text-align:right">${fmt(p.billableAmount)}</td><td class="amt" style="text-align:right">${fmt(p.budget)}</td></tr>`).join('');
+}
+
+// =============================================
+// AGEING ANALYSIS
+// =============================================
+
+let __ageingData=[];
+let __currentAgeingTab='debtors';
+
+function loadAgeingAnalysis(){
+  // ensure correct tab button is highlighted on re-load
+  document.querySelectorAll('#sec-ageing .tab-btn').forEach(b=>b.classList.remove('active'));
+  const activeBtn=document.getElementById('tab-btn-'+__currentAgeingTab);
+  if(activeBtn)activeBtn.classList.add('active');
+  if(__currentAgeingTab==='debtors')renderAgeingTable('debtor');
+  else if(__currentAgeingTab==='creditors')renderAgeingTable('creditor');
+  else renderAgeingSummary();
+}
+
+function switchAgeingTab(tab,el){
+  __currentAgeingTab=tab;
+  document.querySelectorAll('#sec-ageing .tab-btn').forEach(b=>b.classList.remove('active'));
+  if(el)el.classList.add('active');
+  document.getElementById('ageing-drill').classList.remove('active');
+  if(tab==='debtors')renderAgeingTable('debtor');
+  else if(tab==='creditors')renderAgeingTable('creditor');
+  else renderAgeingSummary();
+}
+
+function calcAgeingData(type){
+  const today=new Date();
+  const partyTypes=type==='debtor'?['Customer','Both']:['Vendor','Both'];
+  const txnVoucher=type==='debtor'?'Receipt':'Payment';
+  const pf=(document.getElementById('aging-filter-party')?document.getElementById('aging-filter-party').value:'').toLowerCase();
+
+  let invoices=DB.invoices.filter(inv=>{
+    const party=DB.parties.find(p=>p.name===inv.party_name);
+    return party&&partyTypes.includes(party.type);
+  });
+  if(!isAdmin()){invoices=invoices.filter(inv=>inv.party_name===userProfile.name);}
+
+  const pmap={};
+  invoices.forEach(inv=>{
+    const pn=inv.party_name;
+    if(!pmap[pn]){const party=DB.parties.find(p=>p.name===pn);pmap[pn]={name:pn,gstin:party?party.gstin||'':'',total:0,current:0,d31:0,d61:0,d91:0,d121:0,lastPayDate:null,invoices:[]};}
+    const pm=pmap[pn];
+    pm.invoices.push(inv);
+    const outstanding=inv.status==='Paid'?0:(inv.grand_total||0);
+    if(outstanding>0){
+      const days=Math.floor((today-new Date(inv.invoice_date))/86400000);
+      pm.total+=outstanding;
+      if(days<=30)pm.current+=outstanding;
+      else if(days<=60)pm.d31+=outstanding;
+      else if(days<=90)pm.d61+=outstanding;
+      else if(days<=120)pm.d91+=outstanding;
+      else pm.d121+=outstanding;
+    }
+  });
+
+  // Last payment date: best-effort match via narration
+  DB.transactions.filter(t=>t.voucher_type===txnVoucher).forEach(t=>{
+    if(!t.narration)return;
+    const nar=t.narration.toLowerCase();
+    Object.keys(pmap).forEach(pn=>{
+      if(nar.includes(pn.toLowerCase())){if(!pmap[pn].lastPayDate||t.date>pmap[pn].lastPayDate)pmap[pn].lastPayDate=t.date;}
+    });
+  });
+
+  return Object.values(pmap).filter(p=>!pf||p.name.toLowerCase().includes(pf));
+}
+
+function renderAgeingTable(type){
+  const data=calcAgeingData(type);
+  __ageingData=data;
+  const label=type==='debtor'?'Debtor':'Creditor';
+  const totalOutstanding=data.reduce((s,p)=>s+p.total,0);
+  const overdue=data.reduce((s,p)=>s+p.d31+p.d61+p.d91+p.d121,0);
+  const overduePties=data.filter(p=>p.d31+p.d61+p.d91+p.d121>0).length;
+  let avgDays=0;
+  if(totalOutstanding>0){
+    let wsum=0;
+    data.forEach(p=>{p.invoices.filter(inv=>inv.status!=='Paid').forEach(inv=>{const days=Math.floor((new Date()-new Date(inv.invoice_date))/86400000);wsum+=days*(inv.grand_total||0);});});
+    avgDays=wsum/totalOutstanding;
+  }
+
+  document.getElementById('ageing-kpis').innerHTML=
+    `<div class="card"><div class="label">Total ${label}s</div><div class="value blue">${fmt(totalOutstanding)}</div><div class="sub">${data.length} parties</div></div>`+
+    `<div class="card"><div class="label">Overdue (&gt;30d)</div><div class="value red">${fmt(overdue)}</div></div>`+
+    `<div class="card"><div class="label">Avg Days Outstanding</div><div class="value orange">${avgDays.toFixed(0)}</div></div>`+
+    `<div class="card"><div class="label">Overdue Parties</div><div class="value">${overduePties}</div></div>`;
+
+  const tots={current:0,d31:0,d61:0,d91:0,d121:0,total:0};
+  data.forEach(p=>{tots.current+=p.current;tots.d31+=p.d31;tots.d61+=p.d61;tots.d91+=p.d91;tots.d121+=p.d121;tots.total+=p.total;});
+
+  const rows=data.map((p,i)=>`<tr style="cursor:pointer" onclick="drillPartyAgeing(${i})"><td><strong>${esc(p.name)}</strong></td><td style="font-size:12px;color:var(--text2)">${esc(p.gstin)}</td><td class="amt" style="text-align:right;font-weight:600">${fmt(p.total)}</td><td class="amt age-current" style="text-align:right">${p.current>0?fmt(p.current):'—'}</td><td class="amt age-31" style="text-align:right">${p.d31>0?fmt(p.d31):'—'}</td><td class="amt age-61" style="text-align:right">${p.d61>0?fmt(p.d61):'—'}</td><td class="amt age-91" style="text-align:right">${p.d91>0?fmt(p.d91):'—'}</td><td class="amt age-91" style="text-align:right">${p.d121>0?fmt(p.d121):'—'}</td><td style="font-size:12px">${esc(p.lastPayDate||'—')}</td></tr>`).join('');
+  const totRow=`<tr style="font-weight:700;border-top:2px solid var(--border)"><td>Totals</td><td></td><td class="amt" style="text-align:right">${fmt(tots.total)}</td><td class="amt age-current" style="text-align:right">${fmt(tots.current)}</td><td class="amt age-31" style="text-align:right">${fmt(tots.d31)}</td><td class="amt age-61" style="text-align:right">${fmt(tots.d61)}</td><td class="amt age-91" style="text-align:right">${fmt(tots.d91)}</td><td class="amt age-91" style="text-align:right">${fmt(tots.d121)}</td><td></td></tr>`;
+
+  document.getElementById('ageing-table-wrap').innerHTML=
+    `<div class="table-wrap"><div class="table-header"><h3>${label} Ageing</h3><span class="count">${data.length}</span><span style="margin-left:auto;font-size:12px;color:var(--text2)">Click a row to drill down</span></div>`+
+    `<div class="table-scroll"><table><thead><tr><th>Party Name</th><th>GSTIN</th><th style="text-align:right">Total Outstanding</th><th style="text-align:right" class="age-current">Current (0–30d)</th><th style="text-align:right" class="age-31">31–60d</th><th style="text-align:right" class="age-61">61–90d</th><th style="text-align:right" class="age-91">91–120d</th><th style="text-align:right" class="age-91">120+d</th><th>Last Payment</th></tr></thead>`+
+    `<tbody>${rows||'<tr><td colspan="9" class="empty-state"><p>No outstanding balances</p></td></tr>'}${data.length?totRow:''}</tbody></table></div></div>`;
+}
+
+function renderAgeingSummary(){
+  const debtors=calcAgeingData('debtor');
+  const creditors=calcAgeingData('creditor');
+  const totalRec=debtors.reduce((s,p)=>s+p.total,0);
+  const totalPay=creditors.reduce((s,p)=>s+p.total,0);
+  const net=totalRec-totalPay;
+  const overdueRec=debtors.reduce((s,p)=>s+p.d31+p.d61+p.d91+p.d121,0);
+  const overduePay=creditors.reduce((s,p)=>s+p.d31+p.d61+p.d91+p.d121,0);
+
+  document.getElementById('ageing-kpis').innerHTML=
+    `<div class="card"><div class="label">Total Receivables</div><div class="value blue">${fmt(totalRec)}</div></div>`+
+    `<div class="card"><div class="label">Total Payables</div><div class="value orange">${fmt(totalPay)}</div></div>`+
+    `<div class="card"><div class="label">Net Position</div><div class="value ${net>=0?'green':'red'}">${fmt(Math.abs(net))}</div><div class="sub">${net>=0?'Net Receivable':'Net Payable'}</div></div>`+
+    `<div class="card"><div class="label">Overdue Exposure</div><div class="value red">${fmt(overdueRec+overduePay)}</div></div>`;
+
+  const top5D=debtors.slice().sort((a,b)=>(b.d31+b.d61+b.d91+b.d121)-(a.d31+a.d61+a.d91+a.d121)).slice(0,5);
+  const top5C=creditors.slice().sort((a,b)=>(b.d31+b.d61+b.d91+b.d121)-(a.d31+a.d61+a.d91+a.d121)).slice(0,5);
+
+  const mkRows=(arr,lbl)=>arr.length?arr.map(p=>`<tr><td>${esc(p.name)}</td><td class="amt" style="text-align:right">${fmt(p.total)}</td><td class="amt age-91" style="text-align:right">${fmt(p.d31+p.d61+p.d91+p.d121)}</td></tr>`).join(''):`<tr><td colspan="3" class="empty-state"><p>No overdue ${lbl}</p></td></tr>`;
+
+  const bucketRow=(label,getVal)=>`<tr><td>${label}</td><td class="amt" style="text-align:right">${fmt(debtors.reduce((s,p)=>s+getVal(p),0))}</td><td class="amt" style="text-align:right">${fmt(creditors.reduce((s,p)=>s+getVal(p),0))}</td></tr>`;
+
+  document.getElementById('ageing-table-wrap').innerHTML=
+    `<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">`+
+    `<div class="table-wrap"><div class="table-header"><h3>Top Overdue Debtors</h3></div><div class="table-scroll"><table><thead><tr><th>Party</th><th style="text-align:right">Outstanding</th><th style="text-align:right">Overdue</th></tr></thead><tbody>${mkRows(top5D,'debtors')}</tbody></table></div></div>`+
+    `<div class="table-wrap"><div class="table-header"><h3>Top Overdue Creditors</h3></div><div class="table-scroll"><table><thead><tr><th>Party</th><th style="text-align:right">Outstanding</th><th style="text-align:right">Overdue</th></tr></thead><tbody>${mkRows(top5C,'creditors')}</tbody></table></div></div>`+
+    `</div>`+
+    `<div class="table-wrap" style="margin-top:16px"><div class="table-header"><h3>Ageing Comparison</h3></div><div class="table-scroll"><table><thead><tr><th>Bucket</th><th style="text-align:right">Receivables</th><th style="text-align:right">Payables</th></tr></thead><tbody>`+
+    bucketRow('Current (0–30d)',p=>p.current)+
+    bucketRow('31–60 days',p=>p.d31)+
+    bucketRow('61–90 days',p=>p.d61)+
+    bucketRow('91–120 days',p=>p.d91)+
+    bucketRow('120+ days',p=>p.d121)+
+    `</tbody></table></div></div>`;
+}
+
+function drillPartyAgeing(idx){
+  const p=__ageingData[idx];
+  if(!p)return;
+  const today=new Date();
+  const txnVoucher=__currentAgeingTab==='debtors'?'Receipt':'Payment';
+
+  const invRows=p.invoices.map(inv=>{
+    const outstanding=inv.status==='Paid'?0:(inv.grand_total||0);
+    const days=Math.floor((today-new Date(inv.invoice_date))/86400000);
+    const ageCls=days<=30?'age-current':days<=60?'age-31':days<=90?'age-61':'age-91';
+    return `<tr><td><strong>${esc(inv.invoice_number)}</strong></td><td>${esc(inv.invoice_date)}</td><td>${esc(inv.due_date||'—')}</td><td class="amt" style="text-align:right">${fmt(inv.grand_total||0)}</td><td class="amt ${ageCls}" style="text-align:right">${fmt(outstanding)}</td><td><span class="pill pill-${(inv.status||'draft').toLowerCase()}">${esc(inv.status||'Draft')}</span></td><td class="${ageCls}">${days}d</td></tr>`;
+  }).join('');
+
+  const payments=DB.transactions.filter(t=>t.voucher_type===txnVoucher&&t.narration&&t.narration.toLowerCase().includes(p.name.toLowerCase()));
+  const payRows=payments.sort((a,b)=>b.date.localeCompare(a.date)).map(t=>`<tr><td>${esc(t.date)}</td><td class="amt" style="text-align:right">${fmt(t.amount)}</td><td>${esc(t.narration)}</td></tr>`).join('');
+
+  const drill=document.getElementById('ageing-drill');
+  drill.innerHTML=
+    `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><h3 style="font-size:15px">${esc(p.name)} — Statement of Account</h3><button class="btn btn-ghost btn-sm" onclick="document.getElementById('ageing-drill').classList.remove('active')">✕ Close</button></div>`+
+    `<div class="card-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px">`+
+    `<div class="card"><div class="label">Total Outstanding</div><div class="value red">${fmt(p.total)}</div></div>`+
+    `<div class="card"><div class="label">Current (0–30d)</div><div class="value green">${fmt(p.current)}</div></div>`+
+    `<div class="card"><div class="label">31–90 Days</div><div class="value orange">${fmt(p.d31+p.d61)}</div></div>`+
+    `<div class="card"><div class="label">90+ Days</div><div class="value red">${fmt(p.d91+p.d121)}</div></div></div>`+
+    `<h4 style="margin-bottom:10px;font-size:13px">Invoices</h4>`+
+    `<div class="table-scroll"><table><thead><tr><th>Invoice #</th><th>Invoice Date</th><th>Due Date</th><th style="text-align:right">Amount</th><th style="text-align:right">Outstanding</th><th>Status</th><th>Age</th></tr></thead>`+
+    `<tbody>${invRows||'<tr><td colspan="7" class="empty-state"><p>No invoices</p></td></tr>'}</tbody></table></div>`+
+    (payments.length?`<h4 style="margin:16px 0 10px;font-size:13px">Payment History (matched from transactions)</h4><div class="table-scroll"><table><thead><tr><th>Date</th><th style="text-align:right">Amount</th><th>Narration</th></tr></thead><tbody>${payRows}</tbody></table></div>`:'');
+
+  drill.classList.add('active');
+  drill.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function exportAgeingData(){
+  const debtors=calcAgeingData('debtor');
+  const creditors=calcAgeingData('creditor');
+  const blob=new Blob([JSON.stringify({debtors,creditors,exportDate:new Date().toISOString()},null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=`ageing_${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);
+  toast('Ageing data exported');
+}
 
 // =============================================
 
