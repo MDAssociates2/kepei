@@ -229,6 +229,47 @@ table{width:100%;border-collapse:collapse}thead th{text-align:left;padding:10px 
 .drill-panel{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:20px;display:none}
 .drill-panel.active{display:block}
 
+/* ===== CLIENT SIMPLIFIED JOURNAL ===== */
+.txn-type-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px}
+.txn-type-btn{background:var(--surface);border:2px solid var(--border);border-radius:12px;padding:18px 10px;cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:8px;user-select:none}
+.txn-type-btn:hover{border-color:var(--accent);background:rgba(108,92,231,.08)}
+.txn-type-btn.txn-active{border-color:var(--accent);background:rgba(108,92,231,.12)}
+.txn-type-btn .tb-icon{font-size:26px}
+.txn-type-btn .tb-label{font-size:12px;font-weight:600;color:var(--text);line-height:1.3}
+.txn-type-btn .tb-desc{font-size:10px;color:var(--text2);line-height:1.3}
+.client-form-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px;animation:cjFade .2s ease}
+@keyframes cjFade{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.client-confirm{background:rgba(46,213,115,.1);border:1px solid rgba(46,213,115,.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.client-confirm .cc-icon{font-size:22px;flex-shrink:0}
+.client-confirm .cc-text{font-size:14px;font-weight:500}
+.pill-client-entry{background:rgba(108,92,231,.15);color:var(--accent2)}
+/* ===== OCR UPLOAD MODAL ===== */
+.ocr-modal{width:660px}
+.ocr-dropzone{border:2px dashed var(--border);border-radius:12px;padding:36px 20px;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:var(--bg)}
+.ocr-dropzone:hover,.ocr-dropzone.drag-over{border-color:var(--accent);background:rgba(108,92,231,.05)}
+.ocr-dropzone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.ocr-dz-icon{font-size:36px;margin-bottom:10px}
+.ocr-dz-title{font-size:14px;font-weight:500;margin-bottom:4px}
+.ocr-dz-hint{font-size:11px;color:var(--text2)}
+.ocr-preview-wrap{margin-top:12px;border-radius:8px;overflow:hidden;background:var(--surface2);padding:8px;text-align:center}
+.ocr-preview-wrap img{max-height:160px;max-width:100%;border-radius:6px;object-fit:contain}
+.ocr-progress-wrap{margin-top:14px;padding:12px;background:var(--surface2);border-radius:8px}
+.ocr-progress-label{font-size:12px;color:var(--text2);margin-bottom:8px}
+.ocr-progress-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.ocr-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;width:0%;transition:width .2s}
+.ocr-result-box{margin-top:14px;padding:16px;background:var(--surface2);border:1px solid var(--border);border-radius:10px}
+.ocr-doc-badge{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:6px;font-size:12px;font-weight:600;background:rgba(108,92,231,.15);color:var(--accent2);margin-bottom:10px}
+.ocr-conf-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:12px;color:var(--text2)}
+.ocr-conf-track{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.ocr-conf-fill{height:100%;border-radius:3px}
+.ocr-conf-fill.hi{background:var(--green)}.ocr-conf-fill.med{background:var(--orange)}.ocr-conf-fill.lo{background:var(--red)}
+.ocr-fields-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.ocr-field{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px}
+.ocr-field-label{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--text2)}
+.ocr-field-value{font-size:13px;color:var(--text);margin-top:2px;word-break:break-word}
+.ocr-treatment{background:rgba(79,172,254,.08);border:1px solid rgba(79,172,254,.2);border-radius:8px;padding:12px;font-size:13px;margin-top:10px}
+.ocr-treatment strong{color:var(--blue);display:block;margin-bottom:4px;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+
 </style>
 
 </head>
@@ -371,7 +412,22 @@ table{width:100%;border-collapse:collapse}thead th{text-align:left;padding:10px 
 
 
 
-<div class="section" id="sec-journal"><div class="table-wrap"><div class="table-header"><h3>Transaction Journal</h3><span class="count" id="txn-count">0</span><span class="spacer"></span><button class="btn btn-primary" onclick="openModal('txn')">+ New Entry</button></div><div class="table-scroll"><table><thead><tr><th>Date</th><th>Type</th><th>Account</th><th>DR/CR</th><th style="text-align:right">Amount</th><th>Item</th><th>Narration</th><th></th></tr></thead><tbody id="txn-body"></tbody></table></div></div></div>
+<div class="section" id="sec-journal">
+  <!-- Admin full journal view -->
+  <div id="admin-journal-view">
+    <div class="table-wrap">
+      <div class="table-header">
+        <h3>Transaction Journal</h3><span class="count" id="txn-count">0</span><span class="spacer"></span>
+        <button class="btn btn-ghost btn-sm admin-only" id="cj-toggle-btn" onclick="toggleClientView()" style="margin-right:6px">Client View</button>
+        <button class="btn btn-ghost btn-sm" onclick="openOCRModal()" style="margin-right:6px">&#128247; Upload Doc</button>
+        <button class="btn btn-primary admin-only" onclick="openModal('txn')">+ New Entry</button>
+      </div>
+      <div class="table-scroll"><table><thead><tr><th>Date</th><th>Type</th><th>Account</th><th>DR/CR</th><th style="text-align:right">Amount</th><th>Item</th><th>Narration</th><th></th></tr></thead><tbody id="txn-body"></tbody></table></div>
+    </div>
+  </div>
+  <!-- Client simplified journal view (also shown when admin toggles) -->
+  <div id="client-journal-view" style="display:none"></div>
+</div>
 
 
 
@@ -553,9 +609,45 @@ table{width:100%;border-collapse:collapse}thead th{text-align:left;padding:10px 
 <div class="modal-overlay" id="modal-overlay"><div class="modal"><div class="modal-head"><h3 id="modal-title">Add</h3><button class="close" onclick="closeModal()">&times;</button></div><div class="modal-body" id="modal-body"></div><div class="modal-foot"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-primary" id="modal-save">Save</button></div></div></div>
 
 <div class="toast" id="toast">Saved</div>
+
+<!-- OCR Upload Modal -->
+<div class="modal-overlay" id="ocr-modal-overlay">
+  <div class="modal ocr-modal">
+    <div class="modal-head">
+      <h3>&#128247; Upload Document</h3>
+      <button class="close" onclick="closeOCRModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="ocr-dropzone" id="ocr-dropzone"
+           ondragover="event.preventDefault();this.classList.add('drag-over')"
+           ondragleave="this.classList.remove('drag-over')"
+           ondrop="handleOCRDrop(event)">
+        <input type="file" id="ocr-file-input" accept="image/jpeg,image/png,image/gif,image/webp,.pdf" onchange="handleOCRFile(this.files[0])">
+        <div class="ocr-dz-icon">&#128196;</div>
+        <div class="ocr-dz-title">Drag &amp; drop your document here</div>
+        <div class="ocr-dz-hint">or click to browse &nbsp;&bull;&nbsp; JPG, PNG, PDF</div>
+      </div>
+      <div class="ocr-preview-wrap" id="ocr-preview-wrap" style="display:none">
+        <img id="ocr-preview-img" src="" alt="preview">
+      </div>
+      <div class="ocr-progress-wrap" id="ocr-progress-wrap" style="display:none">
+        <div class="ocr-progress-label" id="ocr-progress-label">Initialising OCR engine...</div>
+        <div class="ocr-progress-bar"><div class="ocr-progress-fill" id="ocr-progress-fill"></div></div>
+      </div>
+      <div class="ocr-result-box" id="ocr-result-box" style="display:none"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeOCRModal()">Cancel</button>
+      <button class="btn btn-primary" id="ocr-accept-btn" style="display:none" onclick="acceptOCRResult()">Accept &amp; Pre-fill Form</button>
+    </div>
+  </div>
+</div>
 <div class="onboard-overlay" id="onboard-overlay"><div class="wizard" id="wizard"><div class="step-indicator" id="step-dots"></div><div class="step active" id="wiz-step-0"><h2>Welcome to ke<span>pei</span></h2><p class="wiz-sub">Set up your accounting in 2 minutes</p><div class="wiz-grid" id="wiz-entity"></div><div class="wiz-actions"><span></span><button class="btn btn-primary" onclick="wizNext()">Next</button></div></div><div class="step" id="wiz-step-1"><h2>Business <span>Scale</span></h2><p class="wiz-sub">Annual turnover determines compliance level</p><div class="wiz-grid" id="wiz-turnover"></div><div class="wiz-actions"><button class="btn btn-ghost" onclick="wizBack()">Back</button><button class="btn btn-primary" onclick="wizNext()">Next</button></div></div><div class="step" id="wiz-step-2"><h2>Nature of <span>Business</span></h2><p class="wiz-sub">Determines which modules to activate</p><div class="wiz-grid" id="wiz-biztype"></div><div class="wiz-actions"><button class="btn btn-ghost" onclick="wizBack()">Back</button><button class="btn btn-primary" onclick="wizNext()">Next</button></div></div><div class="step" id="wiz-step-3"><h2>GST <span>Status</span></h2><p class="wiz-sub">Filing requirements depend on registration</p><div class="wiz-grid" id="wiz-gst"></div><div class="wiz-actions"><button class="btn btn-ghost" onclick="wizBack()">Back</button><button class="btn btn-primary" onclick="wizNext()">Next</button></div></div><div class="step" id="wiz-step-4"><h2>Your <span>Recommendations</span></h2><p class="wiz-sub">Tailored for your business profile</p><div id="wiz-recommendations"></div><div class="wiz-actions"><button class="btn btn-ghost" onclick="wizBack()">Back</button><button class="btn btn-primary" onclick="wizFinish()">Start Using Kepei</button></div></div></div></div><div class="tutorial-overlay" id="tutorial-overlay"><div class="tutorial-box"><div class="tut-step" id="tut-step-label"></div><h3 id="tut-title"></h3><p id="tut-body"></p><div class="tut-actions"><button class="btn btn-ghost" onclick="skipTutorial()">Skip</button><button class="btn btn-primary" id="tut-next-btn" onclick="tutNext()">Next</button></div></div></div>
 
 
+
+<!-- Tesseract.js OCR (v5 CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <!-- Firebase SDK (v9 compat) -->
 
@@ -1080,7 +1172,22 @@ function loadCOA(){const d=DB.coa;document.getElementById('coa-count').textConte
 
 
 
-function loadTransactions(){const d=DB.transactions;document.getElementById('txn-count').textContent=d.length;updateBadges();const tb=document.getElementById('txn-body');if(!d.length){tb.innerHTML='<tr><td colspan="8" class="empty-state"><p>No transactions yet</p></td></tr>';return;}tb.innerHTML=d.map((t,i)=>`<tr><td>${esc(t.date)}</td><td>${esc(t.voucher_type)}</td><td>${esc(t.dr_account)}</td><td><span class="pill ${t.dr_cr==='DR'?'pill-expense':'pill-income'}">${esc(t.dr_cr)}</span></td><td class="amt" style="text-align:right">${fmt(t.amount)}</td><td>${esc(t.item_code)}</td><td>${esc(t.narration)}</td><td>${isAdmin()?`<button class="btn btn-danger btn-sm" onclick="deleteEntry('transactions',${i})">Delete</button>`:''}</td></tr>`).join('');}
+function loadTransactions(){
+  updateBadges();
+  if(!isAdmin()||_cjAdminMode){
+    document.getElementById('admin-journal-view').style.display='none';
+    document.getElementById('client-journal-view').style.display='';
+    showClientJournal();
+    return;
+  }
+  document.getElementById('admin-journal-view').style.display='';
+  document.getElementById('client-journal-view').style.display='none';
+  const d=DB.transactions;
+  document.getElementById('txn-count').textContent=d.length;
+  const tb=document.getElementById('txn-body');
+  if(!d.length){tb.innerHTML='<tr><td colspan="8" class="empty-state"><p>No transactions yet</p></td></tr>';return;}
+  tb.innerHTML=d.map((t,i)=>`<tr><td>${esc(t.date)}</td><td>${esc(t.voucher_type)}</td><td>${esc(t.dr_account)}</td><td><span class="pill ${t.dr_cr==='DR'?'pill-expense':'pill-income'}">${esc(t.dr_cr)}</span></td><td class="amt" style="text-align:right">${fmt(t.amount)}</td><td>${esc(t.item_code||'')}</td><td>${esc(t.narration)}</td><td style="white-space:nowrap">${t.source==='client_entry'?'<span class="pill pill-client-entry" style="font-size:10px;margin-right:4px">Client</span>':''}${isAdmin()?`<button class="btn btn-danger btn-sm" onclick="deleteEntry('transactions',${i})">Delete</button>`:''}</td></tr>`).join('');
+}
 
 
 
@@ -2522,6 +2629,365 @@ function renderWIPAging(el){
   var te=DB.time_entries||[],today=new Date(),map={};
   te.filter(function(e){return e.billable&&!e.invoiced_ref;}).forEach(function(e){var p=e.project||'Unknown';if(!map[p])map[p]={c30:0,c60:0,c90:0,old:0};var d=e.date?Math.floor((today-new Date(e.date))/86400000):0,a=(parseFloat(e.hours)||0)*(parseFloat(e.rate)||0);if(d<=30)map[p].c30+=a;else if(d<=60)map[p].c60+=a;else if(d<=90)map[p].c90+=a;else map[p].old+=a;});
   el.innerHTML='<table class="data-table"><thead><tr><th>Project</th><th>0-30d</th><th>31-60d</th><th>61-90d</th><th>&gt;90d</th><th>Total</th></tr></thead><tbody>'+Object.entries(map).map(function(e){var p=e[0],d=e[1],tot=d.c30+d.c60+d.c90+d.old;return '<tr><td>'+p+'</td><td style="text-align:right">'+formatCurrency(d.c30)+'</td><td style="text-align:right">'+formatCurrency(d.c60)+'</td><td style="text-align:right">'+formatCurrency(d.c90)+'</td><td style="text-align:right;color:var(--danger)">'+formatCurrency(d.old)+'</td><td style="text-align:right;color:var(--purple)">'+formatCurrency(tot)+'</td></tr>';}).join('')+'</tbody></table>';
+}
+
+// =============================================
+// COMPATIBILITY ALIAS
+// =============================================
+function formatCurrency(n){return fmt(n);}
+
+// =============================================
+// CLIENT SIMPLIFIED JOURNAL — STATE
+// =============================================
+var _cjAdminMode=false;
+var _cjActiveType=null;
+var _ocrResult=null;
+var _ocrParsedData=null;
+
+function toggleClientView(){
+  _cjAdminMode=!_cjAdminMode;
+  var btn=document.getElementById('cj-toggle-btn');
+  if(btn)btn.textContent=_cjAdminMode?'\u2190 Full Journal':'Client View';
+  loadTransactions();
+}
+
+// =============================================
+// CLIENT SIMPLIFIED JOURNAL — RENDER
+// =============================================
+function showClientJournal(){
+  var container=document.getElementById('client-journal-view');
+  if(!container)return;
+  var today=new Date().toISOString().slice(0,10);
+  var custOpts=DB.parties.filter(function(p){return p.type==='Customer'||p.type==='Both';}).map(function(p){return '<option value="'+esc(p.name)+'">'+esc(p.name)+'</option>';}).join('');
+  var vendOpts=DB.parties.filter(function(p){return p.type==='Vendor'||p.type==='Both';}).map(function(p){return '<option value="'+esc(p.name)+'">'+esc(p.name)+'</option>';}).join('');
+  var allOpts=DB.parties.map(function(p){return '<option value="'+esc(p.name)+'">'+esc(p.name)+'</option>';}).join('');
+  var unpaidSales=DB.invoices.filter(function(inv){return inv.status!=='Paid'&&inv.status!=='paid';}).map(function(inv){return '<option value="'+esc(inv.invoice_number)+'">'+esc(inv.invoice_number)+' \u2014 '+esc(inv.party_name)+' ('+fmt(inv.grand_total||0)+')</option>';}).join('');
+  var unpaidPurch=DB.invoices.filter(function(inv){return inv.status!=='Paid'&&inv.status!=='paid'&&DB.parties.some(function(p){return p.name===inv.party_name&&(p.type==='Vendor'||p.type==='Both');});}).map(function(inv){return '<option value="'+esc(inv.invoice_number)+'">'+esc(inv.invoice_number)+' \u2014 '+esc(inv.party_name)+' ('+fmt(inv.grand_total||0)+')</option>';}).join('');
+  var bizType=DB.setup.biz_type||(userProfile&&userProfile.biz_type)||'services';
+  var expAcctOpts='<option value="5000">5000 \u2014 Purchases / COGS</option><option value="5200">5200 \u2014 Rent</option><option value="5300">5300 \u2014 Utilities</option><option value="5400">5400 \u2014 Professional Fees</option><option value="5100">5100 \u2014 Employee Costs</option><option value="5700">5700 \u2014 Interest Expense</option>';
+  if(bizType==='trading'||bizType==='manufacturing')expAcctOpts='<option value="5000">5000 \u2014 Purchases / COGS</option>'+expAcctOpts;
+  var gstOpts='<option value="0">0% (Exempt / Non-GST)</option><option value="5">5%</option><option value="12">12%</option><option value="18" selected>18%</option><option value="28">28%</option>';
+  var payOpts='<option value="Unpaid">Unpaid (on credit)</option><option value="Paid">Paid (cash / bank)</option><option value="Partial">Partial payment</option>';
+  var adminBack=isAdmin()?'<button class="btn btn-ghost btn-sm" onclick="toggleClientView()" style="margin-left:auto;margin-right:8px">\u2190 Full Journal</button>':'';
+  container.innerHTML='<div id="client-confirm" class="client-confirm" style="display:none"><span class="cc-icon">\u2705</span><span class="cc-text" id="client-confirm-text">Transaction recorded.</span></div>'
+    +'<div style="display:flex;align-items:center;gap:10px;margin-bottom:18px"><div><div style="font-size:16px;font-weight:600">Add Transaction</div><div style="font-size:12px;color:var(--text2);margin-top:3px">Select what you\'d like to record</div></div>'+adminBack+'<button class="btn btn-ghost btn-sm" onclick="openOCRModal()">\uD83D\uDCF7 Upload Doc</button></div>'
+    +'<div class="txn-type-grid">'
+      +'<div class="txn-type-btn" id="cjbtn-sold" onclick="openClientForm(\'sold\')"><span class="tb-icon">\uD83D\uDCC8</span><span class="tb-label">I Sold Something</span><span class="tb-desc">Sales / invoice</span></div>'
+      +'<div class="txn-type-btn" id="cjbtn-bought" onclick="openClientForm(\'bought\')"><span class="tb-icon">\uD83D\uDCCB</span><span class="tb-label">I Bought Something</span><span class="tb-desc">Purchase / bill</span></div>'
+      +'<div class="txn-type-btn" id="cjbtn-received" onclick="openClientForm(\'received\')"><span class="tb-icon">\uD83D\uDCB0</span><span class="tb-label">I Received Payment</span><span class="tb-desc">Money came in</span></div>'
+      +'<div class="txn-type-btn" id="cjbtn-paid" onclick="openClientForm(\'paid\')"><span class="tb-icon">\uD83D\uDCB3</span><span class="tb-label">I Made a Payment</span><span class="tb-desc">Money went out</span></div>'
+      +'<div class="txn-type-btn" id="cjbtn-other" onclick="openClientForm(\'other\')"><span class="tb-icon">\uD83D\uDCC4</span><span class="tb-label">Other</span><span class="tb-desc">Custom entry</span></div>'
+    +'</div>'
+    +'<div class="client-form-panel" id="cjform-sold" style="display:none"><div style="font-size:14px;font-weight:600;margin-bottom:14px;color:var(--accent2)">\uD83D\uDCC8 Sale Details</div><div class="form-grid"><div class="form-group"><label>Date</label><input type="date" id="cj-sold-date" value="'+today+'"></div><div class="form-group"><label>Customer</label><select id="cj-sold-party"><option value="">Select customer\u2026</option>'+custOpts+'</select></div><div class="form-group full"><label>Description</label><input id="cj-sold-desc" placeholder="What did you sell?"></div><div class="form-group"><label>Amount (\u20b9) \u2014 before GST</label><input type="number" id="cj-sold-amount" placeholder="0.00" min="0" step="0.01"></div><div class="form-group"><label>GST Rate</label><select id="cj-sold-gst">'+gstOpts+'</select></div><div class="form-group"><label>Payment Status</label><select id="cj-sold-status">'+payOpts+'</select></div></div><div style="margin-top:16px;display:flex;gap:8px;justify-content:flex-end"><button class="btn btn-ghost" onclick="closeClientForm()">Cancel</button><button class="btn btn-primary" onclick="saveClientEntry(\'sold\')">Record Sale</button></div></div>'
+    +'<div class="client-form-panel" id="cjform-bought" style="display:none"><div style="font-size:14px;font-weight:600;margin-bottom:14px;color:var(--accent2)">\uD83D\uDCCB Purchase Details</div><div class="form-grid"><div class="form-group"><label>Date</label><input type="date" id="cj-bought-date" value="'+today+'"></div><div class="form-group"><label>Vendor / Supplier</label><select id="cj-bought-party"><option value="">Select vendor\u2026</option>'+vendOpts+'</select></div><div class="form-group full"><label>Description</label><input id="cj-bought-desc" placeholder="What did you buy?"></div><div class="form-group"><label>Amount (\u20b9) \u2014 before GST</label><input type="number" id="cj-bought-amount" placeholder="0.00" min="0" step="0.01"></div><div class="form-group"><label>GST Rate</label><select id="cj-bought-gst">'+gstOpts+'</select></div><div class="form-group"><label>Expense Account</label><select id="cj-bought-acct">'+expAcctOpts+'</select></div><div class="form-group"><label>Payment Status</label><select id="cj-bought-status">'+payOpts+'</select></div></div><div style="margin-top:16px;display:flex;gap:8px;justify-content:flex-end"><button class="btn btn-ghost" onclick="closeClientForm()">Cancel</button><button class="btn btn-primary" onclick="saveClientEntry(\'bought\')">Record Purchase</button></div></div>'
+    +'<div class="client-form-panel" id="cjform-received" style="display:none"><div style="font-size:14px;font-weight:600;margin-bottom:14px;color:var(--accent2)">\uD83D\uDCB0 Payment Received</div><div class="form-grid"><div class="form-group"><label>Date</label><input type="date" id="cj-recv-date" value="'+today+'"></div><div class="form-group"><label>Received From</label><select id="cj-recv-party"><option value="">Select party\u2026</option>'+allOpts+'</select></div><div class="form-group"><label>Amount (\u20b9)</label><input type="number" id="cj-recv-amount" placeholder="0.00" min="0" step="0.01"></div><div class="form-group"><label>Against Invoice (optional)</label><select id="cj-recv-inv"><option value="">None</option>'+unpaidSales+'</select></div></div><div style="margin-top:16px;display:flex;gap:8px;justify-content:flex-end"><button class="btn btn-ghost" onclick="closeClientForm()">Cancel</button><button class="btn btn-primary" onclick="saveClientEntry(\'received\')">Record Receipt</button></div></div>'
+    +'<div class="client-form-panel" id="cjform-paid" style="display:none"><div style="font-size:14px;font-weight:600;margin-bottom:14px;color:var(--accent2)">\uD83D\uDCB3 Payment Made</div><div class="form-grid"><div class="form-group"><label>Date</label><input type="date" id="cj-paid-date" value="'+today+'"></div><div class="form-group"><label>Paid To</label><select id="cj-paid-party"><option value="">Select party\u2026</option>'+allOpts+'</select></div><div class="form-group"><label>Amount (\u20b9)</label><input type="number" id="cj-paid-amount" placeholder="0.00" min="0" step="0.01"></div><div class="form-group"><label>Against Invoice (optional)</label><select id="cj-paid-inv"><option value="">None</option>'+unpaidPurch+'</select></div></div><div style="margin-top:16px;display:flex;gap:8px;justify-content:flex-end"><button class="btn btn-ghost" onclick="closeClientForm()">Cancel</button><button class="btn btn-primary" onclick="saveClientEntry(\'paid\')">Record Payment</button></div></div>'
+    +'<div class="table-wrap" style="margin-top:8px"><div class="table-header"><h3 style="font-size:14px">Recent Transactions</h3></div><div class="table-scroll"><table><thead><tr><th>Date</th><th>Type</th><th>Party</th><th style="text-align:right">Amount</th><th>Status</th></tr></thead><tbody id="client-recent-body"></tbody></table></div></div>';
+  if(_ocrResult){applyOCRToClientForm(_ocrResult);_ocrResult=null;}
+  loadClientRecentTxns();
+}
+
+function openClientForm(type){
+  document.querySelectorAll('.txn-type-btn').forEach(function(b){b.classList.remove('txn-active');});
+  ['sold','bought','received','paid'].forEach(function(t){var p=document.getElementById('cjform-'+t);if(p)p.style.display='none';});
+  if(type==='other'){openModal('txn');return;}
+  var btn=document.getElementById('cjbtn-'+type);
+  var panel=document.getElementById('cjform-'+type);
+  if(btn)btn.classList.add('txn-active');
+  if(panel)panel.style.display='block';
+  _cjActiveType=type;
+}
+
+function closeClientForm(){
+  document.querySelectorAll('.txn-type-btn').forEach(function(b){b.classList.remove('txn-active');});
+  ['sold','bought','received','paid'].forEach(function(t){var p=document.getElementById('cjform-'+t);if(p)p.style.display='none';});
+  _cjActiveType=null;
+}
+
+async function saveClientEntry(type){
+  var now=new Date().toISOString();
+  var pairId='ce_'+Date.now();
+  var createdBy=currentUser?currentUser.email:'';
+  var bizType=DB.setup.biz_type||(userProfile&&userProfile.biz_type)||'services';
+  var entry1,entry2,gstEntry=null,confirmMsg='';
+  if(type==='sold'){
+    var date=document.getElementById('cj-sold-date').value;
+    var party=document.getElementById('cj-sold-party').value;
+    var desc=document.getElementById('cj-sold-desc').value;
+    var amount=parseFloat(document.getElementById('cj-sold-amount').value)||0;
+    var gstRate=parseFloat(document.getElementById('cj-sold-gst').value)||0;
+    var payStatus=document.getElementById('cj-sold-status').value;
+    if(!date||!party||!amount){toast('Date, customer and amount are required');return;}
+    var taxAmt=gstRate>0?amount*gstRate/100:0;
+    var cgst=taxAmt/2,sgst=taxAmt/2,total=amount+taxAmt;
+    var drAcct=payStatus==='Paid'?'1010':'1100';
+    var crAcct=(bizType==='services'||bizType==='mixed')?'4010':'4000';
+    var narr='Sale to '+party+(desc?' \u2014 '+desc:'');
+    entry1={date:date,voucher_type:'Sales',dr_account:drAcct,dr_cr:'DR',amount:total,narration:narr,party_name:party,source:'client_entry',_primary:true,_pair_id:pairId,gst_rate:gstRate,payment_status:payStatus,created_by:createdBy,created_at:now};
+    entry2={date:date,voucher_type:'Sales',dr_account:crAcct,dr_cr:'CR',amount:amount,narration:narr,party_name:party,source:'client_entry',_primary:false,_pair_id:pairId,created_by:createdBy,created_at:now};
+    if(gstRate>0)gstEntry={date:date,type:'Output',source:pairId,party_name:party,taxable_amount:amount,cgst:cgst,sgst:sgst,igst:0,place_of_supply:'',reverse_charge:false,claimed:false,created_at:now};
+    confirmMsg='Sale of '+fmt(total)+' to '+party+' recorded'+(gstRate>0?' (incl. '+fmt(taxAmt)+' GST)':'');
+  }else if(type==='bought'){
+    var date=document.getElementById('cj-bought-date').value;
+    var party=document.getElementById('cj-bought-party').value||'supplier';
+    var desc=document.getElementById('cj-bought-desc').value;
+    var amount=parseFloat(document.getElementById('cj-bought-amount').value)||0;
+    var gstRate=parseFloat(document.getElementById('cj-bought-gst').value)||0;
+    var payStatus=document.getElementById('cj-bought-status').value;
+    var drAcct=document.getElementById('cj-bought-acct').value||'5000';
+    if(!date||!amount){toast('Date and amount are required');return;}
+    var taxAmt=gstRate>0?amount*gstRate/100:0;
+    var cgst=taxAmt/2,sgst=taxAmt/2,total=amount+taxAmt;
+    var crAcct=payStatus==='Paid'?'1010':'2000';
+    var narr='Purchase from '+party+(desc?' \u2014 '+desc:'');
+    entry1={date:date,voucher_type:'Purchase',dr_account:drAcct,dr_cr:'DR',amount:amount,narration:narr,party_name:party,source:'client_entry',_primary:true,_pair_id:pairId,gst_rate:gstRate,payment_status:payStatus,created_by:createdBy,created_at:now};
+    entry2={date:date,voucher_type:'Purchase',dr_account:crAcct,dr_cr:'CR',amount:total,narration:narr,party_name:party,source:'client_entry',_primary:false,_pair_id:pairId,created_by:createdBy,created_at:now};
+    if(gstRate>0)gstEntry={date:date,type:'Input',source:pairId,party_name:party,taxable_amount:amount,cgst:cgst,sgst:sgst,igst:0,place_of_supply:'',reverse_charge:false,claimed:false,created_at:now};
+    confirmMsg='Purchase of '+fmt(amount)+' from '+party+' recorded'+(gstRate>0?' ('+fmt(taxAmt)+' ITC available)':'');
+  }else if(type==='received'){
+    var date=document.getElementById('cj-recv-date').value;
+    var party=document.getElementById('cj-recv-party').value;
+    var amount=parseFloat(document.getElementById('cj-recv-amount').value)||0;
+    var againstInv=document.getElementById('cj-recv-inv').value;
+    if(!date||!amount){toast('Date and amount are required');return;}
+    var narr='Payment received from '+(party||'party')+(againstInv?' against '+againstInv:'');
+    entry1={date:date,voucher_type:'Receipt',dr_account:'1010',dr_cr:'DR',amount:amount,narration:narr,party_name:party,source:'client_entry',_primary:true,_pair_id:pairId,created_by:createdBy,created_at:now};
+    entry2={date:date,voucher_type:'Receipt',dr_account:'1100',dr_cr:'CR',amount:amount,narration:narr,party_name:party,source:'client_entry',_primary:false,_pair_id:pairId,created_by:createdBy,created_at:now};
+    confirmMsg='Receipt of '+fmt(amount)+' from '+(party||'party')+' recorded';
+    if(againstInv){var invIdx=DB.invoices.findIndex(function(i){return i.invoice_number===againstInv;});if(invIdx>=0)await updateRecord('invoices',invIdx,{status:'Paid'});}
+  }else if(type==='paid'){
+    var date=document.getElementById('cj-paid-date').value;
+    var party=document.getElementById('cj-paid-party').value;
+    var amount=parseFloat(document.getElementById('cj-paid-amount').value)||0;
+    var againstInv=document.getElementById('cj-paid-inv').value;
+    if(!date||!amount){toast('Date and amount are required');return;}
+    var narr='Payment made to '+(party||'party')+(againstInv?' against '+againstInv:'');
+    entry1={date:date,voucher_type:'Payment',dr_account:'2000',dr_cr:'DR',amount:amount,narration:narr,party_name:party,source:'client_entry',_primary:true,_pair_id:pairId,created_by:createdBy,created_at:now};
+    entry2={date:date,voucher_type:'Payment',dr_account:'1010',dr_cr:'CR',amount:amount,narration:narr,party_name:party,source:'client_entry',_primary:false,_pair_id:pairId,created_by:createdBy,created_at:now};
+    confirmMsg='Payment of '+fmt(amount)+' to '+(party||'party')+' recorded';
+    if(againstInv){var invIdx=DB.invoices.findIndex(function(i){return i.invoice_number===againstInv;});if(invIdx>=0)await updateRecord('invoices',invIdx,{status:'Paid'});}
+  }
+  if(!entry1)return;
+  await addRecord('transactions',entry1);
+  await addRecord('transactions',entry2);
+  if(gstEntry)await addRecord('gst_ledger',gstEntry);
+  updateBadges();
+  closeClientForm();
+  var cc=document.getElementById('client-confirm');
+  var ccT=document.getElementById('client-confirm-text');
+  if(cc&&ccT){ccT.textContent=confirmMsg;cc.style.display='flex';setTimeout(function(){cc.style.display='none';},6000);}
+  loadClientRecentTxns();
+}
+
+function loadClientRecentTxns(){
+  var body=document.getElementById('client-recent-body');
+  if(!body)return;
+  var clientEmail=currentUser?currentUser.email:'';
+  var clientName=userProfile?(userProfile.name||''):'';
+  var rows=DB.transactions.filter(function(t){return t._primary===true&&t.source==='client_entry'&&(t.created_by===clientEmail||(clientName&&t.party_name===clientName));}).slice().sort(function(a,b){return (b.date||'').localeCompare(a.date||'');}).slice(0,50);
+  if(!rows.length){body.innerHTML='<tr><td colspan="5" class="empty-state"><p>No transactions yet \u2014 use the buttons above to add one</p></td></tr>';return;}
+  var icons={Sales:'\uD83D\uDCC8',Purchase:'\uD83D\uDCCB',Receipt:'\uD83D\uDCB0',Payment:'\uD83D\uDCB3'};
+  body.innerHTML=rows.map(function(t){
+    var icon=icons[t.voucher_type]||'\uD83D\uDCC4';
+    var sc=t.payment_status==='Paid'?'pill-paid':t.payment_status==='Partial'?'pill-draft':'pill-active';
+    var sl=t.payment_status||(t.voucher_type==='Receipt'||t.voucher_type==='Payment'?'Done':'\u2014');
+    return '<tr><td>'+esc(t.date)+'</td><td>'+icon+' '+esc(t.voucher_type)+'</td><td>'+esc(t.party_name||'\u2014')+'</td><td class="amt" style="text-align:right">'+fmt(t.amount)+'</td><td><span class="pill '+sc+'">'+esc(sl)+'</span></td></tr>';
+  }).join('');
+}
+
+// =============================================
+// OCR UPLOAD MODAL
+// =============================================
+function openOCRModal(){
+  document.getElementById('ocr-modal-overlay').classList.add('active');
+  resetOCRModal();
+}
+function closeOCRModal(){document.getElementById('ocr-modal-overlay').classList.remove('active');resetOCRModal();}
+function resetOCRModal(){
+  var dz=document.getElementById('ocr-dropzone');if(dz)dz.classList.remove('drag-over');
+  var pw=document.getElementById('ocr-preview-wrap');if(pw)pw.style.display='none';
+  var pgw=document.getElementById('ocr-progress-wrap');if(pgw)pgw.style.display='none';
+  var rb=document.getElementById('ocr-result-box');if(rb)rb.style.display='none';
+  var ab=document.getElementById('ocr-accept-btn');if(ab)ab.style.display='none';
+  var fi=document.getElementById('ocr-file-input');if(fi)fi.value='';
+  _ocrParsedData=null;
+}
+function handleOCRDrop(e){
+  e.preventDefault();
+  var dz=document.getElementById('ocr-dropzone');if(dz)dz.classList.remove('drag-over');
+  if(e.dataTransfer&&e.dataTransfer.files[0])handleOCRFile(e.dataTransfer.files[0]);
+}
+function handleOCRFile(file){
+  if(!file)return;
+  var isPDF=file.type==='application/pdf'||file.name.toLowerCase().endsWith('.pdf');
+  var isImage=file.type.startsWith('image/');
+  if(!isPDF&&!isImage){toast('Please upload a JPG, PNG, or PDF file');return;}
+  if(isImage){
+    var url=URL.createObjectURL(file);
+    var img=document.getElementById('ocr-preview-img');if(img)img.src=url;
+    var pw=document.getElementById('ocr-preview-wrap');if(pw)pw.style.display='block';
+  }
+  if(isPDF){
+    var rb=document.getElementById('ocr-result-box');if(rb){rb.style.display='block';rb.innerHTML='<div class="ocr-doc-badge">\uD83D\uDCC4 PDF Document</div><p style="font-size:13px;color:var(--text2);margin-bottom:8px">PDF text extraction runs server-side. Please fill in details manually, or convert to an image for auto-extraction.</p><div class="ocr-fields-grid"><div class="ocr-field"><div class="ocr-field-label">Filename</div><div class="ocr-field-value">'+esc(file.name)+'</div></div></div><div class="ocr-treatment"><strong>Suggestion</strong>Select the transaction type above and enter details manually.</div>';}
+    return;
+  }
+  runTesseractOCR(file);
+}
+
+async function runTesseractOCR(file){
+  var pgw=document.getElementById('ocr-progress-wrap');if(pgw)pgw.style.display='block';
+  var rb=document.getElementById('ocr-result-box');if(rb)rb.style.display='none';
+  var ab=document.getElementById('ocr-accept-btn');if(ab)ab.style.display='none';
+  setOCRProgress(0,'Loading OCR engine\u2026');
+  try{
+    if(typeof Tesseract==='undefined')throw new Error('Tesseract.js not loaded. Check your internet connection.');
+    var worker=await Tesseract.createWorker('eng',1,{
+      workerBlobURL:false,
+      logger:function(m){
+        if(m.status==='recognizing text')setOCRProgress(Math.round(m.progress*100),'Recognizing text\u2026 '+Math.round(m.progress*100)+'%');
+        else if(m.status==='loading tesseract core')setOCRProgress(10,'Loading OCR core\u2026');
+        else if(m.status==='initializing tesseract')setOCRProgress(20,'Initializing\u2026');
+        else if(m.status==='loading language traineddata')setOCRProgress(30,'Downloading language data (first use ~4 MB)\u2026');
+        else if(m.status==='initializing api')setOCRProgress(50,'Preparing engine\u2026');
+      }
+    });
+    setOCRProgress(60,'Scanning document\u2026');
+    var result=await worker.recognize(file);
+    await worker.terminate();
+    var text=result&&result.data?result.data.text:'';
+    setOCRProgress(100,'Done!');
+    setTimeout(function(){
+      var pgw2=document.getElementById('ocr-progress-wrap');if(pgw2)pgw2.style.display='none';
+      processOCRText(text,file.name);
+    },400);
+  }catch(err){
+    var pgw3=document.getElementById('ocr-progress-wrap');if(pgw3)pgw3.style.display='none';
+    var rb2=document.getElementById('ocr-result-box');if(rb2){rb2.style.display='block';rb2.innerHTML='<p style="color:var(--red);font-size:13px">OCR failed: '+esc(err.message)+'</p><p style="color:var(--text2);font-size:12px;margin-top:6px">Try refreshing the page. Language data downloads on first use (~4 MB).</p>';}
+  }
+}
+
+function setOCRProgress(pct,label){
+  var fill=document.getElementById('ocr-progress-fill');if(fill)fill.style.width=pct+'%';
+  var lbl=document.getElementById('ocr-progress-label');if(lbl)lbl.textContent=label;
+}
+
+function processOCRText(rawText,filename){
+  var text=rawText||'';
+  var scores={'Sales Invoice':0,'Purchase Invoice':0,'Receipt':0,'Expense Receipt':0,'Bank Statement':0,'Credit Note':0,'Debit Note':0};
+  if(/tax invoice|invoice\s*no|invoice\s*number|inv\s*#/i.test(text))scores['Sales Invoice']+=40;
+  if(/invoice/i.test(text))scores['Sales Invoice']+=10;
+  if(/bill\s*no|purchase\s*bill|vendor\s*invoice|supplier/i.test(text))scores['Purchase Invoice']+=40;
+  if(/bill\s*to/i.test(text))scores['Sales Invoice']+=15;
+  if(/sold\s*to|customer\s*name/i.test(text))scores['Sales Invoice']+=20;
+  if(/purchased\s*from|purchase\s*order/i.test(text))scores['Purchase Invoice']+=20;
+  if(/cash\s*receipt|payment\s*receipt|received\s*from/i.test(text))scores['Receipt']+=50;
+  if(/account\s*statement|opening\s*balance|closing\s*balance/i.test(text))scores['Bank Statement']+=60;
+  if(/credit\s*note|crn\s*#/i.test(text))scores['Credit Note']+=60;
+  if(/debit\s*note|drn\s*#/i.test(text))scores['Debit Note']+=60;
+  if(/restaurant|hotel|swiggy|zomato|petrol|fuel|uber|ola/i.test(text))scores['Expense Receipt']+=50;
+  if(/gstin/i.test(text)){scores['Sales Invoice']+=10;scores['Purchase Invoice']+=10;}
+  var sorted=Object.entries(scores).sort(function(a,b){return b[1]-a[1];});
+  var docType=sorted[0][0];
+  var confidence=Math.min(95,sorted[0][1]);
+  if(confidence<20){docType='Unknown Document';confidence=30;}
+  var formType=null;
+  if(docType==='Sales Invoice')formType='sold';
+  else if(docType==='Purchase Invoice'||docType==='Expense Receipt')formType='bought';
+  else if(docType==='Receipt')formType='received';
+  var fields=extractOCRFields(text);
+  var bizType=DB.setup.biz_type||(userProfile&&userProfile.biz_type)||'services';
+  var gstStatus=DB.setup.gst_status||'regular';
+  var treatment='';
+  if(docType==='Sales Invoice')treatment='Record as a Sale. Use "I Sold Something" \u2014 Output GST will be tracked.';
+  else if(docType==='Purchase Invoice'){treatment=(bizType==='trading'||bizType==='manufacturing')?'Record as Purchase / Stock-in. Account: 5000 (Purchases / COGS). ITC available if GST-registered.':'Record as Expense. Suggest account 5400 (Professional Fees) or appropriate head. ITC available if registered.';if(gstStatus==='composition')treatment+=' Note: Composition scheme \u2014 no ITC claimable.';}
+  else if(docType==='Receipt')treatment='Record as "I Received Payment". Match against an existing unpaid invoice if available.';
+  else if(docType==='Expense Receipt')treatment='Record as a business expense. Common heads: 5200 Rent, 5300 Utilities, 5400 Professional Fees.';
+  else if(docType==='Bank Statement')treatment='Bank statement \u2014 enter each debit/credit individually.';
+  else treatment='Select the appropriate transaction type and fill in the details manually.';
+  _ocrParsedData={docType:docType,confidence:confidence,formType:formType,fields:fields,treatment:treatment,textSnippet:text.slice(0,100)};
+  displayOCRResult(_ocrParsedData);
+}
+
+function extractOCRFields(text){
+  var f={};
+  var invM=text.match(/(?:invoice|inv|bill)\s*(?:no|number|#)?\s*[:#]?\s*([A-Z0-9\-\/]+)/i);
+  if(invM)f.invoice_number=invM[1].trim();
+  var dateM=text.match(/(?:date|dated|dt)\s*[:#]?\s*(\d{1,2}[\/-\.]\d{1,2}[\/-\.]\d{2,4})/i)||text.match(/(\d{1,2}[\/-\.]\d{1,2}[\/-\.]\d{4})/);
+  if(dateM){var raw=dateM[1],parts=raw.split(/[\/-\.]/);if(parts.length===3){var yr=parts[2].length===2?'20'+parts[2]:parts[2],m=parts[1].padStart(2,'0'),d=parts[0].padStart(2,'0'),iso=yr+'-'+m+'-'+d;if(!isNaN(new Date(iso)))f.date=iso;}}
+  var gstM=text.match(/\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/);
+  if(gstM)f.gstin=gstM[0];
+  var hsnM=text.match(/(?:hsn|sac|hsn\/sac)\s*[:#]?\s*(\d{4,8})/i);
+  if(hsnM)f.hsn_sac=hsnM[1];
+  var totalM=text.match(/(?:grand\s*total|total\s*amount|net\s*payable|amount\s*payable|total)\s*[:#\u20b9]?\s*\u20b9?\s*([\d,]+(?:\.\d{2})?)/i);
+  if(totalM)f.total=totalM[1].replace(/,/g,'');
+  var taxableM=text.match(/(?:taxable\s*(?:value|amount)|sub\s*total|subtotal)\s*[:#\u20b9]?\s*\u20b9?\s*([\d,]+(?:\.\d{2})?)/i);
+  if(taxableM)f.taxable_amount=taxableM[1].replace(/,/g,'');
+  var gstRateM=text.match(/(?:cgst|sgst|igst|gst)\s*@?\s*(\d+(?:\.\d+)?)\s*%/i);
+  if(gstRateM){var r=parseFloat(gstRateM[1]),valid=[0,5,12,18,28],near=valid.reduce(function(a,b){return Math.abs(b-r)<Math.abs(a-r)?b:a;},18);f.gst_rate=near;}
+  var partyM=text.match(/(?:bill\s*to|sold\s*to|customer|buyer|from|vendor)\s*[:#]?\s*\n?\s*([A-Z][A-Za-z\s&.,'\-]{3,50})/i);
+  if(partyM)f.party_name=partyM[1].trim().replace(/\n[\s\S]*/,'').trim();
+  var descM=text.match(/(?:description|item|particulars|goods|services)\s*[:#]?\s*\n?\s*([A-Za-z0-9][^\n]{4,60})/i);
+  if(descM)f.description=descM[1].trim();
+  return f;
+}
+
+function displayOCRResult(data){
+  var rb=document.getElementById('ocr-result-box');if(!rb)return;
+  rb.style.display='block';
+  var cc=data.confidence>=70?'hi':data.confidence>=40?'med':'lo';
+  var items='';
+  var f=data.fields;
+  if(f.date)items+='<div class="ocr-field"><div class="ocr-field-label">Date</div><div class="ocr-field-value">'+esc(f.date)+'</div></div>';
+  if(f.invoice_number)items+='<div class="ocr-field"><div class="ocr-field-label">Invoice #</div><div class="ocr-field-value">'+esc(f.invoice_number)+'</div></div>';
+  if(f.party_name)items+='<div class="ocr-field"><div class="ocr-field-label">Party</div><div class="ocr-field-value">'+esc(f.party_name)+'</div></div>';
+  if(f.gstin)items+='<div class="ocr-field"><div class="ocr-field-label">GSTIN</div><div class="ocr-field-value">'+esc(f.gstin)+'</div></div>';
+  if(f.total)items+='<div class="ocr-field"><div class="ocr-field-label">Total Amount</div><div class="ocr-field-value">\u20b9'+esc(f.total)+'</div></div>';
+  if(f.taxable_amount)items+='<div class="ocr-field"><div class="ocr-field-label">Taxable Value</div><div class="ocr-field-value">\u20b9'+esc(f.taxable_amount)+'</div></div>';
+  if(f.gst_rate!==undefined)items+='<div class="ocr-field"><div class="ocr-field-label">GST Rate</div><div class="ocr-field-value">'+f.gst_rate+'%</div></div>';
+  if(f.hsn_sac)items+='<div class="ocr-field"><div class="ocr-field-label">HSN / SAC</div><div class="ocr-field-value">'+esc(f.hsn_sac)+'</div></div>';
+  if(f.description)items+='<div class="ocr-field" style="grid-column:1/-1"><div class="ocr-field-label">Description</div><div class="ocr-field-value">'+esc(f.description)+'</div></div>';
+  rb.innerHTML='<div class="ocr-doc-badge">\uD83D\uDCC4 '+esc(data.docType)+'</div>'
+    +'<div class="ocr-conf-row"><span>Confidence:</span><div class="ocr-conf-track"><div class="ocr-conf-fill '+cc+'" style="width:'+data.confidence+'%"></div></div><span>'+data.confidence+'%</span></div>'
+    +(items?'<div class="ocr-fields-grid">'+items+'</div>':'<p style="font-size:12px;color:var(--text2);margin-bottom:10px">No structured fields detected \u2014 try a clearer image.</p>')
+    +'<div class="ocr-treatment"><strong>Suggested Treatment</strong>'+esc(data.treatment)+'</div>';
+  var ab=document.getElementById('ocr-accept-btn');
+  if(ab)ab.style.display=data.formType?'':'none';
+}
+
+function acceptOCRResult(){
+  if(!_ocrParsedData)return;
+  closeOCRModal();
+  _ocrResult=_ocrParsedData;
+  var ni=document.querySelector('.nav-item[data-section="journal"]');
+  if(ni)navigate(ni);
+}
+
+function applyOCRToClientForm(data){
+  if(!data||!data.formType)return;
+  openClientForm(data.formType);
+  var f=data.fields;
+  var today=new Date().toISOString().slice(0,10);
+  var sv=function(id,val){var el=document.getElementById(id);if(el&&val!==undefined&&val!==null&&val!=='')el.value=val;};
+  function matchParty(name){if(!name)return;var lc=name.toLowerCase();return DB.parties.find(function(p){return p.name.toLowerCase().includes(lc)||lc.includes(p.name.toLowerCase());});}
+  if(data.formType==='sold'){
+    sv('cj-sold-date',f.date||today);
+    var mp=matchParty(f.party_name);if(mp)sv('cj-sold-party',mp.name);
+    sv('cj-sold-desc',f.description||'');
+    sv('cj-sold-amount',f.taxable_amount||f.total||'');
+    if(f.gst_rate!==undefined)sv('cj-sold-gst',String(f.gst_rate));
+  }else if(data.formType==='bought'){
+    sv('cj-bought-date',f.date||today);
+    var mp2=matchParty(f.party_name);if(mp2)sv('cj-bought-party',mp2.name);
+    sv('cj-bought-desc',f.description||'');
+    sv('cj-bought-amount',f.taxable_amount||f.total||'');
+    if(f.gst_rate!==undefined)sv('cj-bought-gst',String(f.gst_rate));
+  }else if(data.formType==='received'){
+    sv('cj-recv-date',f.date||today);
+    sv('cj-recv-amount',f.total||'');
+  }
+  var cc=document.getElementById('client-confirm');
+  var ccT=document.getElementById('client-confirm-text');
+  if(cc&&ccT){ccT.textContent='Document scanned: '+data.docType+'. Form pre-filled \u2014 please review before saving.';cc.style.display='flex';cc.style.background='rgba(79,172,254,.1)';cc.style.borderColor='rgba(79,172,254,.3)';}
 }
 
 </script>
