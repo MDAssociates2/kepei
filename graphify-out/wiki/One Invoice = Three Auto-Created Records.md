@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in/Kepei-Deep-Dive.md"
 type: "document"
-community: "Deep Dive Documentation"
+community: "Modal Dispatcher & Writes"
 location: "Slide 23"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Deep_Dive_Documentation
+  - community/Modal_Dispatcher_&_Writes
 ---
 
 # One Invoice = Three Auto-Created Records
@@ -18,4 +18,4 @@ tags:
 - [[Stock Register Section]] - `references` [EXTRACTED]
 - [[Transaction Journal Section]] - `references` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Deep_Dive_Documentation
+#graphify/document #graphify/EXTRACTED #community/Modal_Dispatcher_&_Writes

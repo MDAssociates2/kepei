@@ -1,56 +1,56 @@
 {
   "colorGroups": [
     {
-      "query": "tag:#community/Data_Bootstrap_&_DB_State",
+      "query": "tag:#community/Auth_&_Roles",
       "color": {
         "a": 1,
         "rgb": 5142951
       }
     },
     {
-      "query": "tag:#community/Roles_&_Invite_Flow",
+      "query": "tag:#community/Data_Bootstrap_&_DB_State",
       "color": {
         "a": 1,
         "rgb": 15896107
       }
     },
     {
-      "query": "tag:#community/App_Init_&_Auth",
+      "query": "tag:#community/Auth_&_Roles",
       "color": {
         "a": 1,
         "rgb": 14767961
       }
     },
     {
-      "query": "tag:#community/Invoice_&_GST_Engine",
+      "query": "tag:#community/OCR_Processing",
       "color": {
         "a": 1,
         "rgb": 7780274
       }
     },
     {
-      "query": "tag:#community/Ageing_Analysis_&_Client_Forms",
+      "query": "tag:#community/Section_Loaders",
       "color": {
         "a": 1,
         "rgb": 5873999
       }
     },
     {
-      "query": "tag:#community/Deep_Dive_Documentation",
+      "query": "tag:#community/Modal_Dispatcher_&_Writes",
       "color": {
         "a": 1,
         "rgb": 15583560
       }
     },
     {
-      "query": "tag:#community/Product_Positioning",
+      "query": "tag:#community/Modal_Dispatcher_&_Writes",
       "color": {
         "a": 1,
         "rgb": 11565729
       }
     },
     {
-      "query": "tag:#community/Dashboard_&_Render_Utils",
+      "query": "tag:#community/Section_Loaders",
       "color": {
         "a": 1,
         "rgb": 16752039
@@ -64,164 +64,136 @@
       }
     },
     {
-      "query": "tag:#community/Navigation_&_OCR_Modal",
+      "query": "tag:#community/Product_Documentation",
       "color": {
         "a": 1,
         "rgb": 12234924
       }
     },
     {
-      "query": "tag:#community/OCR_Processing",
+      "query": "tag:#community/Product_Documentation",
       "color": {
         "a": 1,
         "rgb": 5142951
       }
     },
     {
-      "query": "tag:#community/Onboarding_Wizard",
+      "query": "tag:#community/Cluster_11",
       "color": {
         "a": 1,
         "rgb": 15896107
       }
     },
     {
-      "query": "tag:#community/Multi-Tenant_Architecture",
+      "query": "tag:#community/Product_Positioning",
       "color": {
         "a": 1,
         "rgb": 14767961
       }
     },
     {
-      "query": "tag:#community/Weekly_Timesheet",
+      "query": "tag:#community/Auth_&_Roles",
       "color": {
         "a": 1,
         "rgb": 7780274
       }
     },
     {
-      "query": "tag:#community/Project_&_Time_Sections",
+      "query": "tag:#community/Ageing_Analysis",
       "color": {
         "a": 1,
         "rgb": 5873999
       }
     },
     {
-      "query": "tag:#community/Invoice_Print_Rendering",
+      "query": "tag:#community/Product_Positioning",
       "color": {
         "a": 1,
         "rgb": 15583560
       }
     },
     {
-      "query": "tag:#community/Admin_vs_Client_Roles",
+      "query": "tag:#community/Product_Positioning",
       "color": {
         "a": 1,
         "rgb": 11565729
       }
     },
     {
-      "query": "tag:#community/Fast_Onboarding",
+      "query": "tag:#community/Product_Documentation",
       "color": {
         "a": 1,
         "rgb": 16752039
       }
     },
     {
-      "query": "tag:#community/Invite_Link_Flow",
+      "query": "tag:#community/Product_Documentation",
       "color": {
         "a": 1,
         "rgb": 10253663
       }
     },
     {
-      "query": "tag:#community/Chart_of_Accounts",
+      "query": "tag:#community/Cluster_19",
       "color": {
         "a": 1,
         "rgb": 12234924
       }
     },
     {
-      "query": "tag:#community/Data_Portability",
+      "query": "tag:#community/Cluster_20",
       "color": {
         "a": 1,
         "rgb": 5142951
       }
     },
     {
-      "query": "tag:#community/Time_Tracking_Problem",
+      "query": "tag:#community/Product_Positioning",
       "color": {
         "a": 1,
         "rgb": 15896107
       }
     },
     {
-      "query": "tag:#community/Party_Master",
+      "query": "tag:#community/Product_Positioning",
       "color": {
         "a": 1,
         "rgb": 14767961
       }
     },
     {
-      "query": "tag:#community/Ageing_Analysis_Section",
+      "query": "tag:#community/Product_Positioning",
       "color": {
         "a": 1,
         "rgb": 7780274
       }
     },
     {
-      "query": "tag:#community/Module_Overview",
+      "query": "tag:#community/Cluster_24",
       "color": {
         "a": 1,
         "rgb": 5873999
       }
     },
     {
-      "query": "tag:#community/Data_Architecture",
+      "query": "tag:#community/Cluster_25",
       "color": {
         "a": 1,
         "rgb": 15583560
       }
     },
     {
-      "query": "tag:#community/Market_Opportunity",
+      "query": "tag:#community/Cluster_26",
       "color": {
         "a": 1,
         "rgb": 11565729
       }
     },
     {
-      "query": "tag:#community/Business_Model",
+      "query": "tag:#community/Cluster_27",
       "color": {
         "a": 1,
         "rgb": 16752039
-      }
-    },
-    {
-      "query": "tag:#community/Seed_Ask",
-      "color": {
-        "a": 1,
-        "rgb": 10253663
-      }
-    },
-    {
-      "query": "tag:#community/Dashboard_Section",
-      "color": {
-        "a": 1,
-        "rgb": 12234924
-      }
-    },
-    {
-      "query": "tag:#community/Items_Section",
-      "color": {
-        "a": 1,
-        "rgb": 5142951
-      }
-    },
-    {
-      "query": "tag:#community/Setup_Section",
-      "color": {
-        "a": 1,
-        "rgb": 15896107
       }
     }
   ]

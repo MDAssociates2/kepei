@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in/Kepei-Pitch-Deck.md"
 type: "document"
-community: "Multi-Tenant Architecture"
+community: "Product Documentation"
 location: "Slide 8"
 tags:
   - graphify/document
   - graphify/INFERRED
-  - community/Multi-Tenant_Architecture
+  - community/Product_Documentation
 ---
 
 # CA Firm as Distribution Channel
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[Solution Multi-Tenant Architecture]] - `conceptually_related_to` [INFERRED]
 
-#graphify/document #graphify/INFERRED #community/Multi-Tenant_Architecture
+#graphify/document #graphify/INFERRED #community/Product_Documentation

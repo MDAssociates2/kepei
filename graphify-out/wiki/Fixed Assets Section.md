@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in/kepei-sections.md"
 type: "document"
-community: "Deep Dive Documentation"
+community: "Modal Dispatcher & Writes"
 location: "line 36"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Deep_Dive_Documentation
+  - community/Modal_Dispatcher_&_Writes
 ---
 
 # Fixed Assets Section
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[Fixed Assets & TDS Module]] - `references` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Deep_Dive_Documentation
+#graphify/document #graphify/EXTRACTED #community/Modal_Dispatcher_&_Writes

@@ -12,5 +12,6 @@ tags:
 
 ## Connections
 - [[loadAllData]] - `sole_writer_of` [EXTRACTED]
+- [[saveModal]] - `writes_to` [INFERRED]
 
 #graphify/code #graphify/EXTRACTED #community/Data_Bootstrap_&_DB_State

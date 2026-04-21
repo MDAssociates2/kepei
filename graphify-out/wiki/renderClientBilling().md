@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in\kepei-app.js"
 type: "code"
-community: "Dashboard & Render Utils"
-location: "L2214"
+community: "Section Loaders"
+location: "L2032"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Dashboard_&_Render_Utils
+  - community/Section_Loaders
 ---
 
 # renderClientBilling()
@@ -16,4 +16,4 @@ tags:
 - [[kepei-app.js]] - `contains` [EXTRACTED]
 - [[renderReport()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Dashboard_&_Render_Utils
+#graphify/code #graphify/EXTRACTED #community/Section_Loaders

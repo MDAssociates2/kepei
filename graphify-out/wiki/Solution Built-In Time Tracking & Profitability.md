@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in/Kepei-Problems-Solutions.md"
 type: "document"
-community: "Time Tracking Problem"
+community: "Product Positioning"
 location: "Slide 25"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Time_Tracking_Problem
+  - community/Product_Positioning
 ---
 
 # Solution: Built-In Time Tracking & Profitability
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[Problem No Time Tracking  Billing Justification]] - `rationale_for` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Time_Tracking_Problem
+#graphify/document #graphify/EXTRACTED #community/Product_Positioning

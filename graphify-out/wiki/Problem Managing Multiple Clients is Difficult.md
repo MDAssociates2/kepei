@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in/Kepei-Problems-Solutions.md"
 type: "document"
-community: "Multi-Tenant Architecture"
+community: "Product Documentation"
 location: "Slide 16"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Multi-Tenant_Architecture
+  - community/Product_Documentation
 ---
 
 # Problem: Managing Multiple Clients is Difficult
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[Solution Multi-Tenant Architecture]] - `rationale_for` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Multi-Tenant_Architecture
+#graphify/document #graphify/EXTRACTED #community/Product_Documentation

@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in\kepei-app.js"
 type: "code"
-community: "Section Loaders"
-location: "L695"
+community: "Auth & Roles"
+location: "L694"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Section_Loaders
+  - community/Auth_&_Roles
 ---
 
 # loadGSTLedger()
@@ -16,4 +16,4 @@ tags:
 - [[kepei-app.js]] - `contains` [EXTRACTED]
 - [[updateBadges()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Section_Loaders
+#graphify/code #graphify/EXTRACTED #community/Auth_&_Roles

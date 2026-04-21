@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in\kepei-app.js"
 type: "code"
-community: "Navigation & OCR Modal"
-location: "L1793"
+community: "Auth & Roles"
+location: "L1798"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Navigation_&_OCR_Modal
+  - community/Auth_&_Roles
 ---
 
 # startTutorial()
@@ -15,4 +15,4 @@ tags:
 - [[kepei-app.js]] - `contains` [EXTRACTED]
 - [[showTut()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Navigation_&_OCR_Modal
+#graphify/code #graphify/EXTRACTED #community/Auth_&_Roles

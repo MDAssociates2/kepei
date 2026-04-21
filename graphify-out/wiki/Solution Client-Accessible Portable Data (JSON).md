@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in/Kepei-Problems-Solutions.md"
 type: "document"
-community: "Data Portability"
+community: "Product Positioning"
 location: "Slide 12"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Data_Portability
+  - community/Product_Positioning
 ---
 
 # Solution: Client-Accessible Portable Data (JSON)
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[Problem Client Data Locked in CA System]] - `rationale_for` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Data_Portability
+#graphify/document #graphify/EXTRACTED #community/Product_Positioning

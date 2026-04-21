@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in/Kepei-Deep-Dive.md"
 type: "document"
-community: "Multi-Tenant Architecture"
+community: "Product Documentation"
 location: "Slide 58"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Multi-Tenant_Architecture
+  - community/Product_Documentation
 ---
 
 # Multi-Tenant User Management Architecture
@@ -15,4 +15,4 @@ tags:
 - [[Solution Multi-Tenant Architecture]] - `semantically_similar_to` [INFERRED]
 - [[User Management Section]] - `references` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Multi-Tenant_Architecture
+#graphify/document #graphify/EXTRACTED #community/Product_Documentation

@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in\kepei-app.js"
 type: "code"
-community: "App Init & Auth"
-location: "L2116"
+community: "Modal Dispatcher & Writes"
+location: "L1934"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/App_Init_&_Auth
+  - community/Modal_Dispatcher_&_Writes
 ---
 
 # stopTimer()
@@ -16,4 +16,4 @@ tags:
 - [[openModal()]] - `calls` [EXTRACTED]
 - [[startTimer()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/App_Init_&_Auth
+#graphify/code #graphify/EXTRACTED #community/Modal_Dispatcher_&_Writes

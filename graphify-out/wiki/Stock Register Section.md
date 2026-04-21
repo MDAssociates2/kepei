@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in/kepei-sections.md"
 type: "document"
-community: "Deep Dive Documentation"
+community: "Modal Dispatcher & Writes"
 location: "line 30"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Deep_Dive_Documentation
+  - community/Modal_Dispatcher_&_Writes
 ---
 
 # Stock Register Section
@@ -15,4 +15,4 @@ tags:
 - [[One Invoice = Three Auto-Created Records]] - `references` [EXTRACTED]
 - [[Stock Register â€” Invoice-Driven Automation]] - `references` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Deep_Dive_Documentation
+#graphify/document #graphify/EXTRACTED #community/Modal_Dispatcher_&_Writes

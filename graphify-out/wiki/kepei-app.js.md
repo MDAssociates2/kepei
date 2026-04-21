@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in\kepei-app.js"
 type: "code"
-community: "App Init & Auth"
+community: "Auth & Roles"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/App_Init_&_Auth
+  - community/Auth_&_Roles
 ---
 
 # kepei-app.js
@@ -28,7 +28,6 @@ tags:
 - [[createUserAccount()]] - `contains` [EXTRACTED]
 - [[deleteEntry()]] - `contains` [EXTRACTED]
 - [[deleteRecord()]] - `contains` [EXTRACTED]
-- [[determineInvoiceTypes()]] - `contains` [EXTRACTED]
 - [[displayOCRResult()]] - `contains` [EXTRACTED]
 - [[doLogin()]] - `contains` [EXTRACTED]
 - [[doLogout()]] - `contains` [EXTRACTED]
@@ -42,7 +41,6 @@ tags:
 - [[formatCurrency()]] - `contains` [EXTRACTED]
 - [[genRecs()]] - `contains` [EXTRACTED]
 - [[generateInvoiceHTML()]] - `contains` [EXTRACTED]
-- [[getBuyerGSTProfile()]] - `contains` [EXTRACTED]
 - [[getClientProjects()]] - `contains` [EXTRACTED]
 - [[getGSTRegime()]] - `contains` [EXTRACTED]
 - [[getInvoiceTypeOptions()]] - `contains` [EXTRACTED]
@@ -50,15 +48,11 @@ tags:
 - [[getNextInvoiceNumber()]] - `contains` [EXTRACTED]
 - [[getNextProjectNumber()]] - `contains` [EXTRACTED]
 - [[getRegimeBanner()]] - `contains` [EXTRACTED]
-- [[getSellerGSTProfile()]] - `contains` [EXTRACTED]
-- [[getStateFromGSTIN()]] - `contains` [EXTRACTED]
 - [[handleOCRDrop()]] - `contains` [EXTRACTED]
 - [[handleOCRFile()]] - `contains` [EXTRACTED]
 - [[initApp()]] - `contains` [EXTRACTED]
 - [[initWizard()]] - `contains` [EXTRACTED]
-- [[invoiceTypePillClass()]] - `contains` [EXTRACTED]
 - [[isAdmin()]] - `contains` [EXTRACTED]
-- [[isInterState()]] - `contains` [EXTRACTED]
 - [[loadAgeingAnalysis()]] - `contains` [EXTRACTED]
 - [[loadAllData()]] - `contains` [EXTRACTED]
 - [[loadAssets()]] - `contains` [EXTRACTED]
@@ -85,14 +79,12 @@ tags:
 - [[markITCClaimed()]] - `contains` [EXTRACTED]
 - [[navigate()]] - `contains` [EXTRACTED]
 - [[numberToWords()]] - `contains` [EXTRACTED]
-- [[onInvoiceTypeChange()]] - `contains` [EXTRACTED]
 - [[openClientForm()]] - `contains` [EXTRACTED]
 - [[openModal()]] - `contains` [EXTRACTED]
 - [[openOCRModal()]] - `contains` [EXTRACTED]
 - [[pauseTimer()]] - `contains` [EXTRACTED]
 - [[processOCRText()]] - `contains` [EXTRACTED]
 - [[recalculateInvoice()]] - `contains` [EXTRACTED]
-- [[refreshInvoiceTypeOnPartyChange()]] - `contains` [EXTRACTED]
 - [[removeInvoiceLine()]] - `contains` [EXTRACTED]
 - [[removeUser()]] - `contains` [EXTRACTED]
 - [[renderAgeingSummary()]] - `contains` [EXTRACTED]
@@ -100,7 +92,6 @@ tags:
 - [[renderClientBilling()]] - `contains` [EXTRACTED]
 - [[renderDetailedLog()]] - `contains` [EXTRACTED]
 - [[renderInviteList()]] - `contains` [EXTRACTED]
-- [[renderInvoiceGuidance()]] - `contains` [EXTRACTED]
 - [[renderProfitability()]] - `contains` [EXTRACTED]
 - [[renderReport()]] - `contains` [EXTRACTED]
 - [[renderStaffUtil()]] - `contains` [EXTRACTED]
@@ -146,4 +137,4 @@ tags:
 - [[wizNext()]] - `contains` [EXTRACTED]
 - [[wizSelect()]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/App_Init_&_Auth
+#graphify/code #graphify/EXTRACTED #community/Auth_&_Roles

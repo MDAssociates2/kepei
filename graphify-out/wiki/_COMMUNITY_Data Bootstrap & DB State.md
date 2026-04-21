@@ -1,17 +1,15 @@
 ---
 type: community
-cohesion: 0.08
-members: 36
+cohesion: 0.07
+members: 31
 ---
 
 # Data Bootstrap & DB State
 
-**Cohesion:** 0.08 - loosely connected
-**Members:** 36 nodes
+**Cohesion:** 0.07 - loosely connected
+**Members:** 31 nodes
 
 ## Members
-- [[Contract loadAllData is the ONLY writer of DB. fields]] - code - graphify-in/kepei-app.js
-- [[DB (global state object)]] - code - graphify-in/kepei-app.js
 - [[DB.coa]] - code - graphify-in/kepei-app.js
 - [[DB.fixed_assets]] - code - graphify-in/kepei-app.js
 - [[DB.gst_ledger]] - code - graphify-in/kepei-app.js
@@ -25,27 +23,24 @@ members: 36
 - [[DB.tds]] - code - graphify-in/kepei-app.js
 - [[DB.time_entries]] - code - graphify-in/kepei-app.js
 - [[DB.transactions]] - code - graphify-in/kepei-app.js
-- [[DEFAULT_COA constant]] - code - graphify-in/kepei-app.js
-- [[Firebase Auth]] - code - graphify-in/kepei-app.js
-- [[Firebase Firestore (db)]] - code - graphify-in/kepei-app.js
-- [[Rationale loadAllData as narrow-waist between persistence and app state]] - code - graphify-in/kepei-app.js
-- [[Rationale re-throw on load failure to fail fast instead of rendering empty state]] - code - graphify-in/kepei-app.js
+- [[Fail-fast re-throw (bootstrap fails rather than rendering empty state)]] - code - graphify-in/kepei-app.js
+- [[Narrow-waist between persistence layer and application state]] - code - graphify-in/kepei-app.js
+- [[Non-atomic invoice write (missing db.batch)]] - code - graphify-in/kepei-app.js
+- [[__user__ modal]] - code - graphify-in/kepei-app.js
 - [[addRecord]] - code - graphify-in/kepei-app.js
-- [[deleteRecord]] - code - graphify-in/kepei-app.js
-- [[doLogin]] - code - graphify-in/kepei-app.js
-- [[generateInvoiceHTML]] - code - graphify-in/kepei-app.js
-- [[getGSTRegime]] - code - graphify-in/kepei-app.js
+- [[closeModal]] - code - graphify-in/kepei-app.js
+- [[createUserAccount]] - code - graphify-in/kepei-app.js
+- [[gstentry modal]] - code - graphify-in/kepei-app.js
+- [[invoice modal (3-record atomic)]] - code - graphify-in/kepei-app.js
 - [[loadAllData]] - code - graphify-in/kepei-app.js
-- [[loadDashboard]] - code - graphify-in/kepei-app.js
-- [[loadProjects]] - code - graphify-in/kepei-app.js
-- [[loadTDS]] - code - graphify-in/kepei-app.js
-- [[loadTransactions]] - code - graphify-in/kepei-app.js
-- [[saveAllData]] - code - graphify-in/kepei-app.js
-- [[saveCollection]] - code - graphify-in/kepei-app.js
+- [[modalForms config]] - code - graphify-in/kepei-app.js
+- [[project modal]] - code - graphify-in/kepei-app.js
+- [[saveBulkEntry]] - code - graphify-in/kepei-app.js
+- [[saveClientEntry]] - code - graphify-in/kepei-app.js
 - [[saveModal]] - code - graphify-in/kepei-app.js
-- [[saveSetup]] - code - graphify-in/kepei-app.js
+- [[stockentry modal]] - code - graphify-in/kepei-app.js
+- [[timeentry modal]] - code - graphify-in/kepei-app.js
 - [[updateRecord]] - code - graphify-in/kepei-app.js
-- [[v1-v2-v3 Subcollection Migration]] - code - graphify-in/kepei-app.js
 
 ## Live Query (requires Dataview plugin)
 
@@ -55,9 +50,7 @@ SORT file.name ASC
 ```
 
 ## Connections to other communities
-- 3 edges to [[_COMMUNITY_Roles & Invite Flow]]
+- 1 edge to [[_COMMUNITY_Auth & Roles]]
 
 ## Top bridge nodes
-- [[loadAllData]] - degree 23, connects to 1 community
-- [[saveModal]] - degree 5, connects to 1 community
-- [[saveSetup]] - degree 3, connects to 1 community
+- [[saveModal]] - degree 17, connects to 1 community

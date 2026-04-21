@@ -12,7 +12,5 @@ tags:
 
 ## Connections
 - [[loadAllData]] - `sole_writer_of` [EXTRACTED]
-- [[loadDashboard]] - `references` [EXTRACTED]
-- [[saveModal]] - `references` [EXTRACTED]
 
 #graphify/code #graphify/EXTRACTED #community/Data_Bootstrap_&_DB_State

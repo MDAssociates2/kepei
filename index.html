@@ -1956,6 +1956,37 @@ function closeModal(){document.getElementById('modal-overlay').classList.remove(
 
 
 
+/**
+ * saveModal — Modal save dispatcher for every write operation in the app.
+ *
+ * Dispatches based on `currentModal` to handle each modal type:
+ *   - __user__      → createUserAccount (Firebase Auth + Firestore user doc)
+ *   - invoice       → 3-record atomic create: invoices + inventory(×N lines)
+ *                     + gst_ledger  (the "one invoice = three records" pattern)
+ *   - stockentry    → single write to inventory
+ *   - gstentry      → single write to gst_ledger
+ *   - project       → create OR update (via currentEditId) to projects
+ *   - timeentry     → create OR update to time_entries
+ *   - ... (see modalForms config for the full list)
+ *
+ * All writes route through addRecord() / updateRecord() into Firestore
+ * subcollections. Uses toast() for user feedback; calls closeModal() and
+ * navigate() to the target section on success.
+ *
+ * Architectural note (graphify 2026-04-21): #2 bridge node in the code
+ * graph by meaningful betweenness. See hyperedge "Invoice → Journal +
+ * GST Ledger + Stock Entry Auto-Creation" in graphify-out/GRAPH_REPORT.md
+ * — this function is the sole implementer of that contract.
+ *
+ * KNOWN ISSUE (architectural, not yet fixed): the invoice branch performs
+ * 3 sequential addRecord() calls with NO transaction boundary. If any
+ * call after the first fails (rate limit, network glitch, auth expiry),
+ * the system is left partially-committed — invoice document exists but
+ * inventory or gst_ledger rows are missing. Refactor candidate: wrap the
+ * invoice branch in db.batch() / runTransaction() for atomicity. Until
+ * then, assume any bug report mentioning "GST ledger missing for
+ * invoice X" originates here.
+ */
 async function saveModal(){
 
   const cfg=modalForms[currentModal];

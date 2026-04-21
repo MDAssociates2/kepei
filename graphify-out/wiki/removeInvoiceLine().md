@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in\kepei-app.js"
 type: "code"
-community: "Invoice & GST Engine"
-location: "L1252"
+community: "Modal Dispatcher & Writes"
+location: "L1256"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Invoice_&_GST_Engine
+  - community/Modal_Dispatcher_&_Writes
 ---
 
 # removeInvoiceLine()
@@ -15,4 +15,4 @@ tags:
 - [[kepei-app.js]] - `contains` [EXTRACTED]
 - [[recalculateInvoice()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Invoice_&_GST_Engine
+#graphify/code #graphify/EXTRACTED #community/Modal_Dispatcher_&_Writes

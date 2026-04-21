@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in/Kepei-Deep-Dive.md"
 type: "document"
-community: "Deep Dive Documentation"
+community: "Modal Dispatcher & Writes"
 location: "Slide 22"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Deep_Dive_Documentation
+  - community/Modal_Dispatcher_&_Writes
 ---
 
 # GST Engine: CGST/SGST/IGST Auto-Split
@@ -15,4 +15,4 @@ tags:
 - [[GST Ledger Section]] - `references` [EXTRACTED]
 - [[ITC Summary Section]] - `references` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Deep_Dive_Documentation
+#graphify/document #graphify/EXTRACTED #community/Modal_Dispatcher_&_Writes

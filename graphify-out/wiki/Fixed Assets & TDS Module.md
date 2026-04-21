@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in/Kepei-Deep-Dive.md"
 type: "document"
-community: "Deep Dive Documentation"
+community: "Modal Dispatcher & Writes"
 location: "Slide 64"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Deep_Dive_Documentation
+  - community/Modal_Dispatcher_&_Writes
 ---
 
 # Fixed Assets & TDS Module
@@ -16,4 +16,4 @@ tags:
 - [[Solution One Invoice = Three Auto-Records]] - `conceptually_related_to` [INFERRED]
 - [[TDS Register Section]] - `references` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Deep_Dive_Documentation
+#graphify/document #graphify/EXTRACTED #community/Modal_Dispatcher_&_Writes

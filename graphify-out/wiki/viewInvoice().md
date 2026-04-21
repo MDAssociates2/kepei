@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in\kepei-app.js"
 type: "code"
-community: "Invoice Print Rendering"
-location: "L822"
+community: "Auth & Roles"
+location: "L821"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Invoice_Print_Rendering
+  - community/Auth_&_Roles
 ---
 
 # viewInvoice()
@@ -15,4 +15,4 @@ tags:
 - [[generateInvoiceHTML()]] - `calls` [EXTRACTED]
 - [[kepei-app.js]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Invoice_Print_Rendering
+#graphify/code #graphify/EXTRACTED #community/Auth_&_Roles

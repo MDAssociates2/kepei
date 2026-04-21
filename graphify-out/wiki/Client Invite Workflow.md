@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in/Kepei-CA-Admin-Guide.md"
 type: "document"
-community: "Invite Link Flow"
+community: "Auth & Roles"
 location: "Slide 6"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Invite_Link_Flow
+  - community/Auth_&_Roles
 ---
 
 # Client Invite Workflow
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[Client Invite Link Signup Flow]] - `references` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Invite_Link_Flow
+#graphify/document #graphify/EXTRACTED #community/Auth_&_Roles

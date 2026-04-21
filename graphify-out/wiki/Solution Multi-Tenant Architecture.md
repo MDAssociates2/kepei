@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in/Kepei-Problems-Solutions.md"
 type: "document"
-community: "Multi-Tenant Architecture"
+community: "Product Documentation"
 location: "Slide 17"
 tags:
   - graphify/document
   - graphify/INFERRED
-  - community/Multi-Tenant_Architecture
+  - community/Product_Documentation
 ---
 
 # Solution: Multi-Tenant Architecture
@@ -16,4 +16,4 @@ tags:
 - [[Multi-Tenant User Management Architecture]] - `semantically_similar_to` [INFERRED]
 - [[Problem Managing Multiple Clients is Difficult]] - `rationale_for` [EXTRACTED]
 
-#graphify/document #graphify/INFERRED #community/Multi-Tenant_Architecture
+#graphify/document #graphify/INFERRED #community/Product_Documentation

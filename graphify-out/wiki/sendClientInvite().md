@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in\kepei-app.js"
 type: "code"
-community: "Roles & Invite Flow"
-location: "L1991"
+community: "Auth & Roles"
+location: "L1809"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Roles_&_Invite_Flow
+  - community/Auth_&_Roles
 ---
 
 # sendClientInvite()
@@ -19,4 +19,4 @@ tags:
 - [[renderInviteList()]] - `calls` [EXTRACTED]
 - [[toast()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Roles_&_Invite_Flow
+#graphify/code #graphify/EXTRACTED #community/Auth_&_Roles

@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in\kepei-app.js"
 type: "code"
-community: "App Init & Auth"
-location: "L1782"
+community: "Auth & Roles"
+location: "L1787"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/App_Init_&_Auth
+  - community/Auth_&_Roles
 ---
 
 # wizSelect()
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[kepei-app.js]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/App_Init_&_Auth
+#graphify/code #graphify/EXTRACTED #community/Auth_&_Roles

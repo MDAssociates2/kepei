@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in\kepei-app.js"
 type: "code"
-community: "Onboarding Wizard"
-location: "L1786"
+community: "Auth & Roles"
+location: "L1791"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Onboarding_Wizard
+  - community/Auth_&_Roles
 ---
 
 # updateStepDots()
@@ -16,4 +16,4 @@ tags:
 - [[kepei-app.js]] - `contains` [EXTRACTED]
 - [[showWizStep()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Onboarding_Wizard
+#graphify/code #graphify/EXTRACTED #community/Auth_&_Roles

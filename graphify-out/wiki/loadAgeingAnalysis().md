@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in\kepei-app.js"
 type: "code"
-community: "Ageing Analysis & Client Forms"
-location: "L1588"
+community: "Section Loaders"
+location: "L1593"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Ageing_Analysis_&_Client_Forms
+  - community/Section_Loaders
 ---
 
 # loadAgeingAnalysis()
@@ -16,4 +16,4 @@ tags:
 - [[renderAgeingSummary()]] - `calls` [EXTRACTED]
 - [[renderAgeingTable()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Ageing_Analysis_&_Client_Forms
+#graphify/code #graphify/EXTRACTED #community/Section_Loaders

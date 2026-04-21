@@ -1,19 +1,14 @@
 ---
 source_file: "graphify-in/kepei-app.js"
 type: "code"
-community: "Data Bootstrap & DB State"
+community: "Cluster 27"
 location: "L370"
 tags:
   - graphify/code
-  - graphify/INFERRED
-  - community/Data_Bootstrap_&_DB_State
+  - graphify/EXTRACTED
+  - community/Cluster_27
 ---
 
 # saveAllData
 
-## Connections
-- [[Firebase Firestore (db)]] - `calls` [EXTRACTED]
-- [[loadAllData]] - `semantically_similar_to` [INFERRED]
-- [[saveCollection]] - `semantically_similar_to` [INFERRED]
-
-#graphify/code #graphify/INFERRED #community/Data_Bootstrap_&_DB_State
+#graphify/code #graphify/EXTRACTED #community/Cluster_27

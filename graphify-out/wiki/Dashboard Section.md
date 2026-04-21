@@ -1,14 +1,14 @@
 ---
 source_file: "graphify-in/kepei-sections.md"
 type: "document"
-community: "Dashboard Section"
+community: "Cluster 24"
 location: "line 3"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Dashboard_Section
+  - community/Cluster_24
 ---
 
 # Dashboard Section
 
-#graphify/document #graphify/EXTRACTED #community/Dashboard_Section
+#graphify/document #graphify/EXTRACTED #community/Cluster_24

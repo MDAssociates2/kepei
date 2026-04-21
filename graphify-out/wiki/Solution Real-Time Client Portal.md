@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in/Kepei-Problems-Solutions.md"
 type: "document"
-community: "Product Positioning"
+community: "Section Loaders"
 location: "Slide 4"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Product_Positioning
+  - community/Section_Loaders
 ---
 
 # Solution: Real-Time Client Portal
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[Problem Client Has No Book Visibility]] - `rationale_for` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Product_Positioning
+#graphify/document #graphify/EXTRACTED #community/Section_Loaders

@@ -1,24 +1,21 @@
 ---
 type: community
-cohesion: 0.22
-members: 9
+cohesion: 0.47
+members: 6
 ---
 
 # Section Loaders
 
-**Cohesion:** 0.22 - loosely connected
-**Members:** 9 nodes
+**Cohesion:** 0.47 - moderately connected
+**Members:** 6 nodes
 
 ## Members
-- [[filterGST()]] - code - graphify-in\kepei-app.js
-- [[loadGSTLedger()]] - code - graphify-in\kepei-app.js
-- [[loadInventory()]] - code - graphify-in\kepei-app.js
-- [[loadInvoices()]] - code - graphify-in\kepei-app.js
-- [[loadItems()]] - code - graphify-in\kepei-app.js
-- [[loadParties()]] - code - graphify-in\kepei-app.js
-- [[loadTransactions()]] - code - graphify-in\kepei-app.js
-- [[toggleClientView()]] - code - graphify-in\kepei-app.js
-- [[updateBadges()]] - code - graphify-in\kepei-app.js
+- [[calcAgeingData()]] - code - graphify-in\kepei-app.js
+- [[exportAgeingData()]] - code - graphify-in\kepei-app.js
+- [[loadAgeingAnalysis()]] - code - graphify-in\kepei-app.js
+- [[renderAgeingSummary()]] - code - graphify-in\kepei-app.js
+- [[renderAgeingTable()]] - code - graphify-in\kepei-app.js
+- [[switchAgeingTab()]] - code - graphify-in\kepei-app.js
 
 ## Live Query (requires Dataview plugin)
 
@@ -28,13 +25,13 @@ SORT file.name ASC
 ```
 
 ## Connections to other communities
-- 9 edges to [[_COMMUNITY_App Init & Auth]]
-- 2 edges to [[_COMMUNITY_Ageing Analysis & Client Forms]]
-- 1 edge to [[_COMMUNITY_Roles & Invite Flow]]
+- 6 edges to [[_COMMUNITY_Auth & Roles]]
+- 2 edges to [[_COMMUNITY_Auth & Roles]]
+- 2 edges to [[_COMMUNITY_OCR Processing]]
 
 ## Top bridge nodes
-- [[loadTransactions()]] - degree 5, connects to 3 communities
-- [[updateBadges()]] - degree 8, connects to 2 communities
-- [[loadGSTLedger()]] - degree 3, connects to 1 community
-- [[filterGST()]] - degree 2, connects to 1 community
-- [[loadInventory()]] - degree 2, connects to 1 community
+- [[calcAgeingData()]] - degree 5, connects to 2 communities
+- [[renderAgeingSummary()]] - degree 5, connects to 2 communities
+- [[renderAgeingTable()]] - degree 5, connects to 2 communities
+- [[exportAgeingData()]] - degree 3, connects to 2 communities
+- [[loadAgeingAnalysis()]] - degree 3, connects to 1 community

@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in/kepei-sections.md"
 type: "document"
-community: "Party Master"
+community: "Product Documentation"
 location: "line 6"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Party_Master
+  - community/Product_Documentation
 ---
 
 # Parties Section
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[Party Master â€” GSTIN State Auto-Detect]] - `references` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Party_Master
+#graphify/document #graphify/EXTRACTED #community/Product_Documentation

@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in\kepei-app.js"
 type: "code"
-community: "Dashboard & Render Utils"
-location: "L2228"
+community: "Section Loaders"
+location: "L2046"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Dashboard_&_Render_Utils
+  - community/Section_Loaders
 ---
 
 # formatCurrency()
@@ -20,4 +20,4 @@ tags:
 - [[renderProfitability()]] - `calls` [EXTRACTED]
 - [[renderWIPAging()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Dashboard_&_Render_Utils
+#graphify/code #graphify/EXTRACTED #community/Section_Loaders

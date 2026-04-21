@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in\kepei-app.js"
 type: "code"
-community: "Section Loaders"
-location: "L693"
+community: "Auth & Roles"
+location: "L692"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Section_Loaders
+  - community/Auth_&_Roles
 ---
 
 # filterGST()
@@ -15,4 +15,4 @@ tags:
 - [[kepei-app.js]] - `contains` [EXTRACTED]
 - [[loadGSTLedger()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Section_Loaders
+#graphify/code #graphify/EXTRACTED #community/Auth_&_Roles

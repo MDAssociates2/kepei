@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in\kepei-app.js"
 type: "code"
-community: "Section Loaders"
+community: "Auth & Roles"
 location: "L553"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Section_Loaders
+  - community/Auth_&_Roles
 ---
 
 # loadTransactions()
@@ -18,4 +18,4 @@ tags:
 - [[toggleClientView()]] - `calls` [EXTRACTED]
 - [[updateBadges()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Section_Loaders
+#graphify/code #graphify/EXTRACTED #community/Auth_&_Roles

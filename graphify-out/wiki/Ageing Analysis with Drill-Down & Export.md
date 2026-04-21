@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in/Kepei-Deep-Dive.md"
 type: "document"
-community: "Ageing Analysis Section"
+community: "Ageing Analysis"
 location: "Slide 70"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Ageing_Analysis_Section
+  - community/Ageing_Analysis
 ---
 
 # Ageing Analysis with Drill-Down & Export
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[Ageing Analysis Section]] - `references` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Ageing_Analysis_Section
+#graphify/document #graphify/EXTRACTED #community/Ageing_Analysis

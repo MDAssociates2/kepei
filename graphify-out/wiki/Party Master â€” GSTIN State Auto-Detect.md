@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in/Kepei-Deep-Dive.md"
 type: "document"
-community: "Party Master"
+community: "Product Documentation"
 location: "Slide 10"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Party_Master
+  - community/Product_Documentation
 ---
 
 # Party Master â€” GSTIN State Auto-Detect
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[Parties Section]] - `references` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Party_Master
+#graphify/document #graphify/EXTRACTED #community/Product_Documentation

@@ -11,9 +11,6 @@ tags:
 # DB.setup
 
 ## Connections
-- [[generateInvoiceHTML]] - `references` [EXTRACTED]
 - [[loadAllData]] - `sole_writer_of` [EXTRACTED]
-- [[saveModal]] - `references` [EXTRACTED]
-- [[saveSetup]] - `shares_data_with` [EXTRACTED]
 
 #graphify/code #graphify/EXTRACTED #community/Data_Bootstrap_&_DB_State

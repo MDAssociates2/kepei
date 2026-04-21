@@ -1,12 +1,12 @@
 ---
 source_file: "graphify-in/Kepei-Client-Orientation.md"
 type: "document"
-community: "Admin vs Client Roles"
+community: "Cluster 11"
 location: "Slide 15"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Admin_vs_Client_Roles
+  - community/Cluster_11
 ---
 
 # Client-Visible Modules (8 of 18)
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[Admin vs Client Role Separation]] - `references` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Admin_vs_Client_Roles
+#graphify/document #graphify/EXTRACTED #community/Cluster_11
