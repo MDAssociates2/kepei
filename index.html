@@ -920,13 +920,24 @@ function applyRole() {
 // =============================================
 
 /**
- * loadAllData — Sole write path into the global DB state object.
+ * loadAllData — Sole read-hydration path into the global DB state object.
  *
- * This is the ONLY function that populates DB.{setup,coa,parties,items,
- * transactions,fixed_assets,tds,invoices,projects,time_entries,inventory,
- * gst_ledger,invites} from Firestore. All render/compute functions
+ * This is the ONLY function that performs BULK LOAD of DB.{setup,coa,
+ * parties,items,transactions,fixed_assets,tds,invoices,projects,
+ * time_entries,inventory,gst_ledger,invites} from Firestore on startup.
+ *
+ * Write-through paths (intentional, not in tension with this function):
+ *   - addRecord(col, rec)    — single-record create (also mutates DB[col])
+ *   - updateRecord(col, id)  — single-record update (also mutates DB[col])
+ *   - deleteRecord(col, id)  — single-record delete (also mutates DB[col])
+ *   - saveModal()            — dispatcher that calls add/update for modal forms
+ *   - saveAllData()          — legacy full-DB save (prefer per-record ops)
+ *
+ * The invariant is: bulk-load (hydration) happens ONLY here; all other
+ * mutations go through addRecord/updateRecord/deleteRecord so DB and
+ * Firestore stay in sync per-record. Render/compute functions
  * (loadDashboard, generateInvoiceHTML, calcAgeingData, getGSTRegime, etc.)
- * READ from DB but never WRITE to it — only this function does.
+ * READ from DB but do not write.
  *
  * Called once at app startup, after Firebase auth, before initApp().
  * Runs migration (v1 single-doc → v2 split-doc → v3 subcollection) when
