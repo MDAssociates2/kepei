@@ -919,74 +919,113 @@ function applyRole() {
 
 // =============================================
 
+/**
+ * loadAllData — Sole write path into the global DB state object.
+ *
+ * This is the ONLY function that populates DB.{setup,coa,parties,items,
+ * transactions,fixed_assets,tds,invoices,projects,time_entries,inventory,
+ * gst_ledger,invites} from Firestore. All render/compute functions
+ * (loadDashboard, generateInvoiceHTML, calcAgeingData, getGSTRegime, etc.)
+ * READ from DB but never WRITE to it — only this function does.
+ *
+ * Called once at app startup, after Firebase auth, before initApp().
+ * Runs migration (v1 single-doc → v2 split-doc → v3 subcollection) when
+ * legacy data is detected, otherwise performs a normal parallel subcollection
+ * read.
+ *
+ * Architectural note (from graphify 2026-04-21): this function is the
+ * narrow-waist between the persistence layer (Firebase Auth, migration,
+ * subcollection schema) and the application state. Any tenant-scoping,
+ * RBAC enforcement, or data-load observability belongs here.
+ *
+ * Throws: re-throws any Firestore error after logging + user toast, so
+ * callers (see bootstrap chain around line 881) fail fast rather than
+ * continuing with an empty DB.
+ */
 async function loadAllData() {
-  // SUBCOLLECTION FORMAT: each record is its own Firestore document
-  // Path: appdata/{collectionName}/{docId}
-  // Special: appdata/_meta/setup for setup object, appdata/_meta/coa for COA
+  const _t0 = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+  console.log('[loadAllData] start — loading all subcollections');
+  try {
+    // SUBCOLLECTION FORMAT: each record is its own Firestore document
+    // Path: appdata/{collectionName}/{docId}
+    // Special: appdata/_meta/setup for setup object, appdata/_meta/coa for COA
 
-  const metaRef = db.collection('appdata').doc('_meta');
-  const metaSnap = await metaRef.get();
+    const metaRef = db.collection('appdata').doc('_meta');
+    const metaSnap = await metaRef.get();
 
-  // Check for v2 (split-doc) migration needed
-  const oldSnap = await db.collection('appdata').get();
-  const oldDocs = {};
-  oldSnap.forEach(d => { oldDocs[d.id] = d.data(); });
+    // Check for v2 (split-doc) migration needed
+    const oldSnap = await db.collection('appdata').get();
+    const oldDocs = {};
+    oldSnap.forEach(d => { oldDocs[d.id] = d.data(); });
 
-  // MIGRATION from v1 (single main doc) or v2 (split-doc with {data:[...]})
-  const needsMigration = oldDocs.main || (oldDocs.setup && oldDocs.setup.data !== undefined && !oldDocs._meta);
-  if (needsMigration) {
-    console.log('Kepei: migrating to subcollection format...');
-    let src = {};
-    if (oldDocs.main) {
-      src = oldDocs.main; // v1: single doc
-    } else {
-      // v2: split docs with {data: value}
-      Object.keys(oldDocs).forEach(k => { src[k] = oldDocs[k].data; });
-    }
-    // Write setup + coa to _meta doc
-    const setupData = src.setup || {};
-    const coaData = src.coa || [...DEFAULT_COA];
-    await metaRef.set({ setup: setupData, coa: coaData });
-    DB.setup = setupData;
-    DB.coa = coaData;
-    // Write array collections as subcollection docs
-    const arrayCols = ['parties','items','transactions','fixed_assets','tds','invoices','projects','time_entries','inventory','gst_ledger','invites'];
-    for (const col of arrayCols) {
-      const arr = src[col] || [];
-      DB[col] = [];
-      const colRef = db.collection('appdata').doc(col).collection('records');
-      for (const item of arr) {
-        const docRef = await colRef.add(item);
-        item._id = docRef.id;
-        DB[col].push(item);
+    // MIGRATION from v1 (single main doc) or v2 (split-doc with {data:[...]})
+    const needsMigration = oldDocs.main || (oldDocs.setup && oldDocs.setup.data !== undefined && !oldDocs._meta);
+    if (needsMigration) {
+      console.log('[loadAllData] migrating to subcollection format...');
+      let src = {};
+      if (oldDocs.main) {
+        src = oldDocs.main; // v1: single doc
+      } else {
+        // v2: split docs with {data: value}
+        Object.keys(oldDocs).forEach(k => { src[k] = oldDocs[k].data; });
       }
+      // Write setup + coa to _meta doc
+      const setupData = src.setup || {};
+      const coaData = src.coa || [...DEFAULT_COA];
+      await metaRef.set({ setup: setupData, coa: coaData });
+      DB.setup = setupData;
+      DB.coa = coaData;
+      // Write array collections as subcollection docs
+      const arrayCols = ['parties','items','transactions','fixed_assets','tds','invoices','projects','time_entries','inventory','gst_ledger','invites'];
+      for (const col of arrayCols) {
+        const arr = src[col] || [];
+        DB[col] = [];
+        const colRef = db.collection('appdata').doc(col).collection('records');
+        for (const item of arr) {
+          const docRef = await colRef.add(item);
+          item._id = docRef.id;
+          DB[col].push(item);
+        }
+      }
+      // Clean up old docs
+      const batch = db.batch();
+      Object.keys(oldDocs).forEach(k => {
+        if (k !== '_meta') batch.delete(db.collection('appdata').doc(k));
+      });
+      await batch.commit();
+      console.log('[loadAllData] migration complete — subcollection format active');
+      return;
     }
-    // Clean up old docs
-    const batch = db.batch();
-    Object.keys(oldDocs).forEach(k => {
-      if (k !== '_meta') batch.delete(db.collection('appdata').doc(k));
-    });
-    await batch.commit();
-    console.log('Kepei: migration complete — subcollection format active');
-    return;
-  }
 
-  // Normal load: subcollection format
-  if (metaSnap.exists) {
-    const meta = metaSnap.data();
-    DB.setup = meta.setup || {};
-    DB.coa = meta.coa || [...DEFAULT_COA];
-  } else {
-    DB.setup = { company_name: '', entity_type: '', pan: '', tan: '', gstin: '' };
-    DB.coa = [...DEFAULT_COA];
-    await metaRef.set({ setup: DB.setup, coa: DB.coa });
+    // Normal load: subcollection format
+    if (metaSnap.exists) {
+      const meta = metaSnap.data();
+      DB.setup = meta.setup || {};
+      DB.coa = meta.coa || [...DEFAULT_COA];
+    } else {
+      DB.setup = { company_name: '', entity_type: '', pan: '', tan: '', gstin: '' };
+      DB.coa = [...DEFAULT_COA];
+      await metaRef.set({ setup: DB.setup, coa: DB.coa });
+    }
+    const arrayCols = ['parties','items','transactions','fixed_assets','tds','invoices','projects','time_entries','inventory','gst_ledger','invites'];
+    await Promise.all(arrayCols.map(async col => {
+      const snap = await db.collection('appdata').doc(col).collection('records').get();
+      DB[col] = [];
+      snap.forEach(d => { DB[col].push({ _id: d.id, ...d.data() }); });
+    }));
+
+    // Telemetry: per-collection counts + elapsed time
+    const _elapsed = Math.round(((typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now()) - _t0);
+    const counts = arrayCols.map(c => `${c}:${(DB[c]||[]).length}`).join(' ');
+    console.log(`[loadAllData] done in ${_elapsed}ms — ${counts}`);
+  } catch (err) {
+    const _elapsed = Math.round(((typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now()) - _t0);
+    console.error(`[loadAllData] FAILED after ${_elapsed}ms:`, err);
+    if (typeof toast === 'function') {
+      toast('Failed to load data: ' + (err && err.message ? err.message : 'unknown error'), 'error');
+    }
+    throw err; // re-throw so bootstrap fails fast rather than rendering empty state
   }
-  const arrayCols = ['parties','items','transactions','fixed_assets','tds','invoices','projects','time_entries','inventory','gst_ledger','invites'];
-  await Promise.all(arrayCols.map(async col => {
-    const snap = await db.collection('appdata').doc(col).collection('records').get();
-    DB[col] = [];
-    snap.forEach(d => { DB[col].push({ _id: d.id, ...d.data() }); });
-  }));
 }
 
 async function saveAllData() {

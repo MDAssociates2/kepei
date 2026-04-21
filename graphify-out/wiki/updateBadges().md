@@ -1,0 +1,24 @@
+---
+source_file: "graphify-in\kepei-app.js"
+type: "code"
+community: "Section Loaders"
+location: "L449"
+tags:
+  - graphify/code
+  - graphify/EXTRACTED
+  - community/Section_Loaders
+---
+
+# updateBadges()
+
+## Connections
+- [[kepei-app.js]] - `contains` [EXTRACTED]
+- [[loadGSTLedger()]] - `calls` [EXTRACTED]
+- [[loadInventory()]] - `calls` [EXTRACTED]
+- [[loadInvoices()]] - `calls` [EXTRACTED]
+- [[loadItems()]] - `calls` [EXTRACTED]
+- [[loadParties()]] - `calls` [EXTRACTED]
+- [[loadTransactions()]] - `calls` [EXTRACTED]
+- [[saveClientEntry()]] - `calls` [EXTRACTED]
+
+#graphify/code #graphify/EXTRACTED #community/Section_Loaders

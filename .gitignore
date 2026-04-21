@@ -1,0 +1,10 @@
+# Claude Code session data (per-machine, not shareable)
+.claude/
+
+# Graphify derivative inputs — regenerated from index.html + *.pptx on demand
+graphify-in/
+
+# Graphify semantic-extraction cache — content-hashed, rebuilt automatically.
+# GRAPH_REPORT.md, graph.html, graph.json, and wiki/ stay tracked so anyone
+# cloning can read the knowledge graph without re-running extraction.
+graphify-out/cache/
